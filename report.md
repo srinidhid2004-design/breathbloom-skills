@@ -15,8 +15,8 @@ not be offered as a real mental-health support tool.
 ## Public submission references
 
 - **Public repository:** https://github.com/srinidhid2004-design/breathbloom-skills
-- **Assessed milestone commit:** `ASSESSED_MILESTONE_SHA_PENDING` — public link
-  will be inserted after the milestone commit is created and pushed.
+- **Assessed milestone commit:**
+  [`aa41c3bda8680439f05fcb68bc6945dff6dbd515`](https://github.com/srinidhid2004-design/breathbloom-skills/commit/aa41c3bda8680439f05fcb68bc6945dff6dbd515)
 - **Public Figma file:** https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx
 - **Selected Direction A section:** https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=10-286
 - **Selected overview:** https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=14-537
@@ -36,10 +36,11 @@ Public project records:
 - [Prompt 03 — Direction A selection](https://github.com/srinidhid2004-design/breathbloom-skills/blob/main/prompts/03-direction-a-selection-and-figma-reference.md)
 - [Prompt 04 — submission and publication](https://github.com/srinidhid2004-design/breathbloom-skills/blob/main/prompts/04-part-3-1-submission-and-publication.md)
 
-The assessed milestone commit identifies the substantive Part 3.1 project state.
-A later documentation-only commit finalizes that commit link and the publication
-evidence; its SHA is reported with the submitted Canvas artifact and remains in
-the public repository history to avoid a self-referential commit loop.
+The assessed milestone commit above identifies the substantive Part 3.1 project
+state. The following documentation-only commit, titled **Finalize Assignment 3
+Part 1 report**, is the submitted report version. Its exact SHA is reported with
+the Canvas artifact and remains visible in the public repository history; placing
+that commit's own SHA inside itself would create a self-referential commit loop.
 
 ## Research and design summary
 

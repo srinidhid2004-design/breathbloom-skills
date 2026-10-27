@@ -58,7 +58,16 @@ These are static design observations, not runtime evidence.
 
 ## Publication evidence
 
-The assessed milestone and final documentation commit identifiers, remote SHA
-comparison, public document checks, and Figma public-access result are finalized
-in `docs/verification.md` after publication. No application, database, provider,
-credential, or runtime operation is part of this evidence.
+The substantive milestone was committed as
+[`aa41c3bda8680439f05fcb68bc6945dff6dbd515`](https://github.com/srinidhid2004-design/breathbloom-skills/commit/aa41c3bda8680439f05fcb68bc6945dff6dbd515)
+and pushed to the new public repository. At that checkpoint local `main` and
+`origin/main` matched. Unauthenticated retrieval loaded the public repository,
+commit, and raw report. Direct no-cookie HTTP retrieval returned status 200 for
+the Figma file, selected section, and overview; the Figma browser view resolved
+the named file and requested overview without a login or request-access screen.
+
+The following documentation-only commit finalizes the public links and evidence.
+Its SHA is intentionally reported outside its own content to avoid a self-
+referential loop. The final response and public history identify it exactly. No
+application, database, provider, credential, or runtime operation is part of this
+evidence.

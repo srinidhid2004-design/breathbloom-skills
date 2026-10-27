@@ -46,6 +46,15 @@ that no application or recording exists.
 
 ## Recorded result
 
-The final commit identifiers and public verification observations are recorded in
-`report.md`, `docs/evidence.md`, `docs/verification.md`, and
-`handoffs/current.md` after publication. No Part 3.2 implementation was started.
+The public repository was created at
+`https://github.com/srinidhid2004-design/breathbloom-skills`. The substantive
+milestone commit is `aa41c3bda8680439f05fcb68bc6945dff6dbd515`; it was pushed
+without force and loaded through an unauthenticated public read. The final
+documentation-only commit carries the finalized report/publication evidence and
+is identified by exact SHA in the final response and public history to avoid
+putting a commit's own SHA inside itself.
+
+The repository/report/document links and Figma file/section/overview links were
+checked through public/no-cookie reads where supported. The application
+directories remained empty and no Part 3.2 implementation, dependency, database,
+credential, provider, voice, or audio work was started.

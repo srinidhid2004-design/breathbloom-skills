@@ -47,13 +47,16 @@ prohibited.
 ## Publication state
 
 - Repository: https://github.com/srinidhid2004-design/breathbloom-skills
-- Assessed milestone commit: inserted after the first publication commit.
-- Final documentation commit: inserted after the public links are verified.
+- Assessed milestone commit:
+  https://github.com/srinidhid2004-design/breathbloom-skills/commit/aa41c3bda8680439f05fcb68bc6945dff6dbd515
+- Final documentation commit: the next commit on `main`, with subject **Finalize
+  Assignment 3 Part 1 report**; its exact SHA is reported outside its own content
+  to avoid a self-referential commit loop.
 - Submission artifact: `report.md`.
 
-The publication identifiers and public-access checks are finalized in the second,
-documentation-only commit so the first assessed milestone commit can be named
-without a self-referential commit loop.
+Unauthenticated checks loaded the public repository, assessed commit, and report.
+Direct no-cookie requests and a browser read resolved the Figma file, selected
+section, and overview without a login or request-access screen.
 
 ## Remaining unresolved work
 

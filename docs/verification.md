@@ -329,7 +329,25 @@ project or its future coursework tests.
 
 ### Publication verification result
 
-The assessed milestone SHA, final documentation SHA, local/remote comparison,
-unauthenticated GitHub document results, Figma public-access observation, ignored-
-file result, and clean-tree result are inserted here in the final documentation
-commit after the first milestone commit has been published.
+- Created the public repository
+  `https://github.com/srinidhid2004-design/breathbloom-skills` under the verified
+  authenticated owner without replacing a prior repository.
+- Created and pushed assessed milestone commit
+  `aa41c3bda8680439f05fcb68bc6945dff6dbd515` with the required subject. Local
+  `main` and `origin/main` resolved to that same SHA immediately after the push.
+- An unauthenticated web read loaded the public repository, the assessed commit,
+  and the raw `report.md`. The repository page identified it as Public and listed
+  the expected documentation files.
+- Direct unauthenticated/no-cookie HTTP reads returned status 200 for the Figma
+  file, selected section, and overview without a login redirect or explicit
+  request-access/file-not-found page. A browser read resolved the public file name
+  **BreathBloom — Assignment 3.1 Design Comparison** and requested overview node
+  `14:537`. The generic web-fetch service itself does not support Figma URLs, so
+  the direct HTTP and browser observations are the applicable public checks.
+- The final documentation-only commit uses the required subject and carries the
+  finalized report/evidence. Its SHA cannot be embedded inside itself without a
+  third self-referential commit; it is reported in the final response and remains
+  visible in public history.
+- The final post-push check verifies every GitHub link from `report.md`, confirms
+  local/remote SHA equality, no staged or unstaged change, no ignored/generated
+  file tracked, and zero children in `frontend/`, `backend/`, and `data/`.
