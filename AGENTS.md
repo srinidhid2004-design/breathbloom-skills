@@ -3,20 +3,21 @@
 Work toward the BreathBloom project described in `README.md`. Work only inside
 this project root, preserve existing work, and treat the README's approved
 decisions and open questions as authoritative. Read `README.md`, `AGENTS.md`,
-`AI-USE.md`, `docs/part-3-1-decisions.md`, `docs/support-resources.md`,
-`docs/design-pipeline.md`, `docs/verification.md`, and `handoffs/current.md` when
-relevant before making changes.
+`AI-USE.md`, `docs/part-3-1-decisions.md`, `docs/part-3-2-implementation-plan.md`,
+`docs/support-resources.md`, `docs/design-pipeline.md`, `docs/verification.md`, and
+`handoffs/current.md` when relevant before making changes.
 
 ## Current approved-decision boundary
 
-The repository has completed the approved Assignment 3.1 research/design decision
-checkpoint. The exact behavior, wording, data, API, RAG, responsive, accessibility,
-and Figma-comparison decisions are in `docs/part-3-1-decisions.md`; the fixed U.S.
-Support plan is in `docs/support-resources.md`. Do not install dependencies,
-create application source, add manifests or environments, add credentials, create
-a database or fixture, initialize Git, use Figma, call a model/provider, create
-`report.md`, or add other files until a later task explicitly authorizes that
-work.
+The repository has completed the approved Assignment 3.1 research/design
+checkpoint and Assignment 3.2 Checkpoint 1 foundation. The exact behavior,
+wording, data, API, RAG, responsive, and accessibility decisions are in
+`docs/part-3-1-decisions.md`; the implementation contract is in
+`docs/part-3-2-implementation-plan.md`; and the fixed U.S. Support plan is in
+`docs/support-resources.md`. The Vue/FastAPI foundation and dependency manifests
+are authorized. Do not implement later-checkpoint behavior, create a database or
+fixture, add a real credential, call a provider, change the Figma artifact,
+replace the Part 3.1 `report.md`, or modify `main` without a later explicit task.
 
 Do not resolve a README open question by assumption. Ask for or record a decision
 when it becomes necessary to the requested milestone.
@@ -94,8 +95,10 @@ when it becomes necessary to the requested milestone.
   loading, timeout, provider failure, malformed output, rejected retrieval, and
   stale responses. A model failure must never block practice, Stop, Support, or
   ordinary history.
-- No model or provider is approved yet. Do not select, configure, or call one
-  without a later explicit task.
+- Google Gemini is the approved provider and `gemini-3.5-flash-lite` is the fixed
+  stable model. Configuration and the official backend SDK are authorized, but
+  no provider call is authorized until a later explicit checkpoint. Do not add a
+  provider/model fallback or automatic retry.
 
 ## 5. Protect secrets and backend-only configuration
 

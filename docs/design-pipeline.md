@@ -2,19 +2,19 @@
 
 ## Status and boundary
 
-The current milestone is **approved Assignment 3.1 research/design decisions plus
-the human-selected Direction A Figma reference**.
+The current milestone is **Assignment 3.2 Checkpoint 1 foundation**, built from
+the approved Assignment 3.1 decisions and human-selected Direction A reference.
 The exact approved contracts are in
 [`part-3-1-decisions.md`](part-3-1-decisions.md), and the static U.S. Support
 content and official sources are in
 [`support-resources.md`](support-resources.md). This file summarizes how those
 decisions guide later design and implementation.
 
-Everything below is planned, not implemented or runtime-verified. An editable
-static Figma design reference now exists, but no source code, API, database,
-provider connection, or running application exists. BreathBloom is a local
-coursework prototype for fictional scenarios, not a mental-health or emergency
-service.
+The minimal Vue page, FastAPI application, safe configuration, and health route
+now exist and have local foundation checks. The selected interface and all skill,
+Support, persistence, database, model, and integrated behavior below remain
+planned and unverified. BreathBloom is a local coursework prototype for
+fictional scenarios, not a mental-health or emergency service.
 
 ## Intended fictional user task
 
@@ -179,12 +179,13 @@ fields, duplicates, inconsistent timing, and attempts to overwrite terminal
 states. No asynchronous request-status endpoint is planned unless later
 implementation evidence demonstrates a need.
 
-These contracts do not exist in code yet. The full proposed request, response,
-and failure shapes are in `part-3-1-decisions.md`.
+Only `GET /api/health` exists in code at Checkpoint 1. The final 11-route plan and
+exact schema are in `part-3-2-implementation-plan.md`; the earlier request,
+response, and failure proposal remains in `part-3-1-decisions.md`.
 
 ## Planned model, fallback, and RAG roles
 
-A later, separately authorized model may supply only an optional bounded
+The approved Google Gemini model `gemini-3.5-flash-lite` may later supply only an optional bounded
 introduction, factual reflection, or answer about fictional saved history. It
 cannot control the exercise or Support route, infer condition, diagnose, provide
 therapy/medical advice, or claim improvement. Reviewed deterministic copy keeps
@@ -200,8 +201,9 @@ and arbitrary functions.
 
 Every out-of-scope question receives the same neutral deterministic scope message
 and visible Support link. Empty retrieval also uses fixed wording. BreathBloom
-does not detect or classify crisis language. Provider/model choice, credentials,
-exact timeouts/retries/call budgets, and provider calls remain deferred.
+does not detect or classify crisis language. Provider/model choice is resolved;
+credentials, exact timeout/call budget, implementation, and provider calls remain
+deferred. No provider fallback or automatic retry is permitted.
 
 ## Research rationale and tradeoffs
 
@@ -242,8 +244,9 @@ but a Figma frame does not prove application behavior.
 
 - **Vue 3 frontend:** semantic interface, static Support, deterministic pacing,
   motion/guidance presentation, and HTTP requests.
-- **FastAPI backend:** typed validation, transitions, persistence, read-only RAG
-  enforcement, and any later authorized backend-only provider call.
+- **FastAPI backend:** the checked foundation exposes safe health/config status;
+  later checkpoints add typed transitions, persistence, read-only RAG
+  enforcement, and the separately authorized backend-only provider call.
 - **SQLite:** planned at `data/app.sqlite3`, opened only by the backend for the
   five fictional-demo record types.
 
@@ -253,12 +256,10 @@ Voice input/output, microphone access, WebRTC, audio capture/recording, speech
 recognition, speech synthesis, and live-audio models are prohibited. The complete
 experience uses visible text and controls.
 
-## Remaining unresolved decisions
+## Remaining implementation work
 
-- Which provider/model, if any, will be separately proposed and authorized, and
-  what exact provider timeouts, retries, call budgets, and malformed-output rules
-  will apply?
-- The next concrete milestone is to plan the Part 3.2 implementation foundation
-  from the selected Direction A reference. That planning task must define its
-  authorized implementation boundary before any source, dependency, database,
-  provider, credential, or runtime work begins.
+The next checkpoint must implement the selected Direction A deterministic
+practice and static Support experience with mocked/local behavior only. Later
+checkpoints add the exact five-table SQLite/API contracts, bounded Gemini/RAG,
+and final integration/evidence. Before a live provider check, record the exact
+timeout and a project call cap below the course's 50-call session maximum.

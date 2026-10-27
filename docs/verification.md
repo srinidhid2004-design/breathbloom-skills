@@ -289,12 +289,14 @@ Every item below is **planned/unverified**, not passed.
 | History/database/API comparison | Compare date, duration, cycles, outcome, settings, ordering, and IDs for the same fictional records | Planned / unverified |
 | RAG empty and rejected-query behavior | Observe honest empty retrieval and rejection of write/unsafe SQL without database changes | Planned / unverified |
 
-## Currently unverified behavior
+## Runtime verification boundary
 
-All runtime behavior is currently unverified because there is no source code,
-dependency environment, database, API, implemented interface, provider
-configuration, or running application. The static Figma reference must not be
-cited as implementation or runtime evidence.
+Checkpoint 1 later verified only the minimal Vue/FastAPI foundation described at
+the end of this record. The deterministic exercise, selected Figma interface,
+static Support route, accessibility behavior, persistence schema, session and
+conversation APIs, history, model contribution, RAG, and integrated failure
+behavior remain unimplemented and unverified. The static Figma reference must
+not be cited as implementation or runtime evidence.
 
 Software and documentation checks cannot establish clinical safety or
 effectiveness. No clinical or effectiveness conclusion can be drawn from this
@@ -351,3 +353,76 @@ project or its future coursework tests.
 - The final post-push check verifies every GitHub link from `report.md`, confirms
   local/remote SHA equality, no staged or unstaged change, no ignored/generated
   file tracked, and zero children in `frontend/`, `backend/`, and `data/`.
+
+## Assignment 3.2 Checkpoint 1 — foundation
+
+### Git and pre-change gate
+
+- Fetched `origin` without checking out or changing `main`.
+- Confirmed active branch `main`, clean working tree/index, and exact local and
+  remote start SHA `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`.
+- Confirmed assessed Part 3.1 commit
+  `aa41c3bda8680439f05fcb68bc6945dff6dbd515` remained an ancestor.
+- Confirmed zero source/manifests, zero children in `frontend/`, `backend/`, and
+  `data/`, no prohibited tracked generated artifact, and no credential-like
+  assignment or private absolute path.
+- Confirmed ignore rules for `.env`, `backend/.env`, project-local virtual
+  environments, frontend dependencies/builds, caches/logs, and the selected
+  database path `data/app.sqlite3` plus its sidecars.
+- Created `feature/assignment-3-part-2` exactly at the verified start SHA. Local
+  `main` and `origin/main` remained unchanged.
+
+### Official model check
+
+Official Google AI pages were checked on October 27, 2026. The model guide lists
+`gemini-3.5-flash-lite` as a stable model and the July 2026 release notes describe
+it as generally available. The pricing page lists standard free-tier input and
+output as free of charge. Actual project access and limits remain account/tier
+dependent and must be inspected before a later live call. No provider request was
+made.
+
+### Dependency and foundation results
+
+- Selected Python: project-local `backend/.venv/Scripts/python.exe`, created with
+  Python 3.14.7. Direct pinned packages are FastAPI 0.162.0, Uvicorn 0.54.0,
+  Pydantic Settings 2.16.1, Google Gen AI 2.33.0, pytest 9.1.1, and httpx 0.28.1.
+- `pip check`: **No broken requirements found**.
+- Backend tests: **3 passed**. They cover app/health construction, the exact safe
+  unconfigured response, configured-without-secret-leak behavior, and the single
+  Checkpoint 1 `/api` route.
+- Import/app construction: `FastAPI`; OpenAPI path set exactly
+  `['/api/health']`.
+- ASGI health request: HTTP 200 with
+  `{"database":"not initialized","gemini_api_key":"not configured","service":"ok"}`.
+  No credential, environment contents, provider header, private path, or raw
+  exception appeared.
+- Selected frontend runtime: Node.js 24.20.0 with npm 11.19.0. Direct versions
+  are locked in `package-lock.json`: Vue 3.5.44, Vite 8.3.5, Vue plugin 6.0.10,
+  Vitest 5.0.5, Vue Test Utils 2.5.1, jsdom 30.1.3, ESLint 10.13.0,
+  eslint-plugin-vue 10.12.0, `@eslint/js` 10.0.1, and globals 17.13.0.
+- Frontend tests: **1 file and 2 tests passed**. Zero-warning ESLint and the Vite
+  production build passed; the build transformed 11 modules. Production-only
+  `npm audit` reported **0 vulnerabilities**.
+
+### Revised first pass
+
+The first backend route-count test inspected route objects directly. FastAPI
+0.162 represents the included router with a wrapper that does not expose the
+assumed `path` attribute, so two tests passed and that assertion failed even
+though the health request worked. The assertion was revised to inspect the
+generated OpenAPI paths. The first Vue lint pass also reported 15 formatting
+warnings. The component was formatted. The complete backend and frontend suites
+were then rerun and produced the passing results above.
+
+### What this evidence does and does not establish
+
+The checks establish that the pinned foundation installs locally, the app can be
+constructed, safe status reporting works without a key or database, the minimal
+accessible screen renders its three placeholder areas under component tests, and
+the frontend lints/builds. They do not establish any full Part 3.2 behavior.
+
+No local `.env`, credential, SQLite file/record, fictional fixture/scenario,
+provider request, Figma edit, voice/audio feature, full selected interface,
+runtime capture, authentication, analytics, vector database, or alternate
+provider/model was created. `backend/.venv`, `frontend/node_modules`, and
+`frontend/dist` are generated ignored artifacts, not submitted source.

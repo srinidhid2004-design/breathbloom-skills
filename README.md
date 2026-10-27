@@ -4,9 +4,10 @@ IST 402 — Assignment 3 coursework project
 
 ## Purpose and boundary
 
-BreathBloom is a planned local application for practicing one short paced-breathing
-skill through visible text and controls. It is intended to demonstrate interface,
-backend, persistence, and bounded conversational-model design for coursework.
+BreathBloom is a local application foundation for practicing one short
+paced-breathing skill through visible text and controls. It is intended to
+demonstrate interface, backend, persistence, and bounded conversational-model
+design for coursework.
 
 This is a coursework prototype tested only with fictional scenarios. It must not
 diagnose, provide therapy, claim clinical effectiveness, give medical advice,
@@ -16,23 +17,59 @@ as evidence of a diagnosis, emotional state, or improvement.
 
 ## Current milestone
 
-This repository contains the **completed Assignment 3.1 — Research and Design
-milestone**. The authoritative decisions are recorded in
+This feature branch contains the **Assignment 3.2 Checkpoint 1 foundation** built
+from the completed and published Assignment 3.1 milestone. The authoritative
+design decisions are recorded in
 [`docs/part-3-1-decisions.md`](docs/part-3-1-decisions.md), with the fixed U.S.
 fictional-demo Support plan in
 [`docs/support-resources.md`](docs/support-resources.md). The human-selected
 Direction A reference is available in the public Figma file, and the submitted
-coursework summary is in [`report.md`](report.md). The repository contains no
-dependencies, application source, credentials, database, or provider integration.
+Part 3.1 summary remains unchanged in [`report.md`](report.md).
 
-**No running application exists yet.** Every runtime behavior remains planned and
-unverified even when its design decision is approved.
+The repository now has tested minimal Vue and FastAPI scaffolds, pinned manifests,
+safe lazy Gemini configuration, and `GET /api/health`. The visible page is only a
+foundation screen; it is not the selected Figma experience. No breathing flow,
+Support route/content, persistence tables, database file, model request, or full
+Part 3.2 behavior has been implemented. The exact implementation contract is in
+[`docs/part-3-2-implementation-plan.md`](docs/part-3-2-implementation-plan.md).
 
 Public design references:
 
 - [BreathBloom — Assignment 3.1 Design Comparison](https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx)
 - [Selected Direction A section](https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=10-286)
 - [Selected Direction A overview](https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=14-537)
+
+## Run the foundation from a clean checkout
+
+Prerequisites used for this checkpoint are Python 3.14 and Node.js 24. Run these
+commands from the repository root in PowerShell:
+
+```powershell
+py -3.14 -m venv backend/.venv
+backend/.venv/Scripts/python.exe -m pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+Push-Location backend
+.venv/Scripts/python.exe -m pytest -q
+.venv/Scripts/python.exe -m uvicorn app.main:app --reload --port 8000
+Pop-Location
+```
+
+In a second terminal:
+
+```powershell
+Set-Location frontend
+npm ci
+npm test
+npm run lint
+npm run dev
+```
+
+Open the Vite URL shown in the terminal. The safe backend check is
+`http://127.0.0.1:8000/api/health`; it reports only service, database, and key
+configuration statuses. A Gemini key is not required for this checkpoint.
+
+Before a later explicitly authorized live-model check, copy
+`backend/.env.example` to the ignored `backend/.env` and manually add the key as
+`GEMINI_API_KEY=...`. Never commit or paste the value into project evidence.
 
 ## Chosen skill and timing
 
@@ -154,8 +191,11 @@ The model may not control or change the timer, 4–6 sequence, progress, stop,
 pause, resume, saved status, or Support access. It may not invent therapeutic or
 medical advice, diagnose, infer distress, or present activity as improvement.
 Application-owned fallback text must keep the experience usable when a model is
-missing, slow, malformed, stale, or fails. No provider or model is selected or
-authorized at this milestone.
+missing, slow, malformed, stale, or fails. Google Gemini is the approved provider
+and the fixed model is the official stable `gemini-3.5-flash-lite`. It will be
+backend-only with no provider/model fallback and no automatic retry. This
+checkpoint adds configuration and the official SDK only; it makes no provider
+request. Exact sources and remaining call controls are in the Part 3.2 plan.
 
 ## Planned records and history
 
@@ -248,13 +288,14 @@ breathbloom-skills/
 |-- AGENTS.md
 |-- AI-USE.md
 |-- report.md
-|-- frontend/
-|-- backend/
-|-- data/
+|-- frontend/                 # minimal Vue/Vite foundation and tests
+|-- backend/                  # minimal FastAPI foundation and tests
+|-- data/                     # empty; runtime database remains ignored
 |-- docs/
 |   |-- design-pipeline.md
 |   |-- evidence.md
 |   |-- part-3-1-decisions.md
+|   |-- part-3-2-implementation-plan.md
 |   |-- support-resources.md
 |   `-- verification.md
 |-- prompts/
@@ -262,22 +303,22 @@ breathbloom-skills/
 |   |-- 02-part-3-1-research-decisions.md
 |   |-- 03-direction-a-selection-and-figma-reference.md
 |   |-- 04-part-3-1-submission-and-publication.md
+|   |-- 05-part-3-2-foundation.md
 |   `-- README.md
 `-- handoffs/
     `-- current.md
 ```
 
-`frontend/`, `backend/`, and `data/` are intentionally empty at this milestone.
-The other directories now contain only the authorized continuity records shown
-above. Application and runtime artifacts will be added only when a later milestone
-authorizes them.
+The checked-in manifests and source are intentionally minimal. Generated
+`backend/.venv`, `frontend/node_modules`, and `frontend/dist` remain ignored.
+`data/` remains empty, and no local `.env` was created.
 
 ## Remaining unresolved work
 
-Part 3.1 design work is complete. These later decisions and implementation tasks
-remain unresolved and must not be silently invented:
-
-- Which provider and model, if any, will be proposed and separately authorized,
-  with what exact timeouts, retries, call budget, and malformed-output rules?
-- What exact Part 3.2 implementation sequence will establish the Vue, FastAPI,
-  SQLite, deterministic timing, Support, persistence, and verification foundation?
+Part 3.1 design work and the Part 3.2 foundation are complete. The remaining four
+checkpoints must implement and verify the selected Direction A interface,
+deterministic timing/Support behavior, the exact five-table SQLite/API contracts,
+bounded Gemini/RAG behavior, and final integrated fictional-scenario evidence.
+Before any live Gemini call, record an exact timeout and a project call cap below
+the course's 50-call session maximum. Full behavior must not be claimed from this
+foundation.
