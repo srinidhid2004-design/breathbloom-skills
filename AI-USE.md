@@ -21,9 +21,9 @@ examples and credential-free mocks are permitted.
 - **Internet research/search:** opened the eight named primary research sources
   and recorded limited findings. Studies were not treated as proof of FocusBloom
   outcomes.
-- **Google Gemini (`gemini-3.5-flash-lite`):** remains the approved future runtime
-  model for two bounded purposes. No live provider request occurred in the pivot.
-  Existing backend tests use an injected fake gateway only.
+- **Google Gemini (`gemini-3.5-flash-lite`):** is the fixed backend adapter model
+  for two bounded purposes. Version-2 tests used an injected fake gateway only;
+  no live request or real credential was used.
 - **Git/GitHub:** verified branch/history state, retained the existing repository,
   and published only the authorized feature-branch pivot. No second repository,
   history rewrite, force push, or `main` change is permitted.
@@ -71,20 +71,29 @@ The active pivot record links the primary sources and states their limitations.
 The research supports questions and design rationale, not claims that FocusBloom
 calms, treats, restores attention, or improves a user.
 
-## Runtime model contract (planned, not implemented)
+## Runtime model contract (implemented and mocked)
 
 Perspective alternatives use at most one request, strict bounded JSON, no advice,
 no automatic save, zero retries, and no provider/model fallback. History RAG uses
 at most two requests: one SQL proposal followed by one grounded answer only when
-validated rows exist. The backend must validate SQL, use a read-only connection,
-bound execution/payloads, verify row references, and reject mutations before
-execution. Application-owned fixed status messages handle missing configuration
-or failure without fabricating model content.
+validated rows exist. The backend validates a deliberately small SELECT grammar,
+uses a read-only URI, default-deny authorizer, bound execution/payloads, snapshot
+check, and row-reference validation, and rejects mutations before execution.
+Application-owned fixed status messages handle missing configuration or failure
+without fabricating model content.
+
+The first complete version-2 test cycle passed, but review found two boundaries
+that were correctable before publication: reused idempotency keys needed to
+conflict when content differed, and the SQL WHERE grammar was initially broader
+than necessary. The implementation was revised to compare stored input hashes/
+content and to accept only allow-listed bound comparison predicates. The full
+suite passed again. This is mocked adapter evidence, not a live-provider result.
 
 ## Evidence integrity
 
 Prompt records distinguish requested work from observed results. The submitted
 Part 3.1 report and prompts 01–06 are unchanged. Tests, Figma checks, Git checks,
 and repository-redirect checks are recorded only after observation. A mock is
-never described as a live call, and planned version-2 behavior is never described
-as implemented.
+never described as a live call. Version-2 backend behavior is described as
+implemented only where temporary-database and fake-gateway tests observed it;
+frontend and live-provider behavior remain unimplemented or unverified.

@@ -1,117 +1,109 @@
-"""Bounded Google Gemini gateway with no fallback and one total attempt."""
+"""Bounded Gemini contracts: one attempt, fixed model, no provider fallback."""
 
 from __future__ import annotations
 
+import json
 import re
-from typing import Any, Protocol
+from typing import Any, Protocol, TypeVar
 
 import httpx
 from google import genai
 from google.genai import errors, types
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
-from .config import (
-    GEMINI_MAX_OUTPUT_TOKENS,
-    GEMINI_MODEL,
-    GEMINI_TIMEOUT_MS,
-    Settings,
-)
-from .schemas import ProviderPayload, RequestKind
+from .config import GEMINI_MAX_OUTPUT_TOKENS, GEMINI_MODEL, GEMINI_TIMEOUT_MS, Settings
+from .schemas import GroundedHistoryAnswer, HistoryQueryProposal, PerspectiveAlternativesOutput
 
 
 class ProviderProblem(Exception):
-    """Sanitized provider failure; raw provider details never cross this boundary."""
-
-    def __init__(self, outcome: str, safe_error_code: str, status_code: int, message: str) -> None:
-        super().__init__(message)
-        self.outcome = outcome
+    def __init__(self, safe_error_code: str, status_code: int = 502) -> None:
+        super().__init__(safe_error_code)
         self.safe_error_code = safe_error_code
         self.status_code = status_code
-        self.message = message
 
 
 class GeminiGateway(Protocol):
-    def generate(self, context: str, expected_kind: RequestKind) -> ProviderPayload:
-        """Return one validated structured response or raise ProviderProblem."""
+    def perspective(self, context: dict[str, Any]) -> PerspectiveAlternativesOutput: ...
+    def propose_history_query(self, question: str) -> HistoryQueryProposal: ...
+    def answer_history(self, context: dict[str, Any]) -> GroundedHistoryAnswer: ...
 
 
-SAFE_PROVIDER_MESSAGES = {
-    "authentication_failure": "The optional Gemini request could not authenticate.",
-    "permission_failure": "The optional Gemini request is not permitted for this project.",
-    "quota_failure": "The optional Gemini request is unavailable because its quota was reached.",
-    "rate_limit_failure": "The optional Gemini request is temporarily rate limited.",
-    "timeout": "The optional Gemini request timed out.",
-    "provider_failure": "The optional Gemini request is unavailable.",
-    "malformed_response": "The optional Gemini response could not be safely validated.",
-}
+FORBIDDEN_OUTPUT = (
+    "diagnos", "therapy", "therapeutic", "medical advice", "treatment",
+    "cure", "improve your mental health", "monitoring you", "crisis",
+    "call 911", "call 988", "text 988", "you feel", "you are anxious",
+    "you should", "you need to", "you must", "i recommend", "my advice",
+    "will help you", "take action",
+)
 
 
-def provider_problem(outcome: str) -> ProviderProblem:
-    status_codes = {
-        "authentication_failure": 502,
-        "permission_failure": 502,
-        "quota_failure": 503,
-        "rate_limit_failure": 429,
-        "timeout": 504,
-        "provider_failure": 502,
-        "malformed_response": 502,
-    }
-    return ProviderProblem(outcome, outcome, status_codes[outcome], SAFE_PROVIDER_MESSAGES[outcome])
-
-
-def validate_provider_payload(payload: Any, expected_kind: RequestKind) -> ProviderPayload:
-    try:
-        validated = payload if isinstance(payload, ProviderPayload) else ProviderPayload.model_validate(payload)
-    except ValidationError as exc:
-        raise provider_problem("malformed_response") from exc
-
-    text = validated.response_text.strip()
-    if validated.response_kind is not expected_kind:
-        raise provider_problem("malformed_response")
-    if not text or text != validated.response_text:
-        raise provider_problem("malformed_response")
-    if re.search(r"<[^>]+>|https?://|www\.", text, flags=re.IGNORECASE):
-        raise provider_problem("malformed_response")
-
-    forbidden_claims = (
-        "diagnos",
-        "therapy",
-        "therapeutic",
-        "medical advice",
-        "treatment plan",
-        "cure",
-        "improve your mental health",
-        "monitoring you",
-        "crisis",
-        "call 911",
-        "call 988",
-        "text 988",
+def _safe_text(value: str) -> bool:
+    lowered = value.casefold()
+    return (
+        value == value.strip()
+        and not re.search(r"<[^>]+>|https?://|www\.", value, re.IGNORECASE)
+        and not any(term in lowered for term in FORBIDDEN_OUTPUT)
     )
-    lowered = text.casefold()
-    if any(claim in lowered for claim in forbidden_claims):
-        raise provider_problem("malformed_response")
-    return validated
+
+
+def validate_perspective(value: Any) -> PerspectiveAlternativesOutput:
+    try:
+        output = value if isinstance(value, PerspectiveAlternativesOutput) else PerspectiveAlternativesOutput.model_validate(value)
+    except ValidationError as exc:
+        raise ProviderProblem("malformed_response") from exc
+    if any(not _safe_text(item.alternative) or not _safe_text(item.factual_basis) for item in output.alternatives):
+        raise ProviderProblem("malformed_response")
+    return output
+
+
+def validate_query_proposal(value: Any) -> HistoryQueryProposal:
+    try:
+        return value if isinstance(value, HistoryQueryProposal) else HistoryQueryProposal.model_validate(value)
+    except ValidationError as exc:
+        raise ProviderProblem("malformed_response") from exc
+
+
+def validate_grounded_answer(value: Any) -> GroundedHistoryAnswer:
+    try:
+        output = value if isinstance(value, GroundedHistoryAnswer) else GroundedHistoryAnswer.model_validate(value)
+    except ValidationError as exc:
+        raise ProviderProblem("malformed_response") from exc
+    if not _safe_text(output.answer):
+        raise ProviderProblem("malformed_response")
+    return output
+
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class GoogleGeminiGateway:
-    """Lazily constructs the official SDK client only for an accepted request."""
+    """Construct the official SDK client only for an accepted configured request."""
 
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 
-    def generate(self, context: str, expected_kind: RequestKind) -> ProviderPayload:
-        if self.settings.gemini_api_key is None:
-            raise RuntimeError("gateway constructed without configuration")
-        key = self.settings.gemini_api_key.get_secret_value().strip()
+    def _generate(self, *, purpose: str, context: Any, schema: type[T]) -> T:
+        key = "" if self.settings.gemini_api_key is None else self.settings.gemini_api_key.get_secret_value().strip()
         if not key:
-            raise RuntimeError("gateway constructed without configuration")
-
-        instructions = (
-            "Return only the requested JSON object. Use only the supplied fictional "
-            "coursework facts. Be brief and factual. Do not diagnose, provide therapy "
-            "or medical advice, claim improvement, infer emotion or crisis, generate "
-            "support resources, or alter application-owned activity state."
-        )
+            raise ProviderProblem("missing_configuration", 503)
+        instructions = {
+            "perspective": (
+                "Return only the exact JSON schema. Offer one or two brief alternative interpretations "
+                "and a factual basis for each. Do not give advice, diagnose, infer emotion or crisis, "
+                "claim effectiveness, select an action, or navigate the application."
+            ),
+            "history_sql": (
+                "Return only the exact JSON schema. For saved FocusBloom records, propose one bounded "
+                "parameterized SELECT using one approved table, WHERE profile_id = :profile_id, and a "
+                "final LIMIT no greater than 20. Use bound parameters for other values. No CTE, join, "
+                "subquery, comment, schema access, or mutation. Mark unrelated requests out_of_scope."
+            ),
+            "history_answer": (
+                "Return only the exact JSON schema. Answer solely from the supplied numbered rows and "
+                "cite each used row number. State when information is absent. Do not infer motivation, "
+                "emotion, diagnosis, effectiveness, improvement, treatment, or advice."
+            ),
+        }[purpose]
         try:
             client = genai.Client(
                 api_key=key,
@@ -122,37 +114,46 @@ class GoogleGeminiGateway:
             )
             response = client.models.generate_content(
                 model=GEMINI_MODEL,
-                contents=f"{instructions}\n\nApproved context:\n{context}",
+                contents=f"{instructions}\n\nApproved bounded context:\n{json.dumps(context, separators=(',', ':'), sort_keys=True)}",
                 config=types.GenerateContentConfig(
                     max_output_tokens=GEMINI_MAX_OUTPUT_TOKENS,
                     response_mime_type="application/json",
-                    response_schema=ProviderPayload,
+                    response_schema=schema,
                 ),
             )
         except (TimeoutError, httpx.TimeoutException) as exc:
-            raise provider_problem("timeout") from exc
+            raise ProviderProblem("timeout", 504) from exc
         except errors.APIError as exc:
-            status = (exc.status or "").casefold()
-            message = (exc.message or "").casefold()
             if exc.code == 401:
-                raise provider_problem("authentication_failure") from exc
+                raise ProviderProblem("authentication_failure") from exc
             if exc.code == 403:
-                raise provider_problem("permission_failure") from exc
-            if exc.code == 429 and "quota" in f"{status} {message}":
-                raise provider_problem("quota_failure") from exc
+                raise ProviderProblem("permission_failure") from exc
             if exc.code == 429:
-                raise provider_problem("rate_limit_failure") from exc
-            raise provider_problem("provider_failure") from exc
+                raise ProviderProblem("rate_limit_failure", 429) from exc
+            raise ProviderProblem("provider_failure") from exc
+        except ProviderProblem:
+            raise
         except Exception as exc:
-            raise provider_problem("provider_failure") from exc
-
+            raise ProviderProblem("provider_failure") from exc
         parsed = getattr(response, "parsed", None)
-        if parsed is None:
-            raw_text = getattr(response, "text", None)
-            if not isinstance(raw_text, str):
-                raise provider_problem("malformed_response")
+        if parsed is not None:
             try:
-                parsed = ProviderPayload.model_validate_json(raw_text)
+                return parsed if isinstance(parsed, schema) else schema.model_validate(parsed)
             except ValidationError as exc:
-                raise provider_problem("malformed_response") from exc
-        return validate_provider_payload(parsed, expected_kind)
+                raise ProviderProblem("malformed_response") from exc
+        raw = getattr(response, "text", None)
+        if not isinstance(raw, str):
+            raise ProviderProblem("malformed_response")
+        try:
+            return schema.model_validate_json(raw)
+        except ValidationError as exc:
+            raise ProviderProblem("malformed_response") from exc
+
+    def perspective(self, context: dict[str, Any]) -> PerspectiveAlternativesOutput:
+        return validate_perspective(self._generate(purpose="perspective", context=context, schema=PerspectiveAlternativesOutput))
+
+    def propose_history_query(self, question: str) -> HistoryQueryProposal:
+        return validate_query_proposal(self._generate(purpose="history_sql", context={"question": question}, schema=HistoryQueryProposal))
+
+    def answer_history(self, context: dict[str, Any]) -> GroundedHistoryAnswer:
+        return validate_grounded_answer(self._generate(purpose="history_answer", context=context, schema=GroundedHistoryAnswer))

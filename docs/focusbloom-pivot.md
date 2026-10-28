@@ -189,6 +189,7 @@ test harness remain reusable.
 
 The breathing-specific version-1 schema, five-table assumptions, session timing
 rules, route surface, request kinds, model prompt/response contract, fixture
-labels, and tests do not implement FocusBloom and require deliberate replacement.
-This checkpoint changes only safe product branding and plans that replacement;
-it does not create version 2, migrate a database, or implement the new interface.
+labels, and tests remain historical only. Prompt 08 deliberately replaced them
+in active source with the version-2 FocusBloom backend. That checkpoint did not
+create a runtime database, make a live provider call, change Figma, or implement
+the new Vue interface.

@@ -1,4 +1,4 @@
-"""Direct checks for the five-table SQLite contract."""
+"""Version-2 schema, constraint, transaction, lifecycle, and reopen tests."""
 
 import sqlite3
 from pathlib import Path
@@ -9,89 +9,94 @@ import pytest
 from app.database import DEMO_PROFILE_ID, Repository, SCHEMA_VERSION
 
 
-def test_schema_has_exact_five_tables_and_constraints(tmp_path: Path) -> None:
+EXPECTED_TABLES = {
+    "demo_profiles", "preferences", "activity_sessions", "activity_events",
+    "perspective_artifacts", "next_step_seeds", "conversations", "messages",
+    "model_requests",
+}
+
+
+def test_schema_has_exact_nine_tables_and_version_two(tmp_path: Path) -> None:
     path = tmp_path / "schema.sqlite3"
     repository = Repository(path)
     assert not path.exists()
-
     repository.initialize()
-
     with repository.connect(read_only=True) as connection:
         tables = {
-            row[0]
-            for row in connection.execute(
-                "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name"
+            row[0] for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )
         }
-        assert tables == {
-            "demo_profiles",
-            "preferences",
-            "exercise_sessions",
-            "conversations",
-            "messages",
-        }
+        assert tables == EXPECTED_TABLES
         assert connection.execute("PRAGMA user_version").fetchone()[0] == SCHEMA_VERSION
-
-    with repository.connect() as connection:
-        with pytest.raises(sqlite3.IntegrityError):
-            connection.execute(
-                "UPDATE preferences SET motion_mode = ? WHERE profile_id = ?",
-                ("inferred", DEMO_PROFILE_ID),
-            )
-        with pytest.raises(sqlite3.IntegrityError):
-            connection.execute(
-                """
-                INSERT INTO demo_profiles (
-                    profile_id, display_label, jurisdiction_scope,
-                    reset_version, created_at, updated_at
-                ) VALUES (?, ?, 'US-DEMO', 0, ?, ?)
-                """,
-                (
-                    "another-profile",
-                    "Not approved",
-                    "2026-10-27T16:00:00.000Z",
-                    "2026-10-27T16:00:00.000Z",
-                ),
-            )
+        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
 
 
-def test_foreign_keys_are_enabled_on_every_connection(tmp_path: Path) -> None:
-    repository = Repository(tmp_path / "foreign-keys.sqlite3")
+def test_version_one_database_stops_without_modification(tmp_path: Path) -> None:
+    path = tmp_path / "v1.sqlite3"
+    with sqlite3.connect(path) as connection:
+        connection.execute("CREATE TABLE exercise_sessions(value TEXT)")
+        connection.execute("PRAGMA user_version=1")
+    with pytest.raises(sqlite3.DatabaseError):
+        Repository(path).initialize()
+    with sqlite3.connect(path) as connection:
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 1
+        assert connection.execute("SELECT name FROM sqlite_master WHERE name='exercise_sessions'").fetchone()
+
+
+def test_constraints_and_foreign_keys_are_enforced(tmp_path: Path) -> None:
+    repository = Repository(tmp_path / "constraints.sqlite3")
     repository.initialize()
     with repository.connect() as connection:
-        assert connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         with pytest.raises(sqlite3.IntegrityError):
             connection.execute(
-                """
-                INSERT INTO conversations (
-                    conversation_id, profile_id, client_conversation_id,
-                    status, created_at, updated_at
-                ) VALUES (?, ?, ?, 'open', ?, ?)
-                """,
-                (
-                    str(uuid4()),
-                    "not-the-fictional-profile",
-                    str(uuid4()),
-                    "2026-10-27T16:00:00.000Z",
-                    "2026-10-27T16:00:00.000Z",
-                ),
+                "UPDATE preferences SET motion_mode='full' WHERE profile_id=?", (DEMO_PROFILE_ID,)
+            )
+        with pytest.raises(sqlite3.IntegrityError):
+            connection.execute(
+                "INSERT INTO activity_events VALUES (?, ?, ?, 0, 'started', ?, 0, '{}', ?)",
+                (str(uuid4()), "missing", str(uuid4()), "2026-10-28T14:00:00.000Z", "2026-10-28T14:00:00.000Z"),
             )
 
 
-def test_initialize_is_idempotent_and_records_survive_reopen(tmp_path: Path) -> None:
-    path = tmp_path / "restart.sqlite3"
-    first = Repository(path)
-    first.initialize()
-    first.update_preferences(
-        motion_mode="none",
-        guidance_level="minimal",
-        expected_version=1,
-        idempotency_key=str(uuid4()),
-    )
+def test_reopen_preserves_version_two_records(tmp_path: Path) -> None:
+    path = tmp_path / "reopen.sqlite3"
+    repository = Repository(path)
+    repository.initialize()
+    repository.update_preferences({
+        "motion_mode": "no_motion", "guidance_level": "minimal", "difficulty": "easy",
+        "remember_preferences": True, "expected_version": 1, "idempotency_key": str(uuid4()),
+    })
+    Repository(path).initialize()
+    assert Repository(path).preferences()["motion_mode"] == "no_motion"
+    assert Repository(path).preferences()["version"] == 2
 
-    reopened = Repository(path)
-    reopened.initialize()
 
-    assert reopened.preferences()["motion_mode"] == "none"
-    assert reopened.preferences()["guidance_level"] == "minimal"
-    assert reopened.preferences()["version"] == 2
+def test_preferences_are_idempotent_and_versioned(tmp_path: Path) -> None:
+    repository = Repository(tmp_path / "prefs.sqlite3")
+    repository.initialize()
+    key = str(uuid4())
+    values = {
+        "motion_mode": "no_motion", "guidance_level": "more", "difficulty": "challenge",
+        "remember_preferences": True, "expected_version": 1, "idempotency_key": key,
+    }
+    first, duplicate = repository.update_preferences(values)
+    second, repeated = repository.update_preferences(values)
+    assert not duplicate and repeated
+    assert first["version"] == second["version"] == 2
+
+
+def test_reset_is_atomic_and_reseeds_defaults(tmp_path: Path) -> None:
+    repository = Repository(tmp_path / "reset.sqlite3")
+    repository.initialize()
+    repository.create_session({
+        "client_session_id": str(uuid4()), "activity_type": "different_leaf",
+        "started_at": "2026-10-28T14:00:00.000Z", "difficulty": "standard",
+        "motion_mode": "standard", "guidance_level": "standard",
+    })
+    version, counts, duplicate = repository.reset_demo(0)
+    assert (version, duplicate) == (1, False)
+    assert counts["activity_sessions"] == 1
+    assert repository.preferences()["version"] == 1
+    assert repository.list_sessions(0, 20, None, None)[0] == []
+    assert repository.reset_demo(0)[2] is True

@@ -1,11 +1,12 @@
-# BreathBloom Curated Evidence Log
+# FocusBloom Curated Evidence Log
 
 ## Evidence boundary
 
 This is a redacted, project-relevant evidence log rather than a chat transcript.
 It contains no credentials, private filesystem paths, personal contact details,
 research-participant information, or private account data. Planned behavior is
-kept separate from observed static-design and publication checks.
+kept separate from observed static-design, local mocked implementation, and
+publication checks.
 
 ## Prompt-to-result trace
 
@@ -17,6 +18,8 @@ kept separate from observed static-design and publication checks.
 | [`04-part-3-1-submission-and-publication.md`](../prompts/04-part-3-1-submission-and-publication.md) | Create, audit, commit, publish, and publicly verify the Part 3.1 submission only | `report.md`, this evidence log, final publication records, and public Git history | Complete project/course reread; Figma metadata recheck; pre-Git and staged audits; local/remote SHA and unauthenticated public-link checks |
 | [`05-part-3-2-foundation.md`](../prompts/05-part-3-2-foundation.md) | Authorize the Part 3.2 architecture and tested minimal Vue/FastAPI foundation on a feature branch | Implementation plan, pinned manifests, safe health/config backend, minimal accessible frontend, tests, and continuity updates | Exact Git/start gate; official Google model/pricing check; dependency integrity; backend tests/import/health; frontend tests/lint/build; safety and ignored-artifact audits |
 | [`06-part-3-2-backend.md`](../prompts/06-part-3-2-backend.md) | Authorize the complete backend and supply the exact structural crisis/input decision after the initial safety stop | Five-table SQLite repository, 11-route FastAPI API, deterministic session validation, bounded Gemini adapter, 32-test suite, and continuity updates | Branch/start gate; focused/full tests; temporary-row snapshots; mocked call counts and failure matrix; dependency/import/diff and credential/generated-state audits |
+| [`07-focusbloom-design-pivot.md`](../prompts/07-focusbloom-design-pivot.md) | Preserve Part 3.1 evidence while pivoting the active product, design, architecture, data, API, and model contract to FocusBloom | Editable FocusBloom Figma evolution, exact version-2 plan, low-input boundaries, scaffold branding, and continuity updates | Exact Git/start gate; Figma structure/screenshots; research sources; tests/build; repository rename and feature-branch publication |
+| [`08-focusbloom-version-2-backend.md`](../prompts/08-focusbloom-version-2-backend.md) | Replace the legacy active backend with the complete approved FocusBloom version-2 backend | Nine-table schema, 22 API operations, explicit-save persistence, bounded Gemini adapter, read-only history RAG, 52-test suite, and continuity updates | Exact Git/start gate; schema/route inspection; focused and complete tests; mocked 0/1/2 call matrix; adversarial SQL/read-only checks; dependency and artifact audits |
 
 ## Consequential design comparison
 
@@ -206,3 +209,32 @@ remained at `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`. The feature branch start
 at `68d96d7f241184a062878a510132e911b67e4694`. The pivot commit SHA is reported
 by the final response and public branch history to avoid a self-referential
 documentation edit.
+
+## FocusBloom version-2 backend evidence
+
+- Active source now contains exactly the nine contracted version-2 tables and 22
+  API operations. No breathing table, field, timing rule, or compatibility route
+  remains in the runtime implementation.
+- Temporary SQLite evidence covers schema/version/foreign-key checks, refusal to
+  migrate version 1 implicitly, lifecycle states, ordered events, optimistic
+  preferences, explicit artifact/seed save and deletion, reopen persistence,
+  saved-text deletion, duplicate prevention, and atomic reset.
+- The Gemini seam fixes `gemini-3.5-flash-lite`, a 10-second deadline, 384 output
+  tokens, one attempt, and no alternate provider/model. Mock evidence distinguishes
+  zero-, one-, and two-request outcomes; no generated Perspective text is saved
+  without a separate explicit save request.
+- History retrieval uses a strict non-CTE SELECT grammar, trusted profile binding,
+  approved tables/columns/functions, read-only URI, query-only/trusted-schema
+  pragmas, disabled extensions, default-deny authorizer, 100-ms progress deadline,
+  snapshot check, and 20-row/8-column/8-KiB bounds. Mutation and schema-access
+  cases were rejected before or by read-only execution.
+- Only a validated grounded answer with valid returned row numbers creates an
+  assistant message. Rejected SQL and zero-row retrieval stop after request one;
+  invalid grounding and answer failure stop after request two without retry.
+- Focused tests first reported 45 passing cases. After one hardening cycle and
+  expanded lifecycle/call-count/output-safety coverage, the complete suite reported **52
+  passed**. `pip check` reported no broken requirements.
+
+This evidence is local and mocked. No runtime database, environment file, real
+credential, live Gemini request, Figma change, frontend implementation, voice/
+audio capability, or real-distress testing was created or performed.

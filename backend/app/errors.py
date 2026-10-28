@@ -2,8 +2,6 @@
 
 
 class APIError(Exception):
-    """An error safe to expose through the public API."""
-
     def __init__(self, status_code: int, outcome: str, message: str) -> None:
         super().__init__(message)
         self.status_code = status_code
@@ -11,11 +9,16 @@ class APIError(Exception):
         self.message = message
 
 
-INVALID_REQUEST_MESSAGE = (
-    "FocusBloom only supports the listed coursework requests. No model request "
-    "was made. You can continue with the available prototype or open Support "
-    "information at any time."
-)
-
-GENERIC_INVALID_MESSAGE = "The request did not match the documented FocusBloom API contract."
+INVALID_REQUEST_MESSAGE = "The request did not match the documented FocusBloom API contract."
 DATABASE_FAILURE_MESSAGE = "FocusBloom could not access its fictional coursework records."
+MISSING_CONFIGURATION_MESSAGE = (
+    "The optional Gemini feature is not configured. The application-owned activities, "
+    "saved records, and Support information remain available."
+)
+MODEL_FAILURE_MESSAGE = (
+    "The optional Gemini request could not be completed. Your local work remains available."
+)
+QUERY_REJECTED_MESSAGE = (
+    "That history question could not be answered with the approved read-only record query."
+)
+NO_MATCH_MESSAGE = "No saved FocusBloom records matched that history question."

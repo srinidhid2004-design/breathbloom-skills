@@ -137,12 +137,13 @@ answer call. Application-owned flows work when Gemini is unavailable.
 
 ## Current implementation boundary and next step
 
-This pivot adds design and plans plus basic visible/service branding. Vue/Vite,
-FastAPI construction, lazy backend-only configuration, sanitized errors,
-transaction patterns, dependency pins, and test harnesses remain reusable. The
-version-1 breathing schema, routes, timing services, model contract, and related
-tests require replacement.
+The version-1 breathing schema, routes, timing services, model contract, and
+tests have been replaced in active source by the version-2 FocusBloom backend.
+Temporary-database tests cover the nine-table schema, 22-operation contract,
+activity/artifact/seed/history persistence, delete/reset, mocked Perspective
+calls, RAG call counts, adversarial SQL, read-only enforcement, no-match, and
+grounding. The fake-gateway suite is not live-provider evidence.
 
-Next, implement version-2 persistence and the revised route contracts in
-temporary databases with mocked Gemini, then build the FocusBloom Vue states and
-static Support experience. A live provider call remains separately authorized.
+Next, build the 17 FocusBloom Vue states and static Support experience, integrate
+the API, and complete browser/cross-layer verification. A live provider call
+remains separately authorized.

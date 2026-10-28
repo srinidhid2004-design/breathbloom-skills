@@ -607,3 +607,98 @@ Observed results:
 - The complete FocusBloom frontend, version-2 database/API, Perspective service,
   and RAG layer remain unimplemented and unverified.
 - No merge, rebase, amend, force push, or `main` change occurred.
+
+## FocusBloom version-2 backend verification — October 28, 2026
+
+### Starting gate
+
+- Repository: `https://github.com/srinidhid2004-design/focusbloom`.
+- Branch: `feature/assignment-3-part-2`.
+- Clean local/remote feature SHA:
+  `3f1ca4d3f7c4aa3c970a370925a8ab72915a5d75`.
+- Unchanged local/remote `main` SHA:
+  `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`.
+- `backend/.env` and `data/app.sqlite3` were absent; `data/` was empty.
+- No real credential or live Gemini request was present or used.
+
+### Implemented backend observations
+
+- SQLite initializes exactly nine application tables with `user_version=2`, one
+  fixed fictional profile, explained defaults, foreign keys, checks, and indexes
+  in one transaction. It rejects a version-1 or unversioned existing schema
+  without modifying it.
+- OpenAPI exposes exactly 22 approved `/api` operations. No breathing, Support,
+  classifier, provider-proxy, arbitrary-SQL, authentication, or location route
+  exists.
+- Activity records cover active, completed, stopped, skipped, and interrupted
+  states plus allow-listed ordered events. Perspective artifacts and Next-Step
+  Seeds require explicit save endpoints and support transactional deletion.
+- Saved-text deletion retains factual session metadata; complete reset cascades
+  all fixed-profile children and reseeds defaults atomically.
+- Perspective alternatives use zero calls when configuration/input is missing or
+  invalid and one mocked call for accepted success/failure. Output is bounded to
+  two alternatives and is never saved automatically.
+- History questions use zero calls for invalid input/missing configuration, one
+  for malformed/rejected/out-of-scope/no-match/request-one failure, and exactly
+  two for success/invalid grounding/request-two failure. Only validated success
+  inserts an assistant message.
+
+### RAG security observations
+
+The validator accepts one final-limit `SELECT` against one of four approved
+tables, no more than eight approved columns, only `COUNT`, `MIN`, and `MAX`, an
+exact trusted `:profile_id` predicate, and bound simple comparisons. It rejects
+CTEs, joins, subqueries, set operations, comments, semicolons, multiple
+statements, mutation/DDL, schema access, PRAGMA, attach/detach, extension calls,
+unapproved identifiers/functions, literals replacing bindings, parameter
+mismatch, and limits above 20.
+
+Execution uses an existing-file `mode=ro` URI, `query_only=ON`,
+`trusted_schema=OFF`, disabled extension loading, a default-deny authorizer, a
+100-ms progress-handler deadline, parameter binding, a data-version snapshot
+check, and 20-row/8-column/8-KiB result bounds. Raw SQL, rows, paths, prompts,
+provider errors, and exceptions are not returned by the API.
+
+### Commands and observed results
+
+```powershell
+Push-Location backend
+.venv/Scripts/python.exe -m compileall -q app
+.venv/Scripts/python.exe -m pytest -q tests/test_database.py tests/test_api.py tests/test_perspective.py tests/test_rag.py
+.venv/Scripts/python.exe -m pytest -q
+.venv/Scripts/python.exe -m pip check
+Pop-Location
+```
+
+- Import/compile and 22-operation OpenAPI inspection passed.
+- First focused cycle: **45 passed**.
+- Final complete suite after hardening and added coverage: **52 passed** in the
+  observed 4.25-second run.
+- Dependency integrity: **No broken requirements found.**
+- The same two non-failing dependency warnings remain: Starlette TestClient's
+  httpx transition and Google Gen AI's Python 3.14 type-alias deprecation.
+- AutoLoop used one correction cycle to make differing-content idempotency reuse
+  conflict and narrow WHERE validation to explicit bound predicates. Assertions
+  were strengthened, not relaxed.
+
+### Pre-commit integrity audit
+
+- `git diff --check` passed; Git reported only expected Windows LF/CRLF notices.
+- The frontend, Figma artifact, `report.md`, Part 3.1 decisions, Support source
+  record, prompts 01–07, pinned manifests, and safe environment example have no
+  diff.
+- `backend/.env` and `data/app.sqlite3` remain absent and `data/` remains empty.
+- Credential-pattern and tracked generated/private-artifact scans returned no
+  matches. No dependency was added or changed.
+- Active backend references to the old exercise table/route occur only in tests
+  proving version-1 initialization stops and the obsolete route is absent.
+- Local/remote `main` remained at the starting SHA during the pre-commit audit.
+
+### Limitations
+
+This is temporary-database and mocked-provider backend evidence. It does not
+verify the 17-state Vue interface, browser keyboard/focus behavior, narrow/zoom
+reflow, Standard/No-motion parity, stale browser responses, static Support
+rendering, end-to-end UI/API/SQLite agreement, account quota, or a live Gemini
+call. No clinical, safety, attention, or effectiveness conclusion follows from
+these software checks.

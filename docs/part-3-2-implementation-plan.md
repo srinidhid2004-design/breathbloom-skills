@@ -2,11 +2,12 @@
 
 ## Status and replacement boundary
 
-This document is the authoritative plan for the active FocusBloom product as of
-October 28, 2026. The implemented version-1 backend is preserved as historical
-code and must not be presented as this plan. No version-2 database, revised API,
-RAG workflow, or complete FocusBloom interface was implemented in the pivot
-checkpoint.
+This document is the authoritative contract for the active FocusBloom product as
+of October 28, 2026. The nine-table version-2 backend, revised API, Perspective
+adapter, and history RAG workflow are implemented on the Assignment 3.2 feature
+branch and verified with temporary databases and mocked Gemini. The complete
+FocusBloom Vue interface remains a later checkpoint. The prior version-1 backend
+is preserved only in Git history and historical records.
 
 FocusBloom is a fictional local coursework prototype, not therapy, diagnosis,
 crisis detection, a monitored service, a validated intervention, or evidence of
@@ -80,7 +81,7 @@ are historical version-1 concepts and are not active FocusBloom requirements.
   ordinary text is not tabbable. Controls follow visual order and have visible
   focus. Status announcements are restrained.
 
-## Proposed version-2 SQLite schema — nine tables
+## Implemented version-2 SQLite schema — nine tables
 
 All IDs are application-generated UUID text. Timestamps use UTC ISO 8601 with
 milliseconds. Boolean values are `INTEGER CHECK (value IN (0,1))`. Foreign keys
@@ -214,18 +215,18 @@ saved artifacts and seeds, conversation message order, and request idempotency.
 
 ## Migration strategy
 
-No runtime `data/app.sqlite3` exists, so version 2 should be implemented and
-tested as a clean schema rather than preserving breathing-specific production
-compatibility. The future initializer will use one transaction to create the
-nine version-2 tables, seed the one fictional profile and explained defaults,
-set `PRAGMA user_version = 2`, and validate foreign keys/indexes before commit.
+No runtime `data/app.sqlite3` existed at implementation, so version 2 was built
+and tested as a clean schema rather than preserving breathing-specific runtime
+compatibility. The initializer uses one transaction to create the nine version-2
+tables, seed the one fictional profile and explained defaults, set
+`PRAGMA user_version = 2`, and validate foreign keys before commit.
 
 If a runtime version-1 file is unexpectedly found, migration must stop. The
 developer must decide whether to export fictional data or reset it; code must not
 silently translate, overwrite, or delete breathing rows. Tests use temporary
 databases and must cover initialization rollback, reopen, reset, and constraints.
 
-## Proposed exact `/api` surface — 22 operations
+## Implemented exact `/api` surface — 22 operations
 
 | # | Method and route | Responsibility |
 | ---: | --- | --- |
@@ -327,6 +328,9 @@ model fallback. Safe error codes do not expose questions, prompts, SQL, rows,
 provider errors, or system instructions.
 
 ## Verification required before implementation can be called complete
+
+The backend portions below were completed in Prompt 08 with 52 passing tests.
+Browser, cross-layer UI, and manual pre-demo Support checks remain outstanding:
 
 - Temporary version-2 database tests for all constraints, transactions,
   idempotency, deletion, reset, migration stop, and reopen behavior.

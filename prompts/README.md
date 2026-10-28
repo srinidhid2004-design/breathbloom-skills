@@ -5,11 +5,11 @@
 This directory keeps concise evidence of significant project instructions,
 decisions, acceptance criteria, and observed results. It supports later review of
 how AI-assisted work affected the project without storing full conversations.
-The active milestone is the **FocusBloom Assignment 3.2 design pivot**. The
-existing five-table/11-route BreathBloom backend remains historical version-1
-code; the FocusBloom version-2 data/API/model plan and editable design are
-established, while full implementation and any live provider verification remain
-later work.
+The active milestone is the **FocusBloom Assignment 3.2 version-2 backend**. The
+five-table/11-route BreathBloom backend is retained only in Git history and
+historical evidence. The nine-table/22-operation FocusBloom backend and mocked
+model/RAG workflows are implemented; the complete Vue interface and any live
+provider verification remain later work.
 
 ## Redaction and safety rules
 
@@ -34,9 +34,10 @@ later work.
 | [`05-part-3-2-foundation.md`](05-part-3-2-foundation.md) | 2026-10-27 | Verify the published handoff, finalize Part 3.2 architecture/model decisions, create and test the minimal Vue/FastAPI foundation, and publish it on the feature branch | Exact five-table/11-route/state plan, safe Google Gemini configuration, pinned foundations, passing local checks, and updated continuity records; no database, key, live provider call, or full selected interface |
 | [`06-part-3-2-backend.md`](06-part-3-2-backend.md) | 2026-10-27 | Implement, verify, audit, and publish the complete five-table backend and structurally bounded optional Gemini path | Exact 11-route API, deterministic session validation, SQLite persistence/reset, mocked success/failure matrix, and structural crisis-input boundary; no live provider, real credential, runtime database, frontend, or Figma change |
 | [`07-focusbloom-design-pivot.md`](07-focusbloom-design-pivot.md) | 2026-10-28 | Preserve Part 3.1 evidence while pivoting the active product, design, architecture, data, API, model, and handoff to FocusBloom | Editable FocusBloom Figma evolution, exact version-2 plan, low-input boundaries, basic scaffold branding, verification, and feature-branch publication; no full implementation, database, key, or live provider call |
+| [`08-focusbloom-version-2-backend.md`](08-focusbloom-version-2-backend.md) | 2026-10-28 | Replace the obsolete active backend with the complete contracted FocusBloom version-2 backend using only temporary databases and mocked Gemini | Nine tables, 22 API operations, activity/artifact/seed/history persistence, one-call Perspective, two-call read-only RAG, 52 passing tests, and updated continuity records; no runtime database, real key, live call, frontend, or Figma change |
 
 ## Future numbering
 
 Use two-digit sequential names with a short purpose, such as
-`08-focusbloom-version-2-backend.md`. Add one index row per curated prompt record.
+`09-focusbloom-frontend.md`. Add one index row per curated prompt record.
 Prompt records are curated evidence, not full chat exports.

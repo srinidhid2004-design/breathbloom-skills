@@ -1,4 +1,6 @@
-"""Strict legacy version-1 API contracts under FocusBloom branding."""
+"""Strict FocusBloom version-2 request and provider contracts."""
+
+from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
@@ -10,20 +12,16 @@ from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_valida
 
 
 class StrictModel(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
 
 def validate_utc_timestamp(value: object) -> str:
-    if not isinstance(value, str):
-        raise ValueError("timestamp must be text")
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", value) is None:
+    if not isinstance(value, str) or re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", value
+    ) is None:
         raise ValueError("timestamp must use UTC ISO 8601 milliseconds")
-    try:
-        parsed = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%fZ")
-    except ValueError as exc:
-        raise ValueError("timestamp must use UTC ISO 8601 milliseconds") from exc
-    parsed = parsed.replace(tzinfo=timezone.utc)
-    if parsed.year < 2000 or parsed.year > 2100:
+    parsed = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+    if not 2000 <= parsed.year <= 2100:
         raise ValueError("timestamp outside supported coursework range")
     return value
 
@@ -32,9 +30,8 @@ UtcTimestamp = Annotated[str, BeforeValidator(validate_utc_timestamp)]
 
 
 class MotionMode(str, Enum):
-    FULL = "full"
-    GENTLE = "gentle"
-    NONE = "none"
+    STANDARD = "standard"
+    NO_MOTION = "no_motion"
 
 
 class GuidanceLevel(str, Enum):
@@ -43,130 +40,196 @@ class GuidanceLevel(str, Enum):
     MORE = "more"
 
 
+class Difficulty(str, Enum):
+    EASY = "easy"
+    STANDARD = "standard"
+    CHALLENGE = "challenge"
+
+
+class ActivityType(str, Enum):
+    DIFFERENT_LEAF = "different_leaf"
+    RIPPLE_PATH = "ripple_path"
+    FLOWER_MATCH = "flower_match"
+    FLOWER_CHANGE = "flower_change"
+    PETAL_SEQUENCE = "petal_sequence"
+    CLUE_SEARCH = "clue_search"
+    GARDEN_PATH = "garden_path"
+    PERSPECTIVE_STUDIO = "perspective_studio"
+
+
 class SessionStatus(str, Enum):
     ACTIVE = "active"
-    PAUSED = "paused"
     COMPLETED = "completed"
     STOPPED = "stopped"
+    SKIPPED = "skipped"
     INTERRUPTED = "interrupted"
 
 
-class EndingPhase(str, Enum):
-    SETUP = "setup"
-    READY = "ready"
-    INHALE = "inhale"
-    EXHALE = "exhale"
+class PerspectiveProgress(str, Enum):
+    NONE = "none"
+    INTERPRETATION = "interpretation"
+    EVIDENCE = "evidence"
+    ALTERNATIVE = "alternative"
+    REVIEWED = "reviewed"
 
 
-class NextTimeSetup(str, Enum):
-    USE_THIS_SETUP = "use_this_setup"
-    CHANGE_MOTION = "change_motion"
-    CHANGE_GUIDANCE = "change_guidance"
-    NO_PREFERENCE = "no_preference"
-
-
-class RequestKind(str, Enum):
-    INTRODUCTION = "introduction"
-    REFLECTION = "reflection"
-    HISTORY_SUMMARY = "history_summary"
+class ModelStatus(str, Enum):
+    SKIPPED = "skipped"
+    LOADING = "loading"
+    SUCCEEDED = "succeeded"
+    FAILED = "failed"
+    NO_MATCH = "no_match"
+    QUERY_REJECTED = "query_rejected"
 
 
 class PreferenceUpdate(StrictModel):
     motion_mode: MotionMode
     guidance_level: GuidanceLevel
+    difficulty: Difficulty
+    remember_preferences: bool
     expected_version: int = Field(ge=1)
     idempotency_key: UUID
 
 
-class SessionStart(StrictModel):
+class ActivitySessionCreate(StrictModel):
     client_session_id: UUID
-    idempotency_key: UUID
+    activity_type: ActivityType
     started_at: UtcTimestamp
-    planned_duration_ms: Literal[60_000]
+    difficulty: Difficulty
     motion_mode: MotionMode
     guidance_level: GuidanceLevel
 
 
-class SessionSnapshotAction(StrictModel):
+class ActivitySessionUpdate(StrictModel):
+    action: Literal["complete", "stop", "skip", "interrupt"]
     expected_version: int = Field(ge=1)
     idempotency_key: UUID
-    observed_active_duration_ms: int = Field(ge=0, le=62_000)
-    paused_duration_ms: int = Field(ge=0, le=86_400_000)
-    wall_clock_duration_ms: int = Field(ge=0, le=86_400_000)
-    completed_cycles: int = Field(ge=0, le=6)
-    ending_phase: EndingPhase
-    phase_elapsed_ms: int = Field(ge=0, le=8_000)
-
-
-class PauseAction(SessionSnapshotAction):
-    action: Literal["pause"]
-
-
-class ResumeAction(SessionSnapshotAction):
-    action: Literal["resume"]
-
-
-class StopAction(SessionSnapshotAction):
-    action: Literal["stop"]
     ended_at: UtcTimestamp
+    duration_ms: int = Field(ge=0, le=86_400_000)
+    perspective_progress: PerspectiveProgress = PerspectiveProgress.NONE
+    model_status: ModelStatus = ModelStatus.SKIPPED
+
+    @model_validator(mode="after")
+    def validate_terminal_state(self) -> "ActivitySessionUpdate":
+        if self.model_status is ModelStatus.LOADING:
+            raise ValueError("a terminal session cannot retain loading model state")
+        if self.action == "skip" and self.duration_ms != 0:
+            raise ValueError("a skipped activity has zero duration")
+        return self
 
 
-class CompleteAction(SessionSnapshotAction):
-    action: Literal["complete"]
-    ended_at: UtcTimestamp
+class EventPayload(StrictModel):
+    result: Literal["correct", "not_correct", "shown", "none"] | None = None
+    item_id: str | None = Field(default=None, min_length=1, max_length=40)
+    step: int | None = Field(default=None, ge=0, le=20)
 
 
-class InterruptAction(SessionSnapshotAction):
-    action: Literal["interrupt"]
-    ended_at: UtcTimestamp
+class ActivityEventCreate(StrictModel):
+    client_event_id: UUID
+    ordinal: int = Field(ge=0, le=100)
+    event_type: Literal[
+        "started", "shown", "attempted", "completed", "stopped", "skipped",
+        "interrupted", "perspective_step", "alternative_reviewed"
+    ]
+    happened_at: UtcTimestamp
+    elapsed_ms: int = Field(ge=0, le=86_400_000)
+    payload: EventPayload = Field(default_factory=EventPayload)
 
 
-class SaveNextTimeSetupAction(StrictModel):
-    action: Literal["save_next_time_setup"]
-    expected_version: int = Field(ge=1)
+class PerspectiveAlternativesRequest(StrictModel):
     idempotency_key: UUID
-    next_time_setup: NextTimeSetup
+    interpretation: str = Field(min_length=1, max_length=280)
+    supporting_evidence: list[str] = Field(default_factory=list, max_length=3)
+    uncertainty: list[str] = Field(default_factory=list, max_length=3)
+    observer_mode: Literal["none", "fictional_alex"]
+
+    @model_validator(mode="after")
+    def validate_cards(self) -> "PerspectiveAlternativesRequest":
+        if any(not card or len(card) > 180 for card in self.supporting_evidence + self.uncertainty):
+            raise ValueError("evidence cards must contain 1 to 180 characters")
+        return self
 
 
-SessionAction = Annotated[
-    PauseAction
-    | ResumeAction
-    | StopAction
-    | CompleteAction
-    | InterruptAction
-    | SaveNextTimeSetupAction,
-    Field(discriminator="action"),
-]
+class PerspectiveAlternative(StrictModel):
+    alternative: str = Field(min_length=1, max_length=240)
+    factual_basis: str = Field(min_length=1, max_length=180)
+
+
+class PerspectiveAlternativesOutput(StrictModel):
+    alternatives: list[PerspectiveAlternative] = Field(min_length=1, max_length=2)
+    limitation: Literal["Coursework prototype; not therapy or medical advice."]
+
+
+class PerspectiveArtifactCreate(StrictModel):
+    client_artifact_id: UUID
+    session_id: UUID | None = None
+    interpretation_text: str = Field(min_length=1, max_length=280)
+    supporting_evidence: list[str] = Field(default_factory=list, max_length=3)
+    uncertainty: list[str] = Field(default_factory=list, max_length=3)
+    alternative_text: str = Field(min_length=1, max_length=240)
+    alternative_source: Literal["user", "gemini", "fictional_example"]
+    observer_mode: Literal["none", "fictional_alex"]
+
+    @model_validator(mode="after")
+    def validate_cards(self) -> "PerspectiveArtifactCreate":
+        if any(not card or len(card) > 180 for card in self.supporting_evidence + self.uncertainty):
+            raise ValueError("evidence cards must contain 1 to 180 characters")
+        return self
+
+
+class NextStepSeedCreate(StrictModel):
+    client_seed_id: UUID
+    session_id: UUID | None = None
+    situation_text: str = Field(min_length=1, max_length=180)
+    action_text: str = Field(min_length=1, max_length=180)
+    formatted_plan: str = Field(min_length=1, max_length=400)
+    source: Literal["user", "template", "gemini_format"]
 
 
 class ConversationCreate(StrictModel):
     client_conversation_id: UUID
-    session_id: UUID | None = None
+    purpose: Literal["history_guide"] = "history_guide"
 
 
-class ModelActionRequest(StrictModel):
-    request_kind: RequestKind
-    session_id: UUID | None = None
-    reflection_choice: NextTimeSetup | None = None
+class HistoryMessageCreate(StrictModel):
     idempotency_key: UUID
+    question: str = Field(min_length=1, max_length=300)
+
+
+class HistoryRunRequest(StrictModel):
+    request_id: UUID
+
+
+class HistoryQueryProposal(StrictModel):
+    outcome: Literal["query", "out_of_scope"]
+    intent: str = Field(min_length=1, max_length=180)
+    sql: str | None = Field(default=None, max_length=2000)
+    parameters: dict[str, str | int] = Field(default_factory=dict, max_length=6)
 
     @model_validator(mode="after")
-    def validate_kind_fields(self) -> "ModelActionRequest":
-        if self.request_kind is RequestKind.REFLECTION:
-            if self.session_id is None or self.reflection_choice is None:
-                raise ValueError("reflection requires session and choice")
-        elif self.session_id is not None or self.reflection_choice is not None:
-            raise ValueError("only reflection accepts session and choice")
+    def validate_shape(self) -> "HistoryQueryProposal":
+        if self.outcome == "query" and not self.sql:
+            raise ValueError("query outcome requires SQL")
+        if self.outcome == "out_of_scope" and (self.sql is not None or self.parameters):
+            raise ValueError("out-of-scope outcome cannot include SQL")
+        if any(not re.fullmatch(r"[a-z][a-z0-9_]{0,30}", key) for key in self.parameters):
+            raise ValueError("invalid parameter name")
+        if any(isinstance(value, str) and len(value) > 120 for value in self.parameters.values()):
+            raise ValueError("parameter value is too long")
         return self
+
+
+class GroundedHistoryAnswer(StrictModel):
+    answer: str = Field(min_length=1, max_length=600)
+    row_references: list[int] = Field(min_length=1, max_length=20)
+    limitation: Literal["Coursework prototype; factual saved records only."]
+
+
+class SavedTextDeleteRequest(StrictModel):
+    confirmation: Literal["DELETE SAVED FOCUSBLOOM TEXT"]
 
 
 class DemoResetRequest(StrictModel):
     confirmation: Literal["RESET FICTIONAL FOCUSBLOOM DATA"]
     expected_reset_version: int = Field(ge=0)
     idempotency_key: UUID
-
-
-class ProviderPayload(StrictModel):
-    response_text: str = Field(min_length=1, max_length=600)
-    response_kind: RequestKind
-    limitation: Literal["Coursework prototype; not therapy or medical advice."]

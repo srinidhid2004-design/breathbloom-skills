@@ -17,18 +17,19 @@ text, clicks, timing, completion, or history.
 
 ## Current milestone
 
-This feature branch records the approved Assignment 3.2 product pivot and design
-contract. It includes editable FocusBloom Figma references, a proposed nine-table
-version-2 schema, an exact 22-operation `/api` plan, two bounded Gemini workflows,
-and basic scaffold branding. It does **not** implement the complete revised
-frontend, database, API, Perspective Studio backend, or RAG layer.
+This feature branch implements the approved Assignment 3.2 FocusBloom backend.
+It has the exact nine-table version-2 SQLite schema, 22-operation `/api` surface,
+factual activity/session persistence, explicitly saved Perspective artifacts and
+Next-Step Seeds, ordered history conversations, lifecycle-only model records,
+one-request Perspective alternatives, and the bounded two-request history RAG
+workflow. The previous breathing-specific version-1 implementation remains only
+in Git history and historical records.
 
-The existing FastAPI/SQLite code is the tested version-1 BreathBloom backend. It
-is preserved for history and reusable engineering patterns, but its five-table
-schema, 11-route surface, breathing session rules, and model contract are legacy
-and must be replaced before the backend represents FocusBloom. No runtime
-database, local environment file, real key, or live Gemini request is part of
-this pivot.
+The backend is verified locally with temporary databases and an injected fake
+Gemini gateway. It does **not** include the complete revised Vue interface,
+browser accessibility/integration evidence, or a live Gemini verification. No
+runtime `data/app.sqlite3`, local environment file, real key, or provider request
+was created for this checkpoint.
 
 Authoritative active records:
 
@@ -136,10 +137,10 @@ npm run build
 Pop-Location
 ```
 
-Starting the existing backend would initialize the legacy version-1 database, so
-it is not part of this planning checkpoint. The tests use temporary databases.
-The visible Vue screen is only a branded foundation scaffold, not the Figma
-experience.
+The backend tests initialize version-2 databases only in temporary test
+directories. Starting the server would initialize the configured runtime
+database, so that action was not used as checkpoint evidence. The visible Vue
+screen remains only a branded foundation scaffold, not the Figma experience.
 
 ## Technology and security boundary
 
@@ -147,10 +148,12 @@ experience.
   visible state.
 - `backend/`: typed Python/FastAPI; owns validation, persistence, and the only
   optional provider calls.
-- `data/`: future SQLite `data/app.sqlite3`, opened only by the backend.
+- `data/`: runtime SQLite `data/app.sqlite3`, opened only by the backend when the
+  server is deliberately started; it is absent from this checkpoint.
 - Google Gemini model is fixed to `gemini-3.5-flash-lite`; the key is backend
   only. No alternate provider/model, automatic retry, or live request is
-  authorized by this checkpoint.
+  used by the implemented adapter. This checkpoint authorized mocked verification
+  only, not a live request.
 
 Voice input/output, microphone use, WebRTC, recording, speech recognition,
 speech synthesis, and live-audio models are prohibited. The complete application
@@ -158,8 +161,8 @@ must remain usable through visible text and controls.
 
 ## Next implementation checkpoint
 
-Replace the legacy version-1 schema/routes with the tested version-2 contract in
-small reviewable layers, using temporary databases and mocked Gemini only. Then
-implement the FocusBloom Vue states and static Support experience, integrate
-them, and verify keyboard, reflow, No-motion, cancellation, persistence, and
-factual history behavior. A live provider check requires separate authorization.
+Implement the 17-state FocusBloom Vue experience and static independent Support
+route from the selected Figma reference. Integrate it with the implemented API,
+then verify keyboard/focus behavior, 390-pixel reflow, 200% zoom, Standard/No-
+motion parity, cancellation/stale responses, explicit save/delete/reset, and
+API/SQLite/UI agreement. A live provider check remains separately authorized.
