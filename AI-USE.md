@@ -1,91 +1,90 @@
-# AI Use Disclosure
+# AI use record
 
-## Current disclosure
+## Boundary
 
-- **Project:** BreathBloom
-- **Current milestone:** Assignment 3.2 complete backend checkpoint
-- **Tools used:** OpenAI Codex and the official Figma MCP integration
-- **Specific model identifier:** A more specific Codex model identifier is not
-  exposed in the task or project settings available for this record, so none is
-  inferred or invented.
-- **Role:** Brainstorming, requirements synthesis, proposal drafting, official
-  source verification, project planning, Figma design creation/review, static
-  design validation, publication preparation, backend architecture and code/test
-  generation, dependency selection, and documentation review.
+AI tools assisted with research synthesis, architecture planning, editable Figma
+construction, safe scaffold branding, tests, and documentation. Human-approved
+decisions define the active FocusBloom scope. AI output is not evidence of
+clinical safety, effectiveness, user benefit, or crisis detection. Only fictional
+examples and credential-free mocks are permitted.
 
-Google Gemini and fixed `gemini-3.5-flash-lite` are implemented behind a bounded
-backend-only adapter. Codex generated the five-table SQLite repository, exact
-11-route FastAPI service, strict structural input models, deterministic session
-validation, provider adapter, and temporary-database/mock test suite. No real key
-was added or read and no provider API call occurred. Only mocked provider results
-and failures were used. Figma was used only for prior editable static design
-evidence; it did not run or test backend or application behavior.
+## Tools and roles
 
-Human decisions selected the BreathBloom name, paced 4–6 breathing skill,
-water-garden design direction, exclusion of voice and audio, transparent
-personalization approach, and coursework/safety boundaries. The human also
-approved the Part 3.1 proposal with the data, API, RAG, Support, timing,
-accessibility, and Figma refinements recorded in the decision file. Codex helped
-draft and reconcile the proposal and checked the named official public pages; it
-did not replace human approval or clinically validate the product.
+- **OpenAI Codex:** inspected the repository, maintained project records, applied
+  basic branding, designed the proposed state/data/API/model contracts, ran local
+  checks, and managed the authorized feature-branch publication. It did not make
+  clinical decisions.
+- **Figma integration:** inspected the existing editable design, reused the water-
+  garden variables/styles, created the new FocusBloom section and editable frames,
+  and ran programmatic structural checks. Browser control was used only for the
+  file-level rename that the integration did not expose.
+- **Internet research/search:** opened the eight named primary research sources
+  and recorded limited findings. Studies were not treated as proof of FocusBloom
+  outcomes.
+- **Google Gemini (`gemini-3.5-flash-lite`):** remains the approved future runtime
+  model for two bounded purposes. No live provider request occurred in the pivot.
+  Existing backend tests use an injected fake gateway only.
+- **Git/GitHub:** verified branch/history state, retained the existing repository,
+  and published only the authorized feature-branch pivot. No second repository,
+  history rewrite, force push, or `main` change is permitted.
 
-## Activity log
+No voice, audio, microphone, speech, biometric, geolocation, participant, or
+private third-party tool/data was used.
 
-| Date | Tool/model | Role | Artifact or decision | Human review | Evidence |
-| --- | --- | --- | --- | --- | --- |
-| 2026-10-27 | OpenAI Codex; specific model identifier unavailable | Requirements synthesis and documentation drafting/review | Foundation and continuity documents; no application implementation | Approved project decisions were supplied by the human and retained as constraints | `README.md`, `AGENTS.md`, `docs/design-pipeline.md`, `docs/verification.md`, and `prompts/01-project-foundation.md` |
-| 2026-10-27 | OpenAI Codex; specific model identifier unavailable | AI-assisted research/design proposal drafting, official-source verification, and approved-decision documentation | Assignment 3.1 wording, Support plan, timing/state behavior, five-record data plan, simplified API/RAG scope, accessibility rules, and Figma comparison plan; no implementation | Human approved the proposal subject to explicit refinements, including consolidation from seven to five records and removal of separate reflection/request-attempt records | `docs/part-3-1-decisions.md`, `docs/support-resources.md`, `docs/verification.md`, and `prompts/02-part-3-1-research-decisions.md` |
-| 2026-10-27 | OpenAI Codex with official Figma MCP; specific Codex model identifier unavailable | Created two editable static design directions, expanded the selected direction, inspected metadata/screenshots, and repaired visual defects | Direction A/B comparison, human-selected Direction A, 13 selected reference screens, overview, annotations, and static accessibility/contrast evidence | The human explicitly selected Direction A and supplied the rationale; Codex retained A's atmosphere while incorporating named clarity cues from B | Figma file and `prompts/03-direction-a-selection-and-figma-reference.md` |
-| 2026-10-27 | OpenAI Codex; Git 2.45.1; GitHub API and web interface | Prepared the redacted Part 3.1 report/evidence package, audited content, and performed the authorized publication workflow | Public repository, assessed milestone commit, final documentation commit, and public-link checks; no application implementation | The human explicitly authorized repository creation, commits, publication, and read-only public verification | `report.md`, `docs/evidence.md`, `docs/verification.md`, and `prompts/04-part-3-1-submission-and-publication.md` |
-| 2026-10-27 | OpenAI Codex; Google AI official documentation; Python 3.14.7; Node.js 24.20.0 | Verified the stable free-tier-suitable model, finalized Part 3.2 architecture, generated minimal Vue/FastAPI foundations and tests, installed pinned dependencies, and ran local checks | `gemini-3.5-flash-lite` decision, 11-route/five-table/state plan, safe health/config foundation, minimal UI, and verification records; no key, database, live model call, or full application behavior | The human explicitly authorized Checkpoint 1 implementation and publication on the named feature branch | `docs/part-3-2-implementation-plan.md`, `docs/verification.md`, and `prompts/05-part-3-2-foundation.md` |
-| 2026-10-27 | OpenAI Codex; Python 3.14.7; FastAPI/SQLite; Google Gen AI SDK with mocked gateway only | Implemented and tested the complete Part 3.2 backend, reconciled the human-approved structural crisis/input boundary, and prepared publication | Five-table schema, 11-route API, deterministic session persistence, conversation lifecycle, reset, bounded structured Gemini adapter, failure matrix, and continuity records | The human explicitly authorized the backend checkpoint and then supplied the missing exact crisis/input decision; no live call or frontend work was authorized | `backend/app/`, `backend/tests/`, `docs/verification.md`, and `prompts/06-part-3-2-backend.md` |
+## Human-approved product decisions
 
-Add later dated entries for material AI-assisted changes, including the tool or
-model identifier when it is actually available, its role, the affected artifact
-or decision, the human review performed, and the supporting evidence.
+- Rename the active product to FocusBloom and preserve historical BreathBloom
+  evidence.
+- Make Focus Garden the primary no-typing experience.
+- Use Perspective Studio's five-step one-minute cognitive reframe as the formal
+  course skill, with fictional-example and optional fictional-observer paths.
+- Keep Next-Step Seed optional and user authored.
+- Keep History Garden factual and unscored.
+- Bound Gemini to perspective alternatives and read-only factual history RAG.
+- Keep Support static and independent.
+- Retain the local folder name for tool/project continuity while renaming the
+  public repository.
 
-## Failed or revised approaches
+## Figma construction and validation
 
-The initial AI-assisted proposal separated session reflections and request
-attempts into their own records. Human review replaced that seven-record design
-with five planned record types: Next-time setup is nullable session data, and a
-bounded model request's lifecycle belongs to its initiating user message. The API
-proposal was also consolidated around one validated session-action endpoint, and
-an asynchronous request-status endpoint was removed unless later evidence shows
-it is needed. These were design revisions rather than implementation failures;
-application implementation had not started at that Part 3.1 checkpoint.
+The integration reused existing editable visual foundations and created section
+`05 / FocusBloom Part 3.2 Pivot`, 16 required product frames, three reusable
+components, and a selected overview. It checked dimensions, overflow, fonts,
+placeholder copy, control sizes, primary-action count, and Support availability.
+A screenshot review found an overview design note overlapping the legend; the
+note positions were revised and the screenshot was reviewed again.
 
-The first foundation verification used FastAPI route-object introspection that
-no longer matched FastAPI 0.162's included-router wrapper, and the initial Vue
-component formatting produced ESLint warnings. The health request itself and
-frontend tests/build worked. The test was revised to assert the generated OpenAPI
-path, the component was formatted, and the complete backend/frontend checks were
-rerun successfully. This failed first pass is retained as evidence rather than
-reported as an initial success.
+One early scripted construction approach tried to reuse component-property keys
+and ellipse-node construction assumptions that were not valid for the available
+Figma Plugin API context. The approach was revised to set supported node
+properties directly and create fresh editable shape nodes. The rejected approach
+was not kept in the design. This is a tooling correction, not a design outcome.
 
-The backend implementation paused before model-boundary work because the prior
-records did not define crisis-related input precisely enough. The human resolved
-that gap by prohibiting free-form model text and every keyword/sentiment/classifier
-approach, requiring strict structural fields and zero-write/zero-call HTTP 422
-rejection. During the subsequent AutoLoop, one database constraint test attempted
-its deliberate invalid write through a read-only connection. The constraint
-assertion was retained, the connection mode was corrected, and both the focused
-test and full suite passed.
+Static Figma validation does not prove keyboard behavior, reflow, persistence,
+provider behavior, or runtime accessibility.
 
-The first Figma connection attempt later expired and could not access the design.
-After the human reauthenticated the integration, a read-only account/file check
-succeeded and the design work continued. A later visual review found malformed
-bloom geometry and clipped or overlapping completion/Support text; the affected
-editable vectors and spacing were revised, then the structural and visual checks
-were repeated. These are recorded as revised approaches rather than hidden as
-successful first attempts.
+## Research assistance and limits
 
-## Disclosure and redaction rules
+AI summarized visual-search, digital-nature, reappraisal/distancing,
+third-person self-talk, implementation-intention, and affect-labeling research.
+The active pivot record links the primary sources and states their limitations.
+The research supports questions and design rationale, not claims that FocusBloom
+calms, treats, restores attention, or improves a user.
 
-- Record AI assistance honestly and distinguish planning, mock evidence, and
-  observed live behavior.
-- Do not include credentials, secret values, personal information, research
-  participant information, or private third-party content.
-- Do not store raw chat exports. Keep only curated, relevant, redacted evidence.
-- Do not invent model identifiers, provider selections, tests, or outcomes.
-- Link evidence only when it is safe and appropriate for coursework review.
+## Runtime model contract (planned, not implemented)
+
+Perspective alternatives use at most one request, strict bounded JSON, no advice,
+no automatic save, zero retries, and no provider/model fallback. History RAG uses
+at most two requests: one SQL proposal followed by one grounded answer only when
+validated rows exist. The backend must validate SQL, use a read-only connection,
+bound execution/payloads, verify row references, and reject mutations before
+execution. Application-owned fixed status messages handle missing configuration
+or failure without fabricating model content.
+
+## Evidence integrity
+
+Prompt records distinguish requested work from observed results. The submitted
+Part 3.1 report and prompts 01–06 are unchanged. Tests, Figma checks, Git checks,
+and repository-redirect checks are recorded only after observation. A mock is
+never described as a live call, and planned version-2 behavior is never described
+as implemented.

@@ -46,8 +46,8 @@ CANONICAL_LABELS = {
 }
 
 MISSING_CONFIGURATION_MESSAGE = (
-    "The optional Gemini request is not configured. The breathing practice, "
-    "history, and Support information remain available."
+    "The optional Gemini request is not configured. The available prototype, "
+    "factual history, and Support information remain available."
 )
 
 
@@ -125,7 +125,7 @@ def _database_failure() -> APIError:
     return APIError(503, "database_failure", DATABASE_FAILURE_MESSAGE)
 
 
-class BreathBloomService:
+class LegacyV1Service:
     def __init__(
         self,
         repository: Repository,
@@ -336,7 +336,7 @@ class BreathBloomService:
         profile = self.repository.profile()
         preferences = self.repository.preferences()
         context: dict[str, Any] = {
-            "coursework_scope": "fictional BreathBloom data only",
+            "coursework_scope": "fictional FocusBloom data only",
             "profile_label": profile["display_label"],
             "request_kind": payload.request_kind.value,
         }

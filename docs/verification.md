@@ -511,3 +511,99 @@ provider-boundary behavior. They do not establish frontend behavior, browser
 timing/accessibility, live Gemini access, account quota, static Support rendering,
 or integrated scenario behavior. No real credential was read and no runtime
 database was accessed or mutated.
+
+## FocusBloom design-pivot verification — October 28, 2026
+
+### Starting gate
+
+- Branch: `feature/assignment-3-part-2`.
+- Clean local `HEAD` and `origin/feature/assignment-3-part-2`:
+  `68d96d7f241184a062878a510132e911b67e4694`.
+- Local `main` and `origin/main`:
+  `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`.
+- `backend/.env` absent; `data/app.sqlite3` absent; `data/` empty.
+- No real credential or live Gemini request had been used.
+
+### Figma observations
+
+- Connected editable file renamed visibly to **FocusBloom — Assignment 3 Design
+  Evolution** without deleting the historical page/sections.
+- New section `05 / FocusBloom Part 3.2 Pivot` is node `21:594`; selected overview
+  `27:719` is 2500×1160.
+- All 16 required frames were created: 14 at 390×844 and 2 at 1024×768. Node IDs
+  are listed in `docs/focusbloom-pivot.md`.
+- Programmatic structural inspection reported exact dimensions, no direct
+  overflow, no missing/wrong fonts, no placeholder text, no control under 44×44,
+  one primary action per frame, and Support in every major reference.
+- A first overview screenshot exposed one design-note/legend overlap. Node
+  positions were revised and a final screenshot was reviewed successfully.
+- The No-motion reference explicitly uses no scale, ripple, fade, or translation
+  and retains the same textual task/control information.
+
+These are static editable-design observations, not runtime accessibility,
+keyboard, reflow, persistence, or provider evidence.
+
+### GitHub repository observations
+
+- The authenticated account owned the public repository and `focusbloom` was
+  reported available.
+- The existing repository was renamed in place to
+  `https://github.com/srinidhid2004-design/focusbloom`; no second repository was
+  created.
+- `origin` now uses the renamed HTTPS URL.
+- `git ls-remote` through the new origin returned feature `68d96d7…` and main
+  `9f7a09d…` before publication.
+- Opening the historical URL
+  `https://github.com/srinidhid2004-design/breathbloom-skills` resolved to the
+  renamed repository. Branches and history remained visible.
+- Signed-in browser sessions performed the approved Figma/GitHub renames without
+  exposing or reading a credential value.
+
+### Local automated checks
+
+Commands:
+
+```powershell
+Push-Location backend
+.venv/Scripts/python.exe -m pip check
+.venv/Scripts/python.exe -m pytest -q
+Pop-Location
+Push-Location frontend
+npm test
+npm run lint
+npm run build
+Pop-Location
+git diff --check
+```
+
+Observed results:
+
+- Backend dependency check: **No broken requirements found.**
+- Complete legacy backend suite: **32 passed** in the final 4.70-second run.
+- The two existing non-failing dependency warnings remained: Starlette/httpx
+  TestClient compatibility and Google Gen AI use of a Python 3.14-deprecated type
+  alias. No dependency was changed.
+- Frontend component suite: **1 file, 2 tests passed**.
+- ESLint: passed with `--max-warnings=0`.
+- Vite production build: passed, 11 modules transformed.
+- `git diff --check`: passed after removing trailing blank-line-only additions;
+  Git emitted Windows LF/CRLF conversion notices only.
+
+### Integrity and safety audits
+
+- `report.md`, `docs/part-3-1-decisions.md`, and prompt records 01–06 have no diff
+  from the checkpoint start.
+- Active documents use BreathBloom only to label historical/version-1 material;
+  active product and scaffold branding use FocusBloom.
+- No private absolute local path appears in submitted active records. Prompt 07
+  explicitly records that its original path was redacted.
+- No tracked venv, node modules, build output, cache, bytecode, environment file,
+  or SQLite artifact exists.
+- `backend/.env` and `data/app.sqlite3` remain absent; `data/` remains empty.
+- No credential value was read or stored. No live provider call occurred.
+- No unsupported clinical/effectiveness claim or runtime-implementation claim was
+  added. Research limitations are explicit.
+- Voice/audio remains prohibited and unimplemented.
+- The complete FocusBloom frontend, version-2 database/API, Perspective service,
+  and RAG layer remain unimplemented and unverified.
+- No merge, rebase, amend, force push, or `main` change occurred.

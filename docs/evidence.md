@@ -133,3 +133,76 @@ This is mocked/local backend evidence only. No live Gemini request, real key,
 runtime SQLite database, frontend/Figma implementation, or real-distress testing
 occurred. Static Support and ordinary exercise controls remain independent by
 contract, but their frontend rendering is not yet implemented or verified.
+
+## FocusBloom design-pivot evidence
+
+### Decision and scope
+
+The active product is FocusBloom. The original BreathBloom decision remains
+visible in the submitted Part 3.1 report, prompt records 01–06, original Figma
+sections, and Git history. The pivot motivation is recorded as user-reported
+classroom differentiation input, not research evidence or an effectiveness claim.
+
+The active scope is a low-input fictional coursework prototype with optional
+Focus Garden attention activities, the formal one-minute Perspective Studio
+cognitive reframe, optional fictional Perspective Lens, optional user-authored
+Next-Step Seed, factual History Garden, bounded Garden Guide, and static
+independent Support.
+
+### Research evidence and limitations
+
+Eight named primary sources were reviewed. Visual-search research concerns
+selective attention rather than clinical outcomes. Digital-nature findings were
+mixed across the reviewed studies. Reappraisal, distancing, and preliminary
+third-person self-talk findings do not prove a benefit for this interface.
+Implementation-intention evidence had heterogeneous and bias-sensitive effects,
+so if–then planning remains optional and user authored. Affect labeling is not a
+central/required step because its interaction with reappraisal is uncertain. The
+full citations and product implications are in `docs/focusbloom-pivot.md`.
+
+### Design evidence
+
+- Existing Figma file key: `L09m1XZX6fNEmR2dqrBkcx`.
+- Visible file name: **FocusBloom — Assignment 3 Design Evolution**.
+- Historical top-level sections observed before the pivot remained in place.
+- New section `21:594`, selected overview `27:719`, 16 required screen frames,
+  and three reusable components were created as editable Figma content.
+- Structural checks covered exact narrow/wide dimensions, overflow, fonts,
+  placeholder text, 44×44 controls, primary-action count, and Support presence.
+- Final visual review followed a targeted overview-note overlap repair.
+
+This evidence establishes static editable-reference content only.
+
+### Architecture evidence
+
+The active plan defines exactly 17 major states, nine proposed version-2 tables,
+and 22 proposed `/api` operations. Perspective alternatives are limited to one
+Gemini request; factual history uses a maximum two-request read-only RAG flow.
+The plan specifies allow-listed SQL, parameter binding, read-only enforcement,
+20-row/8-column/8-KiB limits, 100-ms execution deadline, snapshot validation,
+row-reference grounding, zero retries, no provider/model fallback, safe no-match,
+and mutation rejection.
+
+These are reviewed design contracts, not implemented behavior.
+
+### Basic branding and local verification evidence
+
+- Vue metadata/scaffold and frontend package metadata now use FocusBloom.
+- FastAPI display title and sanitized public error messages use FocusBloom.
+- Legacy breathing schema/routes/services were not rewritten or presented as the
+  new implementation.
+- Backend: `pip check` clean; 32 tests passed with two known non-failing dependency
+  warnings.
+- Frontend: 2 tests passed; zero-warning lint passed; production build passed.
+- No runtime database, local environment file, credential value, live Gemini
+  request, full product implementation, voice/audio change, or generated tracked
+  artifact occurred.
+
+### Repository continuity evidence
+
+The existing public repository was renamed in place from `breathbloom-skills` to
+`focusbloom`. The old URL visibly redirected to the new public URL, while main
+remained at `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`. The feature branch started
+at `68d96d7f241184a062878a510132e911b67e4694`. The pivot commit SHA is reported
+by the final response and public branch history to avoid a self-referential
+documentation edit.

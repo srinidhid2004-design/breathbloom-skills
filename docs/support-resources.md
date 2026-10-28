@@ -1,13 +1,13 @@
-# BreathBloom Support Resources
+# FocusBloom Support Resources
 
 ## Approved boundary
 
-BreathBloom uses a fixed **United States national fictional-demo scope**. It does
+FocusBloom uses a fixed **United States national fictional-demo scope**. It does
 not request or infer a real user's location or condition. Support content is
 static, reviewed application content and is not selected from messages, clicks,
 timing, completion, geolocation, a classifier, or model output.
 
-BreathBloom is a coursework prototype. It is not an emergency service, is not
+FocusBloom is a coursework prototype. It is not an emergency service, is not
 monitored, cannot contact help for the user, and does not diagnose, provide
 therapy or medical advice, or determine whether someone is in crisis.
 
@@ -15,7 +15,7 @@ therapy or medical advice, or determine whether someone is in crisis.
 
 > **Support information — United States demo**
 >
-> BreathBloom is a coursework prototype for fictional scenarios. It is not an
+> FocusBloom is a coursework prototype for fictional scenarios. It is not an
 > emergency service, is not monitored, and cannot contact help for you. This page
 > does not use your location or activity to choose resources.
 >
@@ -34,9 +34,9 @@ therapy or medical advice, or determine whether someone is in crisis.
 > FindTreatment.gov lists mental-health and substance-use treatment facilities in
 > the United States and its territories. It is not an emergency service.
 >
-> **About BreathBloom**
+> **About FocusBloom**
 >
-> BreathBloom does not diagnose, provide therapy or medical advice, detect
+> FocusBloom does not diagnose, provide therapy or medical advice, detect
 > distress, or notify another person.
 >
 > **Return**
@@ -71,26 +71,25 @@ Access date for every source: **October 27, 2026**.
 | About - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality | https://findtreatment.gov/about | Identifies the responsible SAMHSA program and the locator's purpose | Direct official page opened successfully and the official ownership/purpose page was confirmed. |
 
 These checks verify source identity, URL, and current stated purpose only. They do
-not verify application behavior and do not clinically validate BreathBloom.
+not verify application behavior and do not clinically validate FocusBloom.
 
 ## Planned route behavior
 
-- Support information remains directly available from entry, setup, loading,
-  model failure, deterministic fallback, ready, exercise, paused, stopped,
-  completed, interrupted, Next-time setup, and history-question/history states.
+- Support information remains directly available from entry, every Focus Garden
+  state, every Perspective Studio state, Next-Step Seed, every History Garden and
+  Garden Guide state, loading, no-match, query-rejected, and model-failed states.
 - The static wording and displayed numbers must render without FastAPI, SQLite,
   a runtime model/provider, a classifier, geolocation, or a successful network
   request.
-- Before or after a practice, **Return** restores the preceding non-exercise view
-  without changing it.
-- Opening Support during an exercise immediately pauses local timing, freezes the
-  current phase offset and completed-cycle count, and attempts an honest pause
-  save without making the pause depend on that save.
-- During a practice the return control is labeled **Return to paused practice**.
-- Returning shows the paused state and never resumes automatically. Only
-  **Resume practice** or **Stop** may continue the flow.
+- **Return** restores the preceding view without changing activity, entry, saved
+  text, or provider status.
+- Opening Support during an active Focus Garden activity suspends local work and
+  clears pending timers/callbacks without making Support depend on a save.
+- During an activity, returning restores the explicitly suspended/stopped view;
+  no activity or request resumes automatically. Any resumable-activity behavior
+  must be separately decided and verified before implementation.
 - A history question outside the approved factual allow-list receives the neutral
-  deterministic scope message and retains a visible Support link. BreathBloom
+  deterministic scope message and retains a visible Support link. FocusBloom
   does not claim why the question was out of scope or infer the user's condition.
 
 ## Manual re-verification procedure

@@ -12,10 +12,10 @@ class APIError(Exception):
 
 
 INVALID_REQUEST_MESSAGE = (
-    "BreathBloom only supports the listed coursework requests. No model request "
-    "was made. You can continue the breathing practice or open Support information "
-    "at any time."
+    "FocusBloom only supports the listed coursework requests. No model request "
+    "was made. You can continue with the available prototype or open Support "
+    "information at any time."
 )
 
-GENERIC_INVALID_MESSAGE = "The request did not match the documented BreathBloom API contract."
-DATABASE_FAILURE_MESSAGE = "BreathBloom could not access its fictional coursework records."
+GENERIC_INVALID_MESSAGE = "The request did not match the documented FocusBloom API contract."
+DATABASE_FAILURE_MESSAGE = "FocusBloom could not access its fictional coursework records."

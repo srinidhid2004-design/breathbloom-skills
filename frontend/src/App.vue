@@ -2,12 +2,13 @@
 import { ref } from 'vue'
 
 const sections = [
-  { id: 'practice', label: 'Practice' },
-  { id: 'history', label: 'History' },
+  { id: 'focus-garden', label: 'Focus Garden' },
+  { id: 'perspective-studio', label: 'Perspective Studio' },
+  { id: 'history-garden', label: 'History Garden' },
   { id: 'support', label: 'Support' },
 ]
 
-const lastVisited = ref('Practice')
+const lastVisited = ref('Focus Garden')
 
 function noteVisit(label) {
   lastVisited.value = label
@@ -21,7 +22,7 @@ function noteVisit(label) {
         class="brand"
         href="#main-content"
       >
-        BreathBloom
+        FocusBloom
       </a>
       <nav aria-label="Foundation areas">
         <a
@@ -39,10 +40,11 @@ function noteVisit(label) {
       <p class="eyebrow">
         IST 402 · Assignment 3.2 foundation
       </p>
-      <h1>BreathBloom coursework prototype</h1>
+      <h1>FocusBloom coursework prototype</h1>
       <p class="boundary">
-        This fictional local prototype will demonstrate a paced-breathing skill.
-        It is not therapy, an emergency service, or a monitored support service.
+        This fictional local prototype will explore brief visual-attention activities and a
+        structured perspective exercise. It is not therapy, an emergency service, or a monitored
+        support service.
       </p>
       <p
         class="status"
@@ -53,26 +55,38 @@ function noteVisit(label) {
 
       <div class="foundation-grid">
         <section
-          id="practice"
-          aria-labelledby="practice-heading"
+          id="focus-garden"
+          aria-labelledby="focus-garden-heading"
         >
-          <h2 id="practice-heading">
-            Practice
+          <h2 id="focus-garden-heading">
+            Focus Garden
           </h2>
           <p>
-            The deterministic 4-second inhale, 6-second exhale flow will be added in a later checkpoint.
+            Short no-typing visual-attention activities will be implemented in a later checkpoint.
           </p>
         </section>
 
         <section
-          id="history"
-          aria-labelledby="history-heading"
+          id="perspective-studio"
+          aria-labelledby="perspective-studio-heading"
         >
-          <h2 id="history-heading">
-            History
+          <h2 id="perspective-studio-heading">
+            Perspective Studio
           </h2>
           <p>
-            Fictional saved-session history will appear here after persistence is implemented.
+            A one-minute cognitive-reframe flow with a fictional-example path is planned here.
+          </p>
+        </section>
+
+        <section
+          id="history-garden"
+          aria-labelledby="history-garden-heading"
+        >
+          <h2 id="history-garden-heading">
+            History Garden
+          </h2>
+          <p>
+            Factual fictional-demo activity history will appear after the revised data model is implemented.
           </p>
         </section>
 

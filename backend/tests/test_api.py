@@ -32,7 +32,7 @@ def test_preference_read_update_duplicate_and_reset(harness_factory) -> None:
 
     reset_key = new_id()
     reset_payload = {
-        "confirmation": "RESET FICTIONAL BREATHBLOOM DATA",
+        "confirmation": "RESET FICTIONAL FOCUSBLOOM DATA",
         "expected_reset_version": 0,
         "idempotency_key": reset_key,
     }
@@ -174,7 +174,7 @@ def test_reset_removes_only_fixed_profile_children_and_preserves_schema(harness_
         "POST",
         "/api/demo/reset",
         json={
-            "confirmation": "RESET FICTIONAL BREATHBLOOM DATA",
+            "confirmation": "RESET FICTIONAL FOCUSBLOOM DATA",
             "expected_reset_version": 0,
             "idempotency_key": new_id(),
         },
@@ -199,7 +199,7 @@ def test_unknown_fields_return_sanitized_contract_error(harness_factory) -> None
     assert response.status_code == 422
     assert response.json() == {
         "outcome": "invalid_request",
-        "message": "The request did not match the documented BreathBloom API contract.",
+        "message": "The request did not match the documented FocusBloom API contract.",
     }
     assert "diagnosis" not in response.text
 

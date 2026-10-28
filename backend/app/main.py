@@ -1,4 +1,4 @@
-"""FastAPI application factory for the complete BreathBloom backend."""
+"""FastAPI application factory for the legacy backend under FocusBloom branding."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ from .schemas import (
     SessionStart,
     SessionStatus,
 )
-from .services import BreathBloomService
+from .services import LegacyV1Service
 
 
 def _error(status_code: int, outcome: str, message: str) -> JSONResponse:
@@ -41,7 +41,7 @@ def _error(status_code: int, outcome: str, message: str) -> JSONResponse:
 def create_api_router() -> APIRouter:
     router = APIRouter(prefix="/api")
 
-    def service(request: Request) -> BreathBloomService:
+    def service(request: Request) -> LegacyV1Service:
         return request.app.state.service
 
     @router.get("/health")
@@ -131,11 +131,11 @@ def create_app(
             repository.initialize()
         except (OSError, sqlite3.Error) as exc:
             application.state.startup_error = exc
-        application.state.service = BreathBloomService(repository, runtime_settings, gateway)
+        application.state.service = LegacyV1Service(repository, runtime_settings, gateway)
         yield
 
     application = FastAPI(
-        title="BreathBloom API",
+        title="FocusBloom API",
         description="Local API for a fictional coursework prototype.",
         version="0.2.0",
         lifespan=lifespan,

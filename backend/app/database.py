@@ -1,4 +1,4 @@
-"""SQLite schema and persistence for the fixed fictional BreathBloom profile."""
+"""Legacy version-1 SQLite persistence under FocusBloom branding."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from uuid import NAMESPACE_URL, uuid4, uuid5
 SCHEMA_VERSION = 1
 BUSY_TIMEOUT_MS = 5_000
 DEMO_PROFILE_ID = "breathbloom-fictional-demo"
-DEMO_LABEL = "Fictional BreathBloom coursework profile"
+DEMO_LABEL = "Fictional FocusBloom coursework profile"
 DEFAULT_MOTION = "gentle"
 DEFAULT_GUIDANCE = "standard"
 DatabaseStatus = Literal["available", "not initialized"]

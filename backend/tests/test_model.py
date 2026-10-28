@@ -16,8 +16,8 @@ from conftest import FakeGateway, create_conversation, start_payload
 
 
 INVALID_MESSAGE = (
-    "BreathBloom only supports the listed coursework requests. No model request was made. "
-    "You can continue the breathing practice or open Support information at any time."
+    "FocusBloom only supports the listed coursework requests. No model request was made. "
+    "You can continue with the available prototype or open Support information at any time."
 )
 
 

@@ -1,4 +1,4 @@
-"""Credential-free test harness for the BreathBloom backend."""
+"""Credential-free test harness for the legacy backend under FocusBloom branding."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from app.schemas import ProviderPayload, RequestKind
 class FakeGateway:
     def __init__(self, result: Any | None = None, error: Exception | None = None) -> None:
         self.result = result or ProviderPayload(
-            response_text="This fictional practice uses six steady breathing cycles.",
+            response_text="This fictional coursework activity uses application-owned steps.",
             response_kind=RequestKind.INTRODUCTION,
             limitation="Coursework prototype; not therapy or medical advice.",
         )

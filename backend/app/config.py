@@ -1,4 +1,4 @@
-"""Lazy, backend-only configuration for the BreathBloom coursework prototype."""
+"""Lazy, backend-only configuration for the FocusBloom coursework prototype."""
 
 from functools import lru_cache
 from pathlib import Path

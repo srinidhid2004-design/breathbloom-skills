@@ -1,4 +1,4 @@
-"""Strict API contracts for BreathBloom's fixed fictional-demo scope."""
+"""Strict legacy version-1 API contracts under FocusBloom branding."""
 
 import re
 from datetime import datetime, timezone
@@ -161,7 +161,7 @@ class ModelActionRequest(StrictModel):
 
 
 class DemoResetRequest(StrictModel):
-    confirmation: Literal["RESET FICTIONAL BREATHBLOOM DATA"]
+    confirmation: Literal["RESET FICTIONAL FOCUSBLOOM DATA"]
     expected_reset_version: int = Field(ge=0)
     idempotency_key: UUID
 

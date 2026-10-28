@@ -1,322 +1,343 @@
-# Assignment 3.2 Implementation Plan
+# FocusBloom Assignment 3.2 implementation contract
 
-## Status, scope, and evidence boundary
+## Status and replacement boundary
 
-This plan began as the implementation contract for the five-checkpoint Assignment
-3.2 workflow. Checkpoint 1 established the Vue/FastAPI foundation. The authorized
-backend checkpoint has now implemented and mock-tested the complete five-table
-schema, 11-route API, deterministic persistence validation, reset, and bounded
-optional model path. The selected Direction A experience, browser timing, static
-Support route, integration, live-provider observation, and final evidence remain
-later work until observed.
+This document is the authoritative plan for the active FocusBloom product as of
+October 28, 2026. The implemented version-1 backend is preserved as historical
+code and must not be presented as this plan. No version-2 database, revised API,
+RAG workflow, or complete FocusBloom interface was implemented in the pivot
+checkpoint.
 
-BreathBloom is a localhost coursework prototype for fictional scenarios. It is
-not therapy, an emergency service, or a monitored service. It will not diagnose,
-infer distress or emotion, provide medical advice, or claim clinical benefit.
-Voice and audio are prohibited.
+FocusBloom is a fictional local coursework prototype, not therapy, diagnosis,
+crisis detection, a monitored service, a validated intervention, or evidence of
+attention, emotional state, or improvement. Tests and demonstrations use only
+fictional input. Voice and audio remain prohibited.
 
-## Requirements traceability
+## Layer responsibilities
 
-| Required behavior | Frontend responsibility | Backend responsibility | Database responsibility | Verification method | Planned evidence | Implementation checkpoint |
-| --- | --- | --- | --- | --- | --- | --- |
-| Complete one paced-breathing skill | Own the 4-second inhale, 6-second exhale, six-cycle sequence; show phase, countdown, cycle, Stop, and Support in text | Validate session transitions and persisted timing; never drive the timer | Store one honest session outcome and timing snapshot | Fake-clock component tests plus browser observation of all 12 phases | Test output, timestamp log, narrow/wide screenshots | 2 |
-| Keep intended exercise at 60 seconds and under 90 seconds | Measure active time from first inhale to final exhale with a monotonic clock; exclude setup, user pauses, and Support time | Reject inconsistent, negative, or out-of-range timing payloads | Store planned, observed-active, paused, and wall-clock integer milliseconds separately | Compare fake-clock result, API response, and row; measure a browser run | Automated timing results and measured-run table | 2–3 |
-| Preserve user control | Require explicit Start and Resume; make Stop and Support continuously available; never auto-resume | Enforce allowed actions and immutable terminal states | Record completed, stopped, or interrupted without failure language | Keyboard/browser checks for Start, Stop, Support pause, Resume, visibility gap, refresh | Scenario log and screenshots/video segment | 2–3 |
-| Keep Support independent | Provide reviewed static U.S. Support content in every view, including loading/failure; do not classify input | No dependency: API or model failure cannot remove Support | No dependency and no location/condition field | Disable backend/network and verify route/content; activate links only in a controlled check | Offline/browser screenshots and link/source review | 2 |
-| Demonstrate a bounded model contribution | Offer only optional introduction, factual reflection, or factual-history answer; deterministic fallback remains usable | Make the only provider request using backend-only config, fixed model, validation, timeout, and request identity | Persist initiating request lifecycle before a call and validated assistant output afterward | Mock success, missing key, timeout, provider error, malformed output, stale response; one later authorized live case | Redacted mock tests and separately labeled live observation | 4 |
-| Persist conversations and sessions in SQLite | Send validated user actions with client IDs; render save state honestly | Own parameterized writes, idempotency, transactions, concurrency versions, and bounded reads | Use exactly five related tables and foreign keys described below | Compare UI/API IDs and values with read-only database inspection | Test database extracts containing fictional-only records | 3–4 |
-| Show useful saved history without a model | Render date, duration, cycles, outcome, and settings; text always carries meaning | Return ordered factual session summaries/details | Query allowed session/preference fields | Restart backend, reload frontend, compare history with API and rows | Browser/API/database comparison | 3 |
-| Use saved settings transparently | Explain the remembered motion/guidance values before use; allow change, skip, and reset | Validate explicit settings and reset transaction | Store only explicit preference values, source, and version | Preference round trip, stale-version conflict, reset test | Mock/browser and database comparison | 3 |
-| Handle model failure without blocking ordinary use | Show neutral deterministic copy and keep Practice, Stop, Support, and History available | Return stable safe error codes; never return credentials, provider headers, raw exceptions, or private paths | Preserve failed initiating lifecycle; do not create an assistant message | Mock every failure class and inspect response/log output for leakage | Automated test results and failure screenshot | 4 |
-| Reject stale or duplicate asynchronous work | Attach request/session generation IDs and ignore responses after navigation, Stop, restart, or replacement | Enforce request/client idempotency and current versions | Unique client/request IDs and transaction constraints prevent duplicate rows | Deliver delayed responses and duplicate actions under fake/mock control | Deterministic stale-response and duplicate tests | 3–4 |
-| Respect reduced motion and accessibility | Full, Gentle, and No motion all show phase/time/cycle text; semantic order, visible focus, restrained live region, 44px targets, narrow/zoom reflow | Return semantic values independent of visual mode | Store explicit preference only; never infer accessibility needs | Keyboard, screen-reader announcement review, contrast, 320px, 400% zoom, reduced-motion checks | Accessibility checklist and representative captures | 2–5 |
-| Use only fictional evaluation data | Label fixtures/scenarios fictional and avoid real distress testing or personal data | Reject fields outside contracts; keep logs minimal | Fixed fictional demo profile only; reset removes its child data | Fixture/name scan and database audit | Curated redacted evidence log | 3–5 |
-| Keep architecture reviewable and runnable from a clean checkout | Vue uses HTTP/JSON only and never receives a provider secret | FastAPI owns validation, SQLite, and Gemini access | SQLite stays at ignored `data/app.sqlite3` | Follow README setup in a clean environment; test/lint/build/import/health | Exact commands and observed results | 1 and 5 |
-| Explain AI use and implementation changes honestly | No hidden runtime AI behavior | Fixed provider/model and safe configuration documented | No generated clinical inference fields | Review disclosure, prompt record, diffs, and claims against evidence | `AI-USE.md`, prompt record, verification log | Every checkpoint |
+- **Vue frontend:** renders Focus Garden, Perspective Studio, History Garden,
+  Garden Guide, and static Support; owns interaction state, timers, visible
+  instructions, answer evaluation for deterministic activities, focus,
+  accessibility, request cancellation, and stale-response rejection.
+- **FastAPI backend:** validates explicit contracts, enforces business rules,
+  manages version-2 SQLite transactions, performs the only optional Gemini calls,
+  validates model output and proposed SQL, and returns sanitized outcomes.
+- **SQLite:** stores one fictional profile, transparent preferences, factual
+  activity/session metadata, explicitly saved text, conversations/messages, and
+  model-request lifecycle data. It is opened only by the backend.
+- **Gemini:** may propose up to two perspective alternatives or participate in
+  factual history RAG. It never controls activities, navigation, save state,
+  support, or user action.
+- **Static Support:** is frontend-owned and works without FastAPI, SQLite,
+  Gemini, classification, geolocation, or user activity.
 
-## Architecture and ownership
+## Exact top-level state model
 
-- `frontend/` is Vue 3, JavaScript, Composition API, Vite, semantic HTML, and
-  CSS. It owns visible navigation, pacing state, monotonic active-time math,
-  presentation preferences, accessibility behavior, stale UI-response guards,
-  and HTTP/JSON calls. It never opens SQLite or receives a provider key.
-- `backend/app/` is typed Python and FastAPI. It owns `/api`, input validation,
-  state-transition validation, idempotent persistence, safe configuration,
-  bounded read-only RAG retrieval, and the only future provider call.
-- `data/app.sqlite3` is an ignored local SQLite file opened only by FastAPI. No
-  database is created at Checkpoint 1; the explicit initializer is present for a
-  later schema checkpoint.
-- The static Support content is bundled in the frontend so it remains available
-  if FastAPI, SQLite, or Gemini is unavailable.
+The frontend recognizes exactly these 17 major states:
 
-The Checkpoint 1 application intentionally exposes only `GET /api/health` and a
-minimal Practice/History/Support foundation screen. That screen is not the
-selected Figma experience and does not claim implemented skill behavior.
+1. `entry`
+2. `focus-activity-ready`
+3. `focus-activity-active`
+4. `focus-activity-stopped`
+5. `focus-activity-completed`
+6. `perspective-entry`
+7. `perspective-evidence`
+8. `perspective-alternatives-loading`
+9. `perspective-alternatives-ready`
+10. `perspective-model-failed`
+11. `next-step-seed`
+12. `history`
+13. `history-question-loading`
+14. `history-answer-ready`
+15. `history-no-match`
+16. `history-query-rejected`
+17. `support-open`
 
-## Provider and model decision
+Support overlays the preceding state and returns to it. It never resumes an
+activity or request automatically. Inhale, exhale, and breathing-cycle states
+are historical version-1 concepts and are not active FocusBloom requirements.
 
-- Provider: **Google Gemini Developer API**.
-- Fixed model identifier: **`gemini-3.5-flash-lite`**.
-- Intended role: one optional brief introduction, factual reflection, or bounded
-  factual-history answer. It never owns timing, sequence, persistence truth,
-  navigation, Stop, Resume, or Support.
-- Configuration: backend environment variable `GEMINI_API_KEY`, represented by a
-  secret type and loaded lazily from process environment or ignored
-  `backend/.env`. `backend/.env.example` contains only the blank setting name.
-- No provider or model fallback. One total SDK attempt (zero automatic retries)
-  per accepted UUID request. The timeout is 10 seconds. Input is at most five
-  recent session records and 4,096 serialized context characters; output is at
-  most 256 tokens and 600 validated response characters. A per-session live-call
-  cap must still be recorded before the later live-call checkpoint; routine tests
-  use mocks.
-- A missing key is an expected configuration state, not a crash. Health reports
-  only `configured` or `not configured`.
-- No live request is authorized at Checkpoint 1.
+## Interaction and asynchronous rules
 
-Official verification on October 27, 2026:
+- One primary action and one current instruction per screen.
+- Focus Garden has a complete no-typing route with visible `Show me`, `Skip
+  this`, `Stop`, and Support controls.
+- The Perspective Studio fictional example requires no personal input. A custom
+  path has at most one initial 280-character field.
+- Inputs remain visible while they are needed; important state is not remembered
+  only from a prior view.
+- Each async request has a UUID, AbortController/cancellation boundary, originating
+  screen/state version, and current-session identity. Late, cancelled, duplicate,
+  prior-screen, or reset responses cannot alter current state or persistence.
+- Entering Support cancels or suspends nonessential UI work; returning never
+  restarts it automatically.
+- Provider failure leaves user input in local state and offers a deterministic
+  status message plus `Continue without Gemini`; it does not synthesize a model
+  fallback.
+- Standard and No-motion modes expose the same text, controls, task state, and
+  results. No-motion uses no scale, ripple, fade, or translation.
+- Significant view changes may focus a heading with temporary `tabindex="-1"`;
+  ordinary text is not tabbable. Controls follow visual order and have visible
+  focus. Status announcements are restrained.
 
-- Google's model page identifies `gemini-3.5-flash-lite` as the stable model code
-  and lists its latest update as July 2026:
-  https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite
-- Google's release notes describe the July 21, 2026 generally available stable
-  release: https://ai.google.dev/gemini-api/docs/changelog
-- Google's pricing page lists standard free-tier input and output as free of
-  charge; availability and quotas still depend on the user's Google AI Studio
-  project and may change: https://ai.google.dev/gemini-api/docs/pricing
-- Google's rate-limit page states actual limits vary by project/tier and are
-  viewed in AI Studio: https://ai.google.dev/gemini-api/docs/rate-limits
+## Proposed version-2 SQLite schema — nine tables
 
-## Final five-table SQLite schema
+All IDs are application-generated UUID text. Timestamps use UTC ISO 8601 with
+milliseconds. Boolean values are `INTEGER CHECK (value IN (0,1))`. Foreign keys
+are enabled on every connection. Text limits are enforced in request validation
+and repeated with database checks where practical. No table stores diagnosis,
+inferred mood, crisis classification, location, authentication, API keys, hidden
+scores, prompts, system instructions, raw provider output, or raw provider errors.
 
-All timestamps are UTC ISO 8601 text with a `Z` suffix. Durations are
-non-negative integer milliseconds. IDs are application-generated opaque text.
-`PRAGMA foreign_keys = ON` is required on every connection. Schema migrations
-will use `PRAGMA user_version`; schema creation and the fixed fictional profile
-will be explicit later operations, not import-time side effects.
+### 1. `demo_profiles`
 
-### `demo_profiles`
+`profile_id TEXT PRIMARY KEY`, `display_label TEXT NOT NULL`,
+`schema_version INTEGER NOT NULL CHECK(schema_version = 2)`,
+`reset_version INTEGER NOT NULL DEFAULT 0 CHECK(reset_version >= 0)`,
+`created_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-| Column | Constraint and purpose |
-| --- | --- |
-| `profile_id` | `TEXT PRIMARY KEY`; fixed fictional demo identifier |
-| `display_label` | `TEXT NOT NULL`; clearly fictional label |
-| `jurisdiction_scope` | `TEXT NOT NULL CHECK (... = 'US-DEMO')` |
-| `reset_version` | `INTEGER NOT NULL DEFAULT 0 CHECK (reset_version >= 0)` |
-| `last_reset_key` | nullable `TEXT`; bounded reset idempotency |
-| `created_at` | `TEXT NOT NULL` |
-| `updated_at` | `TEXT NOT NULL` |
+Exactly one fixed fictional profile is permitted.
 
-### `preferences`
+### 2. `preferences`
 
-| Column | Constraint and purpose |
-| --- | --- |
-| `preference_id` | `TEXT PRIMARY KEY` |
-| `profile_id` | `TEXT NOT NULL UNIQUE REFERENCES demo_profiles(profile_id) ON DELETE CASCADE` |
-| `motion_mode` | `TEXT NOT NULL CHECK` in `full`, `gentle`, `none` |
-| `guidance_level` | `TEXT NOT NULL CHECK` in `minimal`, `standard`, `more` |
-| `source` | `TEXT NOT NULL CHECK` in `explicit`, `default`, `reset` |
-| `version` | `INTEGER NOT NULL CHECK (version >= 1)` for optimistic concurrency |
-| `last_idempotency_key` | nullable `TEXT`; duplicate preference-update prevention |
-| `created_at` | `TEXT NOT NULL` |
-| `updated_at` | `TEXT NOT NULL` |
+`profile_id TEXT PRIMARY KEY REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`motion_mode TEXT NOT NULL CHECK(motion_mode IN ('standard','no_motion'))`,
+`guidance_level TEXT NOT NULL CHECK(guidance_level IN ('minimal','standard','more'))`,
+`difficulty TEXT NOT NULL CHECK(difficulty IN ('easy','standard','challenge'))`,
+`remember_preferences INTEGER NOT NULL`, `version INTEGER NOT NULL CHECK(version >= 1)`,
+`last_idempotency_key TEXT UNIQUE`, `updated_at TEXT NOT NULL`.
 
-### `exercise_sessions`
+The UI explains what is stored before setting `remember_preferences=1`.
 
-| Column | Constraint and purpose |
-| --- | --- |
-| `session_id` | `TEXT PRIMARY KEY` |
-| `profile_id` | `TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE` |
-| `client_session_id` | `TEXT NOT NULL UNIQUE`; duplicate-create prevention |
-| `create_idempotency_key` | `TEXT NOT NULL UNIQUE`; duplicate-create prevention across retries |
-| `status` | `TEXT NOT NULL CHECK` in `active`, `paused`, `completed`, `stopped`, `interrupted` |
-| `started_at` | `TEXT NOT NULL` |
-| `ended_at` | nullable `TEXT`; required for terminal status |
-| `planned_duration_ms` | `INTEGER NOT NULL DEFAULT 60000 CHECK (... = 60000)` |
-| `observed_active_duration_ms` | `INTEGER NOT NULL DEFAULT 0 CHECK (... >= 0)` |
-| `paused_duration_ms` | `INTEGER NOT NULL DEFAULT 0 CHECK (... >= 0)` |
-| `wall_clock_duration_ms` | `INTEGER NOT NULL DEFAULT 0 CHECK (... >= 0)` |
-| `completed_cycles` | `INTEGER NOT NULL DEFAULT 0 CHECK` from 0 through 6 |
-| `ending_phase` | nullable `TEXT CHECK` in `setup`, `ready`, `inhale`, `exhale` |
-| `phase_elapsed_ms` | `INTEGER NOT NULL DEFAULT 0 CHECK (... >= 0)` |
-| `motion_mode` | `TEXT NOT NULL CHECK` in `full`, `gentle`, `none`; session snapshot |
-| `guidance_level` | `TEXT NOT NULL CHECK` in `minimal`, `standard`, `more`; session snapshot |
-| `next_time_setup` | nullable `TEXT CHECK` in `use_this_setup`, `change_motion`, `change_guidance`, `no_preference` |
-| `persistence_status` | `TEXT NOT NULL CHECK` in `pending`, `saved`, `failed` |
-| `version` | `INTEGER NOT NULL CHECK (version >= 1)` |
-| `last_action_id` | nullable `TEXT`; duplicate action prevention |
-| `created_at` | `TEXT NOT NULL` |
-| `updated_at` | `TEXT NOT NULL` |
+### 3. `activity_sessions`
 
-Application validation additionally requires terminal sessions to have
-`ended_at`, `wall_clock_duration_ms >= observed_active_duration_ms`, exactly six
-cycles for `completed`, and fewer than six for `stopped` or `interrupted`.
-Database checks support but do not replace those transition rules.
+`session_id TEXT PRIMARY KEY`, `profile_id TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`client_session_id TEXT NOT NULL UNIQUE`, `activity_type TEXT NOT NULL` checked
+against the seven approved Focus Garden types plus `perspective_studio`,
+`status TEXT NOT NULL CHECK(status IN ('active','completed','stopped','skipped','interrupted'))`,
+`started_at TEXT NOT NULL`, `ended_at TEXT`,
+`duration_ms INTEGER NOT NULL DEFAULT 0 CHECK(duration_ms >= 0)`,
+`difficulty TEXT NOT NULL`, `motion_mode TEXT NOT NULL`,
+`guidance_level TEXT NOT NULL`,
+`perspective_progress TEXT NOT NULL DEFAULT 'none' CHECK(perspective_progress IN ('none','interpretation','evidence','alternative','reviewed'))`,
+`alternative_save_state TEXT NOT NULL DEFAULT 'none' CHECK(alternative_save_state IN ('none','saved','deleted'))`,
+`seed_save_state TEXT NOT NULL DEFAULT 'none' CHECK(seed_save_state IN ('none','saved','deleted'))`,
+`model_status TEXT NOT NULL DEFAULT 'skipped' CHECK(model_status IN ('skipped','loading','succeeded','failed','no_match','query_rejected'))`,
+`version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1)`,
+`created_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-### `conversations`
+No mental-health meaning is assigned to these factual fields.
 
-| Column | Constraint and purpose |
-| --- | --- |
-| `conversation_id` | `TEXT PRIMARY KEY` |
-| `profile_id` | `TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE` |
-| `session_id` | nullable `TEXT REFERENCES exercise_sessions(session_id) ON DELETE SET NULL` |
-| `client_conversation_id` | `TEXT NOT NULL UNIQUE`; duplicate-create prevention |
-| `status` | `TEXT NOT NULL CHECK` in `open`, `closed` |
-| `created_at` | `TEXT NOT NULL` |
-| `updated_at` | `TEXT NOT NULL` |
+### 4. `activity_events`
 
-### `messages`
+`event_id TEXT PRIMARY KEY`, `session_id TEXT NOT NULL REFERENCES activity_sessions(session_id) ON DELETE CASCADE`,
+`client_event_id TEXT NOT NULL UNIQUE`, `ordinal INTEGER NOT NULL CHECK(ordinal >= 0)`,
+`event_type TEXT NOT NULL` checked against an application allow-list,
+`happened_at TEXT NOT NULL`, `elapsed_ms INTEGER NOT NULL CHECK(elapsed_ms >= 0)`,
+`payload_json TEXT NOT NULL DEFAULT '{}' CHECK(length(payload_json) <= 2048)`,
+`created_at TEXT NOT NULL`, `UNIQUE(session_id, ordinal)`.
 
-| Column | Constraint and purpose |
-| --- | --- |
-| `message_id` | `TEXT PRIMARY KEY` |
-| `conversation_id` | `TEXT NOT NULL REFERENCES conversations(conversation_id) ON DELETE CASCADE` |
-| `client_message_id` | `TEXT NOT NULL`; unique with conversation |
-| `ordinal` | `INTEGER NOT NULL CHECK (ordinal >= 0)`; unique with conversation |
-| `role` | `TEXT NOT NULL CHECK` in `user`, `assistant` |
-| `content` | `TEXT NOT NULL CHECK (length(trim(content)) BETWEEN 1 AND 2000)` |
-| `request_id` | nullable `TEXT UNIQUE`; initiating user message only |
-| `request_purpose` | nullable `TEXT CHECK` in `introduction`, `factual_reflection`, `history_question` |
-| `request_status` | nullable `TEXT CHECK` in `pending`, `succeeded`, `failed`, `stale` |
-| `safe_error_code` | nullable `TEXT CHECK` in `missing_configuration`, `authentication_failure`, `permission_failure`, `quota_failure`, `rate_limit_failure`, `timeout`, `provider_failure`, `malformed_response`, `stale_response`, `persistence_failure`, `database_failure` |
-| `created_at` | `TEXT NOT NULL` |
-| `updated_at` | `TEXT NOT NULL` |
+Payload is schema-validated activity metadata, never arbitrary user text.
 
-Table constraints include `UNIQUE (conversation_id, client_message_id)` and
-`UNIQUE (conversation_id, ordinal)`. Request lifecycle fields are all null for an
-assistant message. The initiating user message is committed before provider work;
-an assistant message is inserted only in the same transaction that marks a
-validated request `succeeded`. No separate reflection or request-attempt table is
-permitted. Optional factual reflection uses `messages`; optional Next-time setup
-stays on `exercise_sessions`.
+### 5. `perspective_artifacts`
 
-Reset is one backend transaction scoped to the fixed profile: delete child
-messages/conversations/sessions/preferences, recreate default preferences, and
-increment `demo_profiles.reset_version`. It never changes schema or accepts an
-arbitrary profile identifier.
+`artifact_id TEXT PRIMARY KEY`, `profile_id TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`session_id TEXT REFERENCES activity_sessions(session_id) ON DELETE SET NULL`,
+`client_artifact_id TEXT NOT NULL UNIQUE`,
+`interpretation_text TEXT NOT NULL CHECK(length(interpretation_text) BETWEEN 1 AND 280)`,
+`supporting_evidence_json TEXT NOT NULL CHECK(length(supporting_evidence_json) <= 2048)`,
+`uncertainty_json TEXT NOT NULL CHECK(length(uncertainty_json) <= 2048)`,
+`alternative_text TEXT NOT NULL CHECK(length(alternative_text) BETWEEN 1 AND 240)`,
+`alternative_source TEXT NOT NULL CHECK(alternative_source IN ('user','gemini','fictional_example'))`,
+`observer_mode TEXT NOT NULL CHECK(observer_mode IN ('none','fictional_alex'))`,
+`saved_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-## Final API surface: 11 routes
+The row is created only after explicit preview and Save. Before that, perspective
+text remains frontend memory only. Deleting the row removes saved text while the
+session may retain only `alternative_save_state='deleted'`.
 
-All routes use JSON, strict request models that reject unknown fields, stable
-opaque IDs, safe error bodies, and `/api`. There is deliberately no Support API:
-Support is static frontend content and must not depend on the backend.
+### 6. `next_step_seeds`
 
-| # | Method and route | Purpose |
-| --- | --- | --- |
-| 1 | `GET /api/health` | Safe service/database/key configuration status only |
-| 2 | `GET /api/preferences` | Read explicit/default fictional-demo settings |
-| 3 | `PUT /api/preferences` | Save motion/guidance with expected version |
-| 4 | `POST /api/sessions` | Start one session idempotently from client ID and setting snapshot |
-| 5 | `PATCH /api/sessions/{session_id}` | Apply exactly one `pause`, `resume`, `stop`, `complete`, `interrupt`, or `save_next_time_setup` action |
-| 6 | `GET /api/sessions` | Ordered factual history summaries with bounded pagination |
-| 7 | `GET /api/sessions/{session_id}` | One factual session detail |
-| 8 | `POST /api/conversations` | Create/reuse an idempotent fictional conversation |
-| 9 | `GET /api/conversations/{conversation_id}/messages` | Ordered saved messages without a model request |
-| 10 | `POST /api/conversations/{conversation_id}/messages` | Persist initiating message, perform one bounded model attempt when configured, validate, and persist result/lifecycle |
-| 11 | `POST /api/demo/reset` | Atomically reset only the fixed fictional profile after explicit confirmation |
+`seed_id TEXT PRIMARY KEY`, `profile_id TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`session_id TEXT REFERENCES activity_sessions(session_id) ON DELETE SET NULL`,
+`client_seed_id TEXT NOT NULL UNIQUE`,
+`situation_text TEXT NOT NULL CHECK(length(situation_text) BETWEEN 1 AND 180)`,
+`action_text TEXT NOT NULL CHECK(length(action_text) BETWEEN 1 AND 180)`,
+`formatted_plan TEXT NOT NULL CHECK(length(formatted_plan) <= 400)`,
+`source TEXT NOT NULL CHECK(source IN ('user','template','gemini_format'))`,
+`saved_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-The session patch requires `expected_version`, a UUID `idempotency_key`, and only
-fields allowed for that action. It rejects stale versions, duplicate
-actions, invalid transitions, inconsistent timing, terminal-state replacement,
-and unknown fields with stable codes. The message POST uses a UUID
-`idempotency_key` as its stable request identity. No polling/status route,
-provider proxy, generic
-SQL endpoint, location endpoint, classifier endpoint, authentication endpoint,
-or separate reflection endpoint is planned.
+The action is always user chosen. Deletion hard-deletes text and changes the
+session's factual save state to `deleted` in the same transaction.
 
-### Implemented structural model-input boundary
+### 7. `conversations`
 
-The human-approved boundary accepts exactly `request_kind` (`introduction`,
-`reflection`, or `history_summary`), UUID `idempotency_key`, and `session_id` plus
-the documented Next-time setup enum as `reflection_choice` only for a reflection.
-It accepts no message, question, prompt, crisis text, or other arbitrary free-form
-model input. Unknown, missing, or mismatched fields receive HTTP 422 outcome
-`invalid_request`, make zero database writes, and make zero provider calls.
+`conversation_id TEXT PRIMARY KEY`, `profile_id TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`client_conversation_id TEXT NOT NULL UNIQUE`,
+`purpose TEXT NOT NULL CHECK(purpose IN ('history_guide'))`,
+`created_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-There is deliberately no keyword matching, sentiment analysis, crisis
-classifier, or Gemini crisis detection. This boundary cannot detect crisis
-content. Static Support bypasses the backend and model entirely. The structured
-provider output is exactly `response_text`, `response_kind`, and limitation
-`Coursework prototype; not therapy or medical advice.` Malformed, unknown,
-blank, HTML/URL-bearing, mismatched, or prohibited-claim output is a safe
-`malformed_response` failure and is never stored as assistant text.
+Perspective calls do not persist a conversation unless the resulting artifact is
+explicitly saved.
 
-## Exact top-level state machine
+### 8. `messages`
 
-The planned top-level states are exactly:
+`message_id TEXT PRIMARY KEY`, `conversation_id TEXT NOT NULL REFERENCES conversations(conversation_id) ON DELETE CASCADE`,
+`ordinal INTEGER NOT NULL CHECK(ordinal >= 0)`,
+`role TEXT NOT NULL CHECK(role IN ('user','assistant'))`,
+`content TEXT NOT NULL CHECK(length(content) BETWEEN 1 AND 600)`,
+`created_at TEXT NOT NULL`, `UNIQUE(conversation_id, ordinal)`.
 
-`setup`, `ready`, `inhale`, `exhale`, `stopped`, `completed`, `model-loading`,
-`model-failed`, `support-open`, and `history`.
+Only bounded history questions and validated grounded answers are stored. An
+assistant row is inserted only after validated output persists successfully.
 
-| From | Event | To | Guard/effect |
-| --- | --- | --- | --- |
-| `setup` | valid choices confirmed | `ready` | No timer starts |
-| `setup` | optional model introduction requested | `model-loading` | Create request identity; deterministic controls remain available |
-| `model-loading` | current validated response | `ready` | Display bounded copy only |
-| `model-loading` | missing key, timeout, provider/validation failure | `model-failed` | Display safe deterministic fallback |
-| `model-failed` | continue | `ready` | No provider retry |
-| `ready` | explicit Start | `inhale` | Set monotonic origin and begin cycle 1 |
-| `inhale` | active elapsed reaches 4,000 ms | `exhale` | Derive from elapsed time, not callback count |
-| `exhale` | active elapsed reaches 6,000 ms and cycle < 6 | `inhale` | Increment completed cycle exactly once |
-| `exhale` | active elapsed reaches 6,000 ms and cycle = 6 | `completed` | Clear timing work and persist terminal snapshot |
-| `inhale` or `exhale` | explicit Stop | `stopped` | Clear timing work and retain accurate partial progress |
-| any nonterminal visible state | open Support | `support-open` | Save safe `return_state`; active timing freezes immediately; a loading request is cancelled/staled and returns through `model-failed` fallback |
-| `support-open` | close after nonactive state | saved `return_state` | Return without hidden work |
-| `support-open` | close after active state | saved active phase behind explicit Resume gate | No active time advances until Resume |
-| `setup`, `ready`, `stopped`, `completed`, or `model-failed` | open History | `history` | Read factual history without a model call |
-| `history` | Back | prior nonactive state | Restore navigation context only |
+### 9. `model_requests`
 
-`support-open` is the top-level pause-bearing state, so `paused` is not an
-additional top-level state. Its context stores the prior phase, monotonic
-checkpoint, phase offset, cycle, `pause_reason`, and `resume_required`. A page
-visibility gap uses the same internal pause context and explicit Resume gate
-without adding a top-level view. The backend may persist session status `paused`
-because database status and view state serve different purposes. Refresh or
-browser close is not resumable and is reconciled as `interrupted` from the last
-acknowledged snapshot.
+`request_id TEXT PRIMARY KEY`, `profile_id TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE`,
+`conversation_id TEXT REFERENCES conversations(conversation_id) ON DELETE CASCADE`,
+`initiating_message_id TEXT REFERENCES messages(message_id) ON DELETE CASCADE`,
+`response_message_id TEXT REFERENCES messages(message_id) ON DELETE SET NULL`,
+`idempotency_key TEXT NOT NULL UNIQUE`,
+`purpose TEXT NOT NULL CHECK(purpose IN ('perspective_alternatives','history_sql','history_answer','seed_format'))`,
+`status TEXT NOT NULL CHECK(status IN ('accepted','succeeded','failed','no_match','query_rejected','cancelled'))`,
+`safe_error_code TEXT`, `input_hash TEXT NOT NULL`,
+`model_name TEXT NOT NULL CHECK(model_name = 'gemini-3.5-flash-lite')`,
+`attempt_count INTEGER NOT NULL CHECK(attempt_count IN (0,1))`,
+`retrieved_row_refs_json TEXT CHECK(length(retrieved_row_refs_json) <= 4096)`,
+`created_at TEXT NOT NULL`, `updated_at TEXT NOT NULL`.
 
-Each timer/request run has a generation token. Callbacks and responses must match
-the current token, session, expected state, and request ID. Stop, completion,
-navigation, restart, and replacement invalidate the token. Therefore a late
-model response cannot change an active, stopped, completed, Support, or History
-state and cannot create duplicate messages.
+This table stores lifecycle and idempotency facts, not raw provider errors or
+unsaved Perspective Studio content. Related writes use explicit transactions.
 
-## Timing, failure, and retrieval contracts
+Indexes cover profile/time session history, session event order, profile/time
+saved artifacts and seeds, conversation message order, and request idempotency.
 
-- Use `performance.now()` for in-page elapsed time and UTC ISO timestamps for
-  persistence. Recompute phase/cycle from accumulated active milliseconds.
-- Initial scheduler-gap threshold: 2,000 ms. A larger unexpected gap freezes at
-  the last acknowledged monotonic checkpoint and requires explicit Resume.
-- Cancel scheduled work on pause, Support, Stop, completion, unmount, and flow
-  replacement. A single controller instance owns timing.
-- Model requests never begin until the initiating message is committed.
-- Routine tests mock the provider. A later live check is separately labeled and
-  cannot exceed the course's 50-call session ceiling; this project will adopt a
-  smaller explicit cap before that checkpoint.
-- RAG accepts one backend-constructed parameterized `SELECT` over an allowlist of
-  preference/session fields, `COUNT` as the only initial aggregate, at most 20
-  rows and about 4 KB of context, with a proposed 100-ms local deadline. It
-  rejects multiple statements, mutations, schema inspection, arbitrary
-  functions, messages, and Next-time setup data. Empty results use fixed copy.
+## Migration strategy
 
-## Checkpoint order and verification gates
+No runtime `data/app.sqlite3` exists, so version 2 should be implemented and
+tested as a clean schema rather than preserving breathing-specific production
+compatibility. The future initializer will use one transaction to create the
+nine version-2 tables, seed the one fictional profile and explained defaults,
+set `PRAGMA user_version = 2`, and validate foreign keys/indexes before commit.
 
-1. **Foundation (this checkpoint):** branch from the published Part 3.1 SHA;
-   create pinned manifests, project-local environments, Vue/FastAPI foundations,
-   safe lazy configuration, read-only health status, this plan, tests, lint/build
-   evidence, and publication. Do not create a database or call Gemini.
-2. **Deterministic interface:** implement the selected Direction A practice,
-   exact state/timing controller, static Support, motion/guidance modes, and
-   accessibility checks using mocks only.
-3. **SQLite and API behavior:** create the five-table schema, transactional
-   preferences/sessions/history/reset, idempotency, restart/interruption, and
-   API/database comparison evidence with fictional fixtures.
-4. **Bounded Gemini and RAG:** implement one backend-only attempt, lifecycle,
-   validation, fallback, stale-response protection, and mocked failure matrix;
-   then run only the separately authorized small live sample.
-5. **Integration and submission:** perform at least 15 fictional scenarios and
-   three cross-case behavior checks, clean-checkout verification, measured
-   exercise duration, final report/evidence, and process/demo recordings.
+If a runtime version-1 file is unexpectedly found, migration must stop. The
+developer must decide whether to export fictional data or reset it; code must not
+silently translate, overwrite, or delete breathing rows. Tests use temporary
+databases and must cover initialization rollback, reopen, reset, and constraints.
 
-At every checkpoint, inspect branch/diff/ignored files, scan for secrets/private
-paths and prohibited voice/audio/provider alternatives, preserve `main`, and
-report only behavior that the observed evidence establishes.
+## Proposed exact `/api` surface — 22 operations
+
+| # | Method and route | Responsibility |
+| ---: | --- | --- |
+| 1 | `GET /api/health` | Sanitized service/database/key configuration status only |
+| 2 | `GET /api/preferences` | Read explained fictional-profile preferences |
+| 3 | `PUT /api/preferences` | Versioned, idempotent preference update/reset choice |
+| 4 | `GET /api/focus-activities` | Static allow-listed activity metadata and instructions |
+| 5 | `POST /api/activity-sessions` | Idempotently create a factual activity session |
+| 6 | `PATCH /api/activity-sessions/{session_id}` | Versioned stop/complete/skip/interrupt update |
+| 7 | `POST /api/activity-sessions/{session_id}/events` | Append an allow-listed idempotent activity event |
+| 8 | `GET /api/activity-sessions` | Bounded factual history with simple filters/cursor |
+| 9 | `GET /api/activity-sessions/{session_id}` | One session plus bounded ordered events |
+| 10 | `POST /api/perspective/alternatives` | Ephemeral bounded Gemini alternatives; no automatic save |
+| 11 | `POST /api/perspective-artifacts` | Explicitly previewed/idempotent artifact save |
+| 12 | `GET /api/perspective-artifacts` | Bounded saved-artifact list for current demo profile |
+| 13 | `DELETE /api/perspective-artifacts/{artifact_id}` | Delete saved text; retain explained metadata state |
+| 14 | `POST /api/next-step-seeds` | Explicitly previewed/idempotent seed save |
+| 15 | `GET /api/next-step-seeds` | Bounded saved seed list |
+| 16 | `DELETE /api/next-step-seeds/{seed_id}` | Delete saved seed text transactionally |
+| 17 | `POST /api/conversations` | Create an idempotent history-guide conversation |
+| 18 | `GET /api/conversations/{conversation_id}/messages` | Bounded ordered stored history questions/answers |
+| 19 | `POST /api/conversations/{conversation_id}/messages` | Store a validated bounded history question request |
+| 20 | `POST /api/garden-guide/history-questions` | Run the validated two-request history RAG workflow |
+| 21 | `DELETE /api/demo/saved-text` | Confirmed deletion of saved artifacts, seeds, and messages while retaining explained session metadata |
+| 22 | `POST /api/demo/reset` | Confirmed atomic reset of all fictional-profile children and preferences |
+
+Support has no backend route. No generic provider proxy or arbitrary SQL route is
+permitted.
+
+## Gemini workflow A — perspective alternatives
+
+Input is one interpretation (1–280 characters), zero to three supporting-evidence
+cards (each at most 180 characters), zero to three uncertainty cards (each at
+most 180 characters), and observer mode `none` or `fictional_alex`. The UI shows
+the payload before submission. Unsaved text remains in memory and is not logged.
+
+One request at most uses `gemini-3.5-flash-lite`, a 10-second deadline, 384 output
+tokens, zero retries, and no provider/model fallback. Strict JSON output contains
+one or two alternatives (each at most 240 characters), one factual basis for each
+(at most 180 characters), and the exact limitation `Coursework prototype; not
+therapy or medical advice.` Output may not include advice, diagnosis, emotion,
+crisis inference, treatment, effectiveness, action selection, or navigation.
+
+Missing configuration uses zero calls. Timeout, provider failure, malformed
+output, cancellation, and stale response use a fixed application status message
+and retain local work. They do not fabricate alternative content. Output is not
+saved automatically.
+
+## Gemini workflow B — history RAG
+
+The natural-language question is optional, 1–300 characters, and limited to
+saved FocusBloom records. Suggested factual questions precede the field. The UI
+warns against private, identifying, medical, or crisis information.
+
+### Request 1: SQL proposal
+
+One Gemini request proposes exactly one parameterized `SELECT`. The validator
+parses the statement and accepts only:
+
+- tables: `activity_sessions`, `perspective_artifacts`, `next_step_seeds`, or
+  `preferences`;
+- explicitly enumerated non-content columns needed for each question, plus saved
+  artifact/seed display columns only for requests that ask to show them;
+- `WHERE`, `GROUP BY`, `ORDER BY`, and `LIMIT`;
+- aggregate functions `COUNT`, `MIN`, and `MAX` only;
+- bound parameter `:profile_id`, which must constrain the current fictional
+  profile; and
+- at most 8 selected columns and `LIMIT` no greater than 20.
+
+It rejects mutation, DDL, PRAGMA, ATTACH, transaction commands, comments,
+multiple statements, CTEs, subqueries, joins, UNION/INTERSECT/EXCEPT, window
+functions, unlisted functions/tables/columns, literals substituted for profile
+scope, and missing/oversized limits before execution.
+
+SQLite runs through a read-only URI connection with `PRAGMA query_only=ON`, an
+authorizer denying writes/schema/unsafe functions, parameter binding, and a
+progress handler enforcing a 100-ms execution deadline. Serialized rows are at
+most 20 rows, 8 columns, and 8 KiB. `PRAGMA data_version` is checked before and
+after retrieval (or an equivalent consistent read transaction is used); a
+changed snapshot fails safely. Mutation never executes.
+
+Rejected or out-of-scope proposals produce `history-query-rejected` after one
+provider request. Zero rows produce `history-no-match` after one request and no
+answer-generation call.
+
+### Request 2: grounded answer
+
+Only validated rows, stable row references, the original bounded question, and
+the factual-answer schema are sent. One Gemini request returns at most 600
+characters plus row references. Every asserted stored fact must resolve to one of
+the retrieved references; otherwise output is rejected. The answer acknowledges
+missing information and cannot infer motivation, emotion, diagnosis,
+effectiveness, improvement, treatment, or advice.
+
+The successful maximum is two provider requests. A rejected/no-match outcome
+uses one. Missing configuration uses zero. Timeout, provider failure, malformed
+output, inconsistent snapshot, or invalid grounding produces no retry and no
+model fallback. Safe error codes do not expose questions, prompts, SQL, rows,
+provider errors, or system instructions.
+
+## Verification required before implementation can be called complete
+
+- Temporary version-2 database tests for all constraints, transactions,
+  idempotency, deletion, reset, migration stop, and reopen behavior.
+- API contract tests for exactly 22 operations and every allowed/failure outcome.
+- Property/adversarial SQL validator tests and observed read-only authorizer,
+  deadline, payload, snapshot, zero-row, mutation, and grounding behavior.
+- Mocked Gemini call-count tests: Perspective 0/1; history 0/1/2 by outcome; no
+  retry or fallback.
+- Browser tests for all 17 states, keyboard/focus, 390-pixel reflow, 200% zoom,
+  Standard/No-motion equivalence, fictional no-input path, no-typing Focus Garden,
+  stale/cancelled responses, Support independence, Delete, and Reset.
+- API/SQLite agreement for stable IDs and factual History Garden fields.
+- Manual source recheck for Support before submission. Software checks do not
+  establish clinical safety or effectiveness.

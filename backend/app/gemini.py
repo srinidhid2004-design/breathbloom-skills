@@ -110,7 +110,7 @@ class GoogleGeminiGateway:
             "Return only the requested JSON object. Use only the supplied fictional "
             "coursework facts. Be brief and factual. Do not diagnose, provide therapy "
             "or medical advice, claim improvement, infer emotion or crisis, generate "
-            "support resources, or alter the breathing sequence."
+            "support resources, or alter application-owned activity state."
         )
         try:
             client = genai.Client(
