@@ -16,6 +16,7 @@ kept separate from observed static-design and publication checks.
 | [`03-direction-a-selection-and-figma-reference.md`](../prompts/03-direction-a-selection-and-figma-reference.md) | Human selected Direction A and supplied the selection rationale | Public editable comparison, selected section, 13 static reference frames, overview, and annotations | Historical-frame fingerprints; names/dimensions; controls, vectors, fonts, image fills, text coverage, contrast evidence, and screenshot review |
 | [`04-part-3-1-submission-and-publication.md`](../prompts/04-part-3-1-submission-and-publication.md) | Create, audit, commit, publish, and publicly verify the Part 3.1 submission only | `report.md`, this evidence log, final publication records, and public Git history | Complete project/course reread; Figma metadata recheck; pre-Git and staged audits; local/remote SHA and unauthenticated public-link checks |
 | [`05-part-3-2-foundation.md`](../prompts/05-part-3-2-foundation.md) | Authorize the Part 3.2 architecture and tested minimal Vue/FastAPI foundation on a feature branch | Implementation plan, pinned manifests, safe health/config backend, minimal accessible frontend, tests, and continuity updates | Exact Git/start gate; official Google model/pricing check; dependency integrity; backend tests/import/health; frontend tests/lint/build; safety and ignored-artifact audits |
+| [`06-part-3-2-backend.md`](../prompts/06-part-3-2-backend.md) | Authorize the complete backend and supply the exact structural crisis/input decision after the initial safety stop | Five-table SQLite repository, 11-route FastAPI API, deterministic session validation, bounded Gemini adapter, 32-test suite, and continuity updates | Branch/start gate; focused/full tests; temporary-row snapshots; mocked call counts and failure matrix; dependency/import/diff and credential/generated-state audits |
 
 ## Consequential design comparison
 
@@ -100,3 +101,35 @@ evidence.
 These results are local foundation evidence only. The later breathing sequence,
 Support independence, persistence, history, model behavior, RAG, accessibility,
 and integrated scenarios remain unverified.
+
+## Assignment 3.2 backend evidence
+
+- Implemented exactly five tables and 11 `/api` operations without adding a
+  Support, classifier, authentication, location, provider-proxy, or generic SQL
+  route.
+- The accepted model body is structural only. Unknown/free-form fields produce
+  the approved HTTP 422 message with no row mutation and no provider call. There
+  is no keyword matching, sentiment inference, classifier, or crisis detection.
+- Temporary-database tests observed preference update/reset, deterministic
+  start/stop/complete, invalid no-mutation transitions, reopen persistence,
+  foreign-key/identity constraints, ordered messages, duplicate prevention, and
+  atomic fixed-profile reset.
+- Injected mocks observed one call for success and each accepted provider failure;
+  zero for missing configuration and invalid input; no second call for duplicate
+  or failed-request reuse. Valid success stored two ordered rows. Accepted failure
+  stored one failed user row and no assistant. Malformed output was not stored or
+  returned as assistant text.
+- SDK seam inspection observed fixed model `gemini-3.5-flash-lite`, 10-second
+  timeout, one total attempt, and 256-token output cap. Application constants and
+  tests establish five history rows, 4,096 context characters, and 600 validated
+  response characters.
+- Focused tests: 28 passed. Complete tests: 32 passed. `pip check`, application
+  construction/11-operation inspection, and `git diff --check` passed. Two
+  dependency deprecation warnings were recorded without changing dependencies.
+- AutoLoop used one correction cycle for a test connection-mode error; it did not
+  weaken the constraint assertion.
+
+This is mocked/local backend evidence only. No live Gemini request, real key,
+runtime SQLite database, frontend/Figma implementation, or real-distress testing
+occurred. Static Support and ordinary exercise controls remain independent by
+contract, but their frontend rendering is not yet implemented or verified.

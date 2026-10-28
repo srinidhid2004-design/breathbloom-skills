@@ -17,8 +17,9 @@ as evidence of a diagnosis, emotional state, or improvement.
 
 ## Current milestone
 
-This feature branch contains the **Assignment 3.2 Checkpoint 1 foundation** built
-from the completed and published Assignment 3.1 milestone. The authoritative
+This feature branch contains the **Assignment 3.2 backend checkpoint** built from
+the completed and published Assignment 3.1 milestone and the tested Checkpoint 1
+foundation. The authoritative
 design decisions are recorded in
 [`docs/part-3-1-decisions.md`](docs/part-3-1-decisions.md), with the fixed U.S.
 fictional-demo Support plan in
@@ -26,11 +27,14 @@ fictional-demo Support plan in
 Direction A reference is available in the public Figma file, and the submitted
 Part 3.1 summary remains unchanged in [`report.md`](report.md).
 
-The repository now has tested minimal Vue and FastAPI scaffolds, pinned manifests,
-safe lazy Gemini configuration, and `GET /api/health`. The visible page is only a
-foundation screen; it is not the selected Figma experience. No breathing flow,
-Support route/content, persistence tables, database file, model request, or full
-Part 3.2 behavior has been implemented. The exact implementation contract is in
+The repository now has a tested five-table FastAPI/SQLite backend with the exact
+11-route API, deterministic session-state validation, preferences, history,
+ordered conversations/messages, atomic reset, safe lazy Gemini configuration,
+and an injected/mock-tested optional Gemini path. Application startup explicitly
+initializes the ignored runtime database; imports and app construction do not.
+The visible Vue page is still only the foundation screen and is not the selected
+Figma experience. Static Support and the complete breathing interface remain a
+later frontend checkpoint. The exact implementation contract is in
 [`docs/part-3-2-implementation-plan.md`](docs/part-3-2-implementation-plan.md).
 
 Public design references:
@@ -39,7 +43,7 @@ Public design references:
 - [Selected Direction A section](https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=10-286)
 - [Selected Direction A overview](https://www.figma.com/design/L09m1XZX6fNEmR2dqrBkcx?node-id=14-537)
 
-## Run the foundation from a clean checkout
+## Run the backend from a clean checkout
 
 Prerequisites used for this checkpoint are Python 3.14 and Node.js 24. Run these
 commands from the repository root in PowerShell:
@@ -65,9 +69,11 @@ npm run dev
 
 Open the Vite URL shown in the terminal. The safe backend check is
 `http://127.0.0.1:8000/api/health`; it reports only service, database, and key
-configuration statuses. A Gemini key is not required for this checkpoint.
+configuration statuses. A Gemini key is not required for ordinary backend use or
+the automated suite. Starting the backend creates or reopens the ignored runtime
+database at `data/app.sqlite3`; tests use isolated temporary databases only.
 
-Before a later explicitly authorized live-model check, copy
+Before a separately authorized live-model check, copy
 `backend/.env.example` to the ignored `backend/.env` and manually add the key as
 `GEMINI_API_KEY=...`. Never commit or paste the value into project evidence.
 
@@ -180,26 +186,35 @@ user's location or condition. Exact reviewed wording, official source URLs, and
 the manual re-verification procedure are in
 [`docs/support-resources.md`](docs/support-resources.md).
 
-## Planned model role and limits
+## Implemented model role and limits
 
-A later conversational model may provide one brief introduction or factual
-reflection grounded in reviewed skill material and fictional saved context. It
-may also answer bounded questions about saved session history through the
-course's reviewed SQL-based retrieval-augmented generation (RAG) pattern.
+The optional backend model path may provide one brief introduction, factual
+reflection grounded in an approved choice and fictional session, or bounded
+factual summary of saved session history. It accepts structural fields only and
+does not accept an arbitrary prompt, message, question, crisis text, or other
+free-form model input.
 
 The model may not control or change the timer, 4–6 sequence, progress, stop,
 pause, resume, saved status, or Support access. It may not invent therapeutic or
 medical advice, diagnose, infer distress, or present activity as improvement.
-Application-owned fallback text must keep the experience usable when a model is
-missing, slow, malformed, stale, or fails. Google Gemini is the approved provider
-and the fixed model is the official stable `gemini-3.5-flash-lite`. It will be
-backend-only with no provider/model fallback and no automatic retry. This
-checkpoint adds configuration and the official SDK only; it makes no provider
-request. Exact sources and remaining call controls are in the Part 3.2 plan.
+Application-owned frontend copy must keep the experience usable when a model is
+missing, slow, malformed, or fails. Google Gemini is the only provider and the
+fixed model is `gemini-3.5-flash-lite`. The backend uses one total attempt (zero
+automatic retries), no fallback, a 10-second timeout, at most five recent session
+rows, a 4,096-character serialized context, 256 output tokens, and 600 validated
+response characters. The exact structured output fields are `response_text`,
+`response_kind`, and the limitation `Coursework prototype; not therapy or medical
+advice.` No live provider request has been made.
 
-## Planned records and history
+Structurally invalid model bodies receive a safe HTTP 422 response before service
+code runs, with zero database writes and zero provider calls. BreathBloom does
+not inspect keywords or sentiment and cannot detect crisis content. Independent
+Support remains static frontend content and never relies on this boundary,
+FastAPI, SQLite, or Gemini.
 
-SQLite is planned to use exactly five record types:
+## Implemented records and history
+
+SQLite uses exactly five tables:
 
 - `demo_profiles`: one fixed fictional demo profile;
 - `preferences`: explicit motion/guidance choices;
@@ -210,10 +225,12 @@ SQLite is planned to use exactly five record types:
 - `messages`: stable IDs, roles, ordering, timestamps, and—in the initiating user
   message—bounded request lifecycle fields.
 
-There is no separate reflection or request-attempt record. An assistant message
-is created only after validated output is successfully persisted. This five-record
-plan reduces implementation and testing scope without weakening honest failure
-reporting.
+There is no separate reflection or request-attempt table. An initiating user
+message is committed before an accepted provider attempt; an assistant message
+is created only in the transaction that marks validated output successful.
+Failed accepted attempts retain one user lifecycle row and no invented assistant
+text. Invalid structural bodies persist nothing. UUID request/action keys,
+optimistic versions, and unique client identifiers prevent duplicate records.
 
 History will show date, duration, cycle count, completion status, and chosen
 settings in text. A completed session may also use a six-petal bloom, and a
@@ -221,18 +238,19 @@ stopped session may use an accurate partial bloom, but neither visual replaces
 its text label. History must remain available without a model request and must
 not interpret participation as mental-health improvement.
 
-If RAG is implemented, FastAPI will validate and execute bounded, read-only SQL
-retrieval against allowed records. The model will never connect directly to
-SQLite, and retrieval will remain separate from parameterized application writes.
+For factual history, FastAPI performs a fixed parameterized read of at most five
+session rows and constructs bounded JSON context. The model never opens SQLite,
+proposes SQL, or writes records. Retrieval remains separate from parameterized
+application writes.
 
-## Planned technology and separation
+## Technology and separation
 
 - **`frontend/`:** Vue 3 with JavaScript, HTML, and CSS. It will render the
   interface, own client interaction and deterministic pacing state, and call the
   backend over HTTP/JSON.
-- **`backend/`:** typed Python with FastAPI. It will validate requests, enforce
-  business rules, manage persistence, and make any later provider calls using
-  backend-only configuration.
+- **`backend/`:** typed Python with FastAPI. It validates requests, enforces
+  business rules, manages SQLite persistence, and owns the only optional provider
+  call using backend-only configuration.
 - **`data/`:** SQLite at `data/app.sqlite3`, accessed only by the backend.
 
 The application is planned to run on localhost. Ordinary practice and history
@@ -289,8 +307,8 @@ breathbloom-skills/
 |-- AI-USE.md
 |-- report.md
 |-- frontend/                 # minimal Vue/Vite foundation and tests
-|-- backend/                  # minimal FastAPI foundation and tests
-|-- data/                     # empty; runtime database remains ignored
+|-- backend/                  # complete Part 3.2 backend and mocked tests
+|-- data/                     # empty checkout; runtime database remains ignored
 |-- docs/
 |   |-- design-pipeline.md
 |   |-- evidence.md
@@ -304,21 +322,23 @@ breathbloom-skills/
 |   |-- 03-direction-a-selection-and-figma-reference.md
 |   |-- 04-part-3-1-submission-and-publication.md
 |   |-- 05-part-3-2-foundation.md
+|   |-- 06-part-3-2-backend.md
 |   `-- README.md
 `-- handoffs/
     `-- current.md
 ```
 
-The checked-in manifests and source are intentionally minimal. Generated
-`backend/.venv`, `frontend/node_modules`, and `frontend/dist` remain ignored.
-`data/` remains empty, and no local `.env` was created.
+Generated `backend/.venv`, `frontend/node_modules`, and `frontend/dist` remain
+ignored. `data/` remains empty in this checkpoint, no runtime database is
+submitted, and no local `.env` was created.
 
 ## Remaining unresolved work
 
-Part 3.1 design work and the Part 3.2 foundation are complete. The remaining four
-checkpoints must implement and verify the selected Direction A interface,
-deterministic timing/Support behavior, the exact five-table SQLite/API contracts,
-bounded Gemini/RAG behavior, and final integrated fictional-scenario evidence.
-Before any live Gemini call, record an exact timeout and a project call cap below
-the course's 50-call session maximum. Full behavior must not be claimed from this
-foundation.
+Part 3.1 design work, the Part 3.2 foundation, and the backend checkpoint are
+complete. Remaining work is the selected Direction A Vue interface, browser-owned
+timing and static Support behavior, frontend/backend integration, runtime
+accessibility checks, fictional integrated scenarios, submission evidence, and a
+separately authorized minimal live-provider verification. Before any live call,
+record a project call cap below the course's 50-call session maximum and confirm
+account/model availability. The backend mock suite does not establish live
+provider access or frontend behavior.

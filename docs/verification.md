@@ -426,3 +426,88 @@ provider request, Figma edit, voice/audio feature, full selected interface,
 runtime capture, authentication, analytics, vector database, or alternate
 provider/model was created. `backend/.venv`, `frontend/node_modules`, and
 `frontend/dist` are generated ignored artifacts, not submitted source.
+
+## Assignment 3.2 backend checkpoint
+
+### Git and safety gate
+
+- Active branch at the implementation gate:
+  `feature/assignment-3-part-2`.
+- Exact clean starting SHA and matching remote feature SHA:
+  `55371b8576a5174ab5a026763f1d11374234cb1c`.
+- Local and remote `main` remained
+  `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`.
+- No `backend/.env`, SQLite database, or record existed; no live Gemini request
+  had occurred. No frontend/Figma, dependency-installation, voice/audio,
+  authentication, analytics, vector-database, alternate-provider, or `report.md`
+  change was made.
+- The initially missing crisis-input decision was supplied by the human before
+  implementation resumed. The implemented boundary uses strict structural input
+  only and no classifier, keyword, sentiment, or free-form text path.
+
+### Implemented contracts
+
+- Exactly five SQLite tables: `demo_profiles`, `preferences`,
+  `exercise_sessions`, `conversations`, and `messages`; schema version 1.
+- Exactly 11 OpenAPI operations under `/api`; no Support endpoint.
+- Foreign keys on every connection, explicit write transactions, parameterized
+  values, 5,000-ms busy timeout, safe cleanup, fixed fictional identity,
+  optimistic versions, UUID idempotency, and atomic reset.
+- Deterministic 4-second inhale/6-second exhale validation, six cycles, 60,000-ms
+  completion boundary, and distinct stop/completed/interrupted states.
+- Fixed provider/model `gemini-3.5-flash-lite`, one total SDK attempt, zero
+  automatic retries, no fallback, 10,000-ms timeout, five history rows, 4,096
+  context characters, 256 output tokens, and 600 validated response characters.
+- Exact structured output: `response_text`, `response_kind`, and limitation
+  `Coursework prototype; not therapy or medical advice.`
+- Invalid model bodies return safe HTTP 422 before persistence/service work, with
+  zero provider calls and zero database writes. This structural boundary cannot
+  detect or classify crisis content; static Support remains independent.
+
+### Automated observations
+
+Commands were run from `backend/` unless shown otherwise:
+
+```powershell
+.venv/Scripts/python.exe -m pytest tests/test_database.py tests/test_api.py tests/test_model.py -q
+.venv/Scripts/python.exe -m pytest tests -q
+.venv/Scripts/python.exe -m pip check
+.venv/Scripts/python.exe -c "from app.main import app; ..."
+git diff --check
+```
+
+Observed results:
+
+- Focused backend suite: **28 passed**.
+- Complete backend suite: **32 passed**.
+- Two non-failing dependency deprecation warnings were reported by Starlette's
+  current `TestClient` compatibility shim and Google Gen AI's Python 3.14 type
+  internals. They do not represent application behavior failures and no
+  dependency was changed during this checkpoint.
+- Mock request counts: success **1**; each accepted authentication, permission,
+  quota, rate-limit, timeout, general-provider, and malformed-output case **1**;
+  missing configuration **0**; structurally invalid input **0**; duplicate/retry
+  with the same request ID adds **0** further calls.
+- Failed accepted attempts retained exactly one `failed` user lifecycle row and
+  no assistant row. Invalid structural input left the before/after message rows
+  identical and empty.
+- `pip check`: **No broken requirements found.**
+- Import/application construction: **FastAPI, 11 operations**; construction did
+  not open the injected database path or load runtime settings.
+- `git diff --check`: passed (Git emitted only Windows LF/CRLF conversion notices,
+  not whitespace errors).
+
+### AutoLoop correction and evidence limit
+
+One correction cycle was used. The first schema constraint test attempted its
+intentional invalid update through a read-only connection and produced SQLite's
+read-only error before reaching the constraint. The invalid-value assertion was
+kept and moved to a normal repository connection; the focused test and complete
+suite then passed. A prior root-venv command typo did not reach test collection
+and was corrected to `backend/.venv`.
+
+These checks establish local schema/API/persistence/idempotency and mocked
+provider-boundary behavior. They do not establish frontend behavior, browser
+timing/accessibility, live Gemini access, account quota, static Support rendering,
+or integrated scenario behavior. No real credential was read and no runtime
+database was accessed or mutated.

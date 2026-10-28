@@ -1,53 +1,64 @@
-"""Foundation tests for safe application construction and health reporting."""
+"""Health, route-surface, and construction-side-effect tests."""
 
-import asyncio
+from pathlib import Path
 
-from httpx import ASGITransport, AsyncClient
+from pydantic import SecretStr
 
-from app.config import PROJECT_ROOT, get_settings
+from app.config import Settings
 from app.main import create_app
 
 
-def request_health():
-    async def request():
-        transport = ASGITransport(app=create_app())
-        async with AsyncClient(transport=transport, base_url="http://test") as client:
-            return await client.get("/api/health")
-
-    return asyncio.run(request())
-
-
-def test_application_constructs_with_health_route(monkeypatch) -> None:
-    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    get_settings.cache_clear()
-
-    response = request_health()
+def test_health_reports_database_and_key_without_private_values(harness_factory) -> None:
+    harness = harness_factory(configured=True)
+    response = harness.request("GET", "/api/health")
 
     assert response.status_code == 200
     assert response.json() == {
         "service": "ok",
-        "database": "not initialized",
-        "gemini_api_key": "not configured",
+        "database": "available",
+        "gemini_api_key": "configured",
     }
+    assert "fictional-test-key" not in response.text
+    assert str(harness.database_path) not in response.text
 
 
-def test_health_reports_configured_without_exposing_secret(monkeypatch) -> None:
-    secret = "fictional-test-secret-that-must-not-leak"
-    monkeypatch.setenv("GEMINI_API_KEY", secret)
-    get_settings.cache_clear()
-
-    response = request_health()
-    response_text = response.text
-
-    assert response.status_code == 200
-    assert response.json()["gemini_api_key"] == "configured"
-    assert secret not in response_text
-    assert str(PROJECT_ROOT) not in response_text
-    assert "environment" not in response_text.lower()
-    assert "private" not in response_text.lower()
+def test_health_reports_missing_key(harness_factory) -> None:
+    response = harness_factory(configured=False).request("GET", "/api/health")
+    assert response.json()["gemini_api_key"] == "not configured"
 
 
-def test_health_route_is_the_only_foundation_api_route() -> None:
-    paths = set(create_app().openapi()["paths"])
+def test_application_construction_does_not_open_database(tmp_path: Path) -> None:
+    database_path = tmp_path / "not-created.sqlite3"
+    settings = Settings(
+        _env_file=None,
+        database_path=database_path,
+        gemini_api_key=SecretStr("construction-only-fake"),
+    )
 
-    assert paths == {"/api/health"}
+    application = create_app(settings=settings)
+
+    assert not database_path.exists()
+    assert not hasattr(application.state, "service")
+
+
+def test_exact_eleven_api_operations(harness_factory) -> None:
+    schema = harness_factory().app.openapi()
+    operations = {
+        (method.upper(), path)
+        for path, methods in schema["paths"].items()
+        for method in methods
+        if method.lower() in {"get", "put", "post", "patch"}
+    }
+    assert operations == {
+        ("GET", "/api/health"),
+        ("GET", "/api/preferences"),
+        ("PUT", "/api/preferences"),
+        ("POST", "/api/sessions"),
+        ("PATCH", "/api/sessions/{session_id}"),
+        ("GET", "/api/sessions"),
+        ("GET", "/api/sessions/{session_id}"),
+        ("POST", "/api/conversations"),
+        ("GET", "/api/conversations/{conversation_id}/messages"),
+        ("POST", "/api/conversations/{conversation_id}/messages"),
+        ("POST", "/api/demo/reset"),
+    }

@@ -2,71 +2,83 @@
 
 - **Date:** October 27, 2026
 - **Project:** BreathBloom
-- **Milestone:** Assignment 3.2 — Checkpoint 1 foundation
+- **Milestone:** Assignment 3.2 — complete backend checkpoint
 - **Branch:** `feature/assignment-3-part-2`
-- **Start SHA:** `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`
-- **Status:** Minimal Vue/FastAPI foundation and exact implementation plan are
-  complete and locally verified. Full Part 3.2 behavior remains unimplemented.
+- **Checkpoint start SHA:** `55371b8576a5174ab5a026763f1d11374234cb1c`
+- **Status:** Five-table FastAPI/SQLite backend and bounded mocked Gemini path are
+  implemented, verified, committed, and published. Frontend implementation and
+  live-provider verification remain future work.
 
-## Completed foundation
+## Completed backend
 
-- Verified the clean published Part 3.1 handoff and preserved `main` and
-  `origin/main` at the exact start SHA.
-- Finalized the requirement traceability, exact five-table schema, 11-route API,
-  ten-state top-level state machine, timing/stale-response rules, and five-step
-  implementation order in `docs/part-3-2-implementation-plan.md`.
-- Selected Google Gemini with stable `gemini-3.5-flash-lite` after checking
-  official model, release, pricing, and rate-limit documentation. No fallback or
-  automatic retry is permitted.
-- Added pinned FastAPI/Uvicorn/Pydantic Settings/Google Gen AI dependencies,
-  project-local Python environment instructions, safe lazy secret configuration,
-  an explicit unused SQLite initializer, and only `GET /api/health`.
-- Added a pinned Vue 3 JavaScript/Composition API/Vite foundation, lockfile,
-  minimal accurate coursework boundary, and visible Practice/History/Support
-  placeholders. It is not the selected Figma interface.
-- Added backend/frontend tests and frontend lint/build configuration. Updated the
-  README, agent guidance, AI-use disclosure, design pipeline, verification,
-  curated evidence, and prompt records. The Part 3.1 `report.md` is unchanged.
+- Exactly five schema-version-1 tables: `demo_profiles`, `preferences`,
+  `exercise_sessions`, `conversations`, and `messages`.
+- Exactly 11 `/api` operations for health, preferences, sessions/history,
+  conversations/messages, and fixed-profile reset. There is no Support backend
+  route.
+- Deterministic session validation preserves 4-second inhale, 6-second exhale,
+  six cycles, 60 seconds, versioned transitions, distinct terminal states, and
+  idempotent retries.
+- Explicit SQLite lifespan initialization, foreign keys per connection, explicit
+  transactions, parameterized values, busy timeout, stable IDs/order, reopen
+  persistence, and atomic reset.
+- Fixed optional provider/model: Google Gemini `gemini-3.5-flash-lite`; no
+  fallback; one total attempt; 10-second timeout; five history rows; 4,096 context
+  characters; 256 output tokens; 600 validated response characters.
+- Exact provider response fields: `response_text`, `response_kind`, and
+  `limitation`. Raw/unvalidated output and raw errors are neither stored nor
+  returned.
+- Structural request boundary accepts only request kind, UUID idempotency key,
+  and session/reflection choice where required. It does not accept free-form
+  model text, use keywords/sentiment/classification, or detect crisis content.
+  Invalid input produces the approved HTTP 422 with zero writes and zero calls.
+- Static Support remains an independent frontend responsibility and bypasses the
+  backend, model, and database.
 
 ## Observed checks
 
-- Selected Python: `backend/.venv/Scripts/python.exe`, Python 3.14.7.
-- Backend dependencies installed; `pip check` clean; 3 tests passed; FastAPI app
-  construction passed; OpenAPI exposed only `/api/health`.
-- Health response: HTTP 200, service `ok`, database `not initialized`, Gemini key
-  `not configured`; no configuration value or private path was returned.
-- Node.js 24.20.0/npm 11.19.0; direct dependency tree matched; 2 component tests,
-  zero-warning lint, and production build passed; production audit found zero
-  vulnerabilities.
-- The first route-introspection assertion and first formatting pass were revised;
-  the complete suites passed afterward. Details are retained in the evidence.
+- Focused backend tests: **28 passed**.
+- Complete backend tests: **32 passed**.
+- Mock calls: one for success and each accepted provider failure; zero for
+  missing configuration and invalid input; no additional call for duplicate ID.
+- Failed accepted attempt: one failed user lifecycle row, no assistant row.
+  Structurally invalid request: no row at all.
+- `pip check`: no broken requirements.
+- Import/application construction: FastAPI with exactly 11 operations and no
+  construction-time database/config access.
+- `git diff --check`: passed. Two non-failing dependency deprecation warnings
+  from Starlette/httpx compatibility and Google Gen AI/Python 3.14 were retained
+  in the verification record.
+- AutoLoop: one correction cycle fixed a test that attempted its constraint write
+  on a read-only connection; the assertion itself was preserved.
 
 ## Safety and generated state
 
-No local `.env`, credential, SQLite file or record, fictional fixture/scenario,
-live provider request, Figma change, voice/audio feature, alternate provider,
-authentication, analytics, or vector database was created. Generated
-`backend/.venv`, `frontend/node_modules`, and `frontend/dist` are ignored. The
-user does not need a Gemini key for this checkpoint; before a later explicitly
-authorized live check, they must copy `backend/.env.example` to ignored
-`backend/.env` and manually add `GEMINI_API_KEY`.
+No live Gemini request occurred. No real credential or `backend/.env` was read or
+created. No ignored runtime database was opened or changed; tests used operating-
+system temporary databases only. `data/` remains empty. No frontend/Figma,
+voice/audio, authentication, analytics, alternate provider, vector database,
+merge, rebase, amend, force-push, or `main` change occurred. `report.md` remains
+the submitted Part 3.1 report.
 
-## Still unimplemented and unverified
+Generated `backend/.venv`, `backend/.pytest_cache`, and Python bytecode remain
+ignored. No generated frontend output, node modules, log, credential, SQLite
+file, or local environment file is part of the backend commit.
 
-- Selected Direction A interface and static reviewed Support route/content.
-- Deterministic 4/6 timing, six cycles, pause/Resume, Stop, visibility gaps,
-  stale timers, motion/guidance modes, and runtime accessibility.
-- The five SQLite tables, schema migration, fixed fictional profile, preferences,
-  sessions, History, conversations/messages, reset, and remaining ten API routes.
-- Bounded model request, exact timeout/call cap, output validation, request
-  lifecycle, mock failure matrix, read-only RAG, and any separately authorized
-  live-model sample.
-- Fifteen fictional scenarios, cross-case checks, clean-checkout reproduction,
-  measured browser evidence, report update, and recordings.
+## Still unimplemented or unverified
+
+- Selected Direction A Vue experience and static reviewed Support content.
+- Browser-owned 4/6 timer, pause/explicit Resume, Stop, visibility gaps,
+  interrupted reconciliation, motion/guidance modes, and stale UI guards.
+- Frontend/backend integration, browser accessibility/reflow, measured duration,
+  15 fictional scenarios, cross-case checks, final report/evidence, and recordings.
+- A separately authorized minimal live Gemini request. Before it, confirm account
+  access/quota and record a project call cap below the course's 50-call limit.
 
 ## Exact next task
 
-Checkpoint 2 should implement the selected Direction A deterministic practice
-and static Support experience against the documented state/timing contract using
-local or mocked behavior only. It must not create the database, add credentials,
-or make a live Gemini call unless that next prompt explicitly authorizes them.
+Implement the selected Direction A Vue interface and static Support experience
+against the published backend contracts using local/mocked provider behavior.
+Verify deterministic browser timing, user control, accessibility, stale-response
+handling, and persisted API/row agreement. Do not make a live Gemini call unless
+the next prompt separately authorizes it.

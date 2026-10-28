@@ -5,9 +5,10 @@
 This directory keeps concise evidence of significant project instructions,
 decisions, acceptance criteria, and observed results. It supports later review of
 how AI-assisted work affected BreathBloom without storing full conversations.
-The current project milestone is the **Assignment 3.2 Checkpoint 1 foundation**.
-A minimal tested Vue/FastAPI scaffold exists, but no full application behavior,
-database, credential, or provider request exists.
+The current project milestone is the **Assignment 3.2 backend checkpoint**.
+The five-table FastAPI/SQLite backend and bounded mocked Gemini path are
+implemented and tested. The selected frontend experience and any live provider
+verification remain later work.
 
 ## Redaction and safety rules
 
@@ -30,6 +31,7 @@ database, credential, or provider request exists.
 | [`03-direction-a-selection-and-figma-reference.md`](03-direction-a-selection-and-figma-reference.md) | 2026-10-27 | Record the human selection of Direction A and expand it into an editable implementation-ready static Figma reference | Direction A selection, rationale, 13 selected reference frames, preserved comparison evidence, accessibility/layout validation, targeted visual repairs, and runtime limitations were documented; no application, Git, dependency, database, credential, or provider work occurred |
 | [`04-part-3-1-submission-and-publication.md`](04-part-3-1-submission-and-publication.md) | 2026-10-27 | Create, audit, commit, publish, and publicly verify the self-contained Assignment 3.1 submission | `report.md`, curated evidence, publication verification, and public Git history were created without starting Part 3.2 implementation |
 | [`05-part-3-2-foundation.md`](05-part-3-2-foundation.md) | 2026-10-27 | Verify the published handoff, finalize Part 3.2 architecture/model decisions, create and test the minimal Vue/FastAPI foundation, and publish it on the feature branch | Exact five-table/11-route/state plan, safe Google Gemini configuration, pinned foundations, passing local checks, and updated continuity records; no database, key, live provider call, or full selected interface |
+| [`06-part-3-2-backend.md`](06-part-3-2-backend.md) | 2026-10-27 | Implement, verify, audit, and publish the complete five-table backend and structurally bounded optional Gemini path | Exact 11-route API, deterministic session validation, SQLite persistence/reset, mocked success/failure matrix, and structural crisis-input boundary; no live provider, real credential, runtime database, frontend, or Figma change |
 
 ## Future numbering
 

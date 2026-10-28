@@ -2,19 +2,21 @@
 
 ## Status and boundary
 
-The current milestone is **Assignment 3.2 Checkpoint 1 foundation**, built from
-the approved Assignment 3.1 decisions and human-selected Direction A reference.
+The current milestone is the **Assignment 3.2 backend checkpoint**, built from
+the approved Assignment 3.1 decisions, Checkpoint 1 foundation, and
+human-selected Direction A reference.
 The exact approved contracts are in
 [`part-3-1-decisions.md`](part-3-1-decisions.md), and the static U.S. Support
 content and official sources are in
 [`support-resources.md`](support-resources.md). This file summarizes how those
 decisions guide later design and implementation.
 
-The minimal Vue page, FastAPI application, safe configuration, and health route
-now exist and have local foundation checks. The selected interface and all skill,
-Support, persistence, database, model, and integrated behavior below remain
-planned and unverified. BreathBloom is a local coursework prototype for
-fictional scenarios, not a mental-health or emergency service.
+The minimal Vue page remains a foundation screen. The FastAPI application now
+implements the five-table persistence, exact 11 routes, deterministic session
+validation, reset, and bounded mock-tested Gemini adapter. The selected interface,
+browser timing, static Support, integrated behavior, and live-provider access
+remain unverified. BreathBloom is a local coursework prototype for fictional
+scenarios, not a mental-health or emergency service.
 
 ## Intended fictional user task
 
@@ -244,11 +246,12 @@ but a Figma frame does not prove application behavior.
 
 - **Vue 3 frontend:** semantic interface, static Support, deterministic pacing,
   motion/guidance presentation, and HTTP requests.
-- **FastAPI backend:** the checked foundation exposes safe health/config status;
-  later checkpoints add typed transitions, persistence, read-only RAG
-  enforcement, and the separately authorized backend-only provider call.
-- **SQLite:** planned at `data/app.sqlite3`, opened only by the backend for the
-  five fictional-demo record types.
+- **FastAPI backend:** exposes safe health/config status, typed deterministic
+  transitions, persistence, bounded factual history retrieval, reset, and the
+  only optional provider call.
+- **SQLite:** implemented at the configurable ignored default
+  `data/app.sqlite3`, opened only during backend lifespan/requests for exactly the
+  five fictional-demo tables. Automated tests use temporary paths.
 
 ## Explicit exclusions
 
@@ -259,7 +262,31 @@ experience uses visible text and controls.
 ## Remaining implementation work
 
 The next checkpoint must implement the selected Direction A deterministic
-practice and static Support experience with mocked/local behavior only. Later
-checkpoints add the exact five-table SQLite/API contracts, bounded Gemini/RAG,
-and final integration/evidence. Before a live provider check, record the exact
-timeout and a project call cap below the course's 50-call session maximum.
+practice and static Support experience, integrate it with the existing backend,
+and verify browser-owned timing and accessibility. Later work must add final
+integration/evidence and a separately authorized minimal live-provider check.
+The backend timeout is fixed at 10 seconds; before a live check, record a project
+call cap below the course's 50-call session maximum.
+
+## Implemented backend flow
+
+Application construction has no configuration or database side effect. Lifespan
+loads backend settings, initializes/reopens schema version 1 idempotently, and
+ensures the fixed fictional profile plus default preferences. API writes use
+explicit transactions, optimistic versions, UUID idempotency keys, and stable
+client identifiers. Session history and messages are ordered and bounded. Reset
+deletes only child data for the fixed profile, recreates defaults, and increments
+its reset version in one transaction.
+
+The model route accepts structural choices only: `introduction`, `reflection`,
+or `history_summary`, a UUID request identity, and the documented reflection
+session/choice where required. Invalid bodies stop at validation with no database
+or provider activity. Accepted requests commit one canonical user lifecycle row
+before one optional provider attempt; only fully validated structured output
+creates an assistant row. Failed attempts retain an honest safe code and never
+invent assistant text. Duplicate request IDs return stored state without another
+call.
+
+This is an input-shape boundary, not crisis detection. There is no keyword,
+sentiment, classifier, or model-based crisis analysis, and it cannot infer a
+person's condition. Static Support remains independent frontend content.

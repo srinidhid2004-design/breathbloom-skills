@@ -2,12 +2,13 @@
 
 ## Status, scope, and evidence boundary
 
-This plan is the implementation contract for the five-checkpoint Assignment 3.2
-workflow. Checkpoint 1 establishes only a tested Vue/FastAPI foundation, safe
-configuration, and the exact architecture below. The selected Direction A
-experience, the five-table schema, persistence behavior, deterministic exercise,
-static Support route, model request, and integrated evidence remain assigned to
-later checkpoints until their tests are observed.
+This plan began as the implementation contract for the five-checkpoint Assignment
+3.2 workflow. Checkpoint 1 established the Vue/FastAPI foundation. The authorized
+backend checkpoint has now implemented and mock-tested the complete five-table
+schema, 11-route API, deterministic persistence validation, reset, and bounded
+optional model path. The selected Direction A experience, browser timing, static
+Support route, integration, live-provider observation, and final evidence remain
+later work until observed.
 
 BreathBloom is a localhost coursework prototype for fictional scenarios. It is
 not therapy, an emergency service, or a monitored service. It will not diagnose,
@@ -62,9 +63,12 @@ selected Figma experience and does not claim implemented skill behavior.
 - Configuration: backend environment variable `GEMINI_API_KEY`, represented by a
   secret type and loaded lazily from process environment or ignored
   `backend/.env`. `backend/.env.example` contains only the blank setting name.
-- No provider or model fallback. No automatic retry. One request attempt per
-  explicit user action. The exact timeout and per-session live-call cap will be
-  recorded before the later live-call checkpoint; routine tests use mocks.
+- No provider or model fallback. One total SDK attempt (zero automatic retries)
+  per accepted UUID request. The timeout is 10 seconds. Input is at most five
+  recent session records and 4,096 serialized context characters; output is at
+  most 256 tokens and 600 validated response characters. A per-session live-call
+  cap must still be recorded before the later live-call checkpoint; routine tests
+  use mocks.
 - A missing key is an expected configuration state, not a crash. Health reports
   only `configured` or `not configured`.
 - No live request is authorized at Checkpoint 1.
@@ -98,6 +102,7 @@ will be explicit later operations, not import-time side effects.
 | `display_label` | `TEXT NOT NULL`; clearly fictional label |
 | `jurisdiction_scope` | `TEXT NOT NULL CHECK (... = 'US-DEMO')` |
 | `reset_version` | `INTEGER NOT NULL DEFAULT 0 CHECK (reset_version >= 0)` |
+| `last_reset_key` | nullable `TEXT`; bounded reset idempotency |
 | `created_at` | `TEXT NOT NULL` |
 | `updated_at` | `TEXT NOT NULL` |
 
@@ -111,6 +116,7 @@ will be explicit later operations, not import-time side effects.
 | `guidance_level` | `TEXT NOT NULL CHECK` in `minimal`, `standard`, `more` |
 | `source` | `TEXT NOT NULL CHECK` in `explicit`, `default`, `reset` |
 | `version` | `INTEGER NOT NULL CHECK (version >= 1)` for optimistic concurrency |
+| `last_idempotency_key` | nullable `TEXT`; duplicate preference-update prevention |
 | `created_at` | `TEXT NOT NULL` |
 | `updated_at` | `TEXT NOT NULL` |
 
@@ -121,6 +127,7 @@ will be explicit later operations, not import-time side effects.
 | `session_id` | `TEXT PRIMARY KEY` |
 | `profile_id` | `TEXT NOT NULL REFERENCES demo_profiles(profile_id) ON DELETE CASCADE` |
 | `client_session_id` | `TEXT NOT NULL UNIQUE`; duplicate-create prevention |
+| `create_idempotency_key` | `TEXT NOT NULL UNIQUE`; duplicate-create prevention across retries |
 | `status` | `TEXT NOT NULL CHECK` in `active`, `paused`, `completed`, `stopped`, `interrupted` |
 | `started_at` | `TEXT NOT NULL` |
 | `ended_at` | nullable `TEXT`; required for terminal status |
@@ -136,6 +143,7 @@ will be explicit later operations, not import-time side effects.
 | `next_time_setup` | nullable `TEXT CHECK` in `use_this_setup`, `change_motion`, `change_guidance`, `no_preference` |
 | `persistence_status` | `TEXT NOT NULL CHECK` in `pending`, `saved`, `failed` |
 | `version` | `INTEGER NOT NULL CHECK (version >= 1)` |
+| `last_action_id` | nullable `TEXT`; duplicate action prevention |
 | `created_at` | `TEXT NOT NULL` |
 | `updated_at` | `TEXT NOT NULL` |
 
@@ -168,8 +176,8 @@ Database checks support but do not replace those transition rules.
 | `content` | `TEXT NOT NULL CHECK (length(trim(content)) BETWEEN 1 AND 2000)` |
 | `request_id` | nullable `TEXT UNIQUE`; initiating user message only |
 | `request_purpose` | nullable `TEXT CHECK` in `introduction`, `factual_reflection`, `history_question` |
-| `request_status` | nullable `TEXT CHECK` in `pending`, `succeeded`, `failed`, `rejected`, `stale` |
-| `safe_error_code` | nullable `TEXT CHECK` in `missing_configuration`, `timeout`, `provider_failure`, `malformed_output`, `out_of_scope`, `stale_response`, `persistence_failure` |
+| `request_status` | nullable `TEXT CHECK` in `pending`, `succeeded`, `failed`, `stale` |
+| `safe_error_code` | nullable `TEXT CHECK` in `missing_configuration`, `authentication_failure`, `permission_failure`, `quota_failure`, `rate_limit_failure`, `timeout`, `provider_failure`, `malformed_response`, `stale_response`, `persistence_failure`, `database_failure` |
 | `created_at` | `TEXT NOT NULL` |
 | `updated_at` | `TEXT NOT NULL` |
 
@@ -206,13 +214,31 @@ Support is static frontend content and must not depend on the backend.
 | 10 | `POST /api/conversations/{conversation_id}/messages` | Persist initiating message, perform one bounded model attempt when configured, validate, and persist result/lifecycle |
 | 11 | `POST /api/demo/reset` | Atomically reset only the fixed fictional profile after explicit confirmation |
 
-The session patch requires `expected_version`, an action-specific client action
-ID, and only fields allowed for that action. It rejects stale versions, duplicate
+The session patch requires `expected_version`, a UUID `idempotency_key`, and only
+fields allowed for that action. It rejects stale versions, duplicate
 actions, invalid transitions, inconsistent timing, terminal-state replacement,
-and unknown fields with stable codes. The message POST uses `client_message_id`
-and `request_id` for idempotency. No polling/status route, provider proxy, generic
+and unknown fields with stable codes. The message POST uses a UUID
+`idempotency_key` as its stable request identity. No polling/status route,
+provider proxy, generic
 SQL endpoint, location endpoint, classifier endpoint, authentication endpoint,
 or separate reflection endpoint is planned.
+
+### Implemented structural model-input boundary
+
+The human-approved boundary accepts exactly `request_kind` (`introduction`,
+`reflection`, or `history_summary`), UUID `idempotency_key`, and `session_id` plus
+the documented Next-time setup enum as `reflection_choice` only for a reflection.
+It accepts no message, question, prompt, crisis text, or other arbitrary free-form
+model input. Unknown, missing, or mismatched fields receive HTTP 422 outcome
+`invalid_request`, make zero database writes, and make zero provider calls.
+
+There is deliberately no keyword matching, sentiment analysis, crisis
+classifier, or Gemini crisis detection. This boundary cannot detect crisis
+content. Static Support bypasses the backend and model entirely. The structured
+provider output is exactly `response_text`, `response_kind`, and limitation
+`Coursework prototype; not therapy or medical advice.` Malformed, unknown,
+blank, HTML/URL-bearing, mismatched, or prohibited-claim output is a safe
+`malformed_response` failure and is never stored as assistant text.
 
 ## Exact top-level state machine
 
