@@ -1,10 +1,16 @@
 <script setup>
-import { reactive, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { activityPresentations } from '../data/activities.js'
 import { api, newId } from '../services/api.js'
 
 const props = defineProps({ preferences: { type: Object, required: true } })
 const emit = defineEmits(['start-focus', 'perspective', 'history', 'guide', 'preferences'])
 const draft = reactive({ ...props.preferences })
+const selectedActivity = ref('different_leaf')
+const activityChoices = Object.entries(activityPresentations).map(([value, activity]) => ({
+  value,
+  label: activity.title,
+}))
 let saving = false
 
 watch(() => props.preferences, (value) => Object.assign(draft, value), { deep: true })
@@ -62,10 +68,29 @@ async function savePreferences() {
     <button
       class="button primary full-width"
       type="button"
-      @click="$emit('start-focus')"
+      @click="$emit('start-focus', selectedActivity)"
     >
       Start a Focus Garden
     </button>
+    <details class="activity-choice-card">
+      <summary>Choose a different activity (optional)</summary>
+      <label for="activity-choice">Focus Garden activity</label>
+      <select
+        id="activity-choice"
+        v-model="selectedActivity"
+      >
+        <option
+          v-for="choice in activityChoices"
+          :key="choice.value"
+          :value="choice.value"
+        >
+          {{ choice.label }}
+        </option>
+      </select>
+      <p class="caption">
+        The default starts in one action. Every activity uses visible choices and no required typing.
+      </p>
+    </details>
     <button
       class="button secondary full-width"
       type="button"

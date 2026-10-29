@@ -54,7 +54,7 @@ trace data.
 
 ## Verification evidence
 
-- Frontend: 2 files, 16 tests passed; ESLint passed with zero warnings; Vite
+- Frontend: 2 files, 17 tests passed; ESLint passed with zero warnings; Vite
   production build passed with 22 modules transformed.
 - Backend regression: 52 tests passed using temporary databases; two known
   dependency warnings remained. `pip check` reported no broken requirements.
@@ -73,11 +73,13 @@ trace data.
 
 ## Bounded AutoLoop corrections
 
-Two correction cycles were used. The first applied existing ESLint formatting
+Three correction cycles were used. The first applied existing ESLint formatting
 rules and corrected test setup expectations without weakening assertions. The
 second fixed a live-browser-discovered lifecycle gap: leaving Perspective after
 a missing-configuration/continue-without-model path now terminalizes the session
-before History or Next-Step Seed, so History never mislabels it as active.
+before History or Next-Step Seed, so History never mislabels it as active. The
+third acceptance audit made all seven implemented activity renderers reachable
+through an optional chooser while preserving the one-action default start.
 
 ## Remaining work
 

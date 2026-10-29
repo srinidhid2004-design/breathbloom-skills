@@ -55,7 +55,7 @@ were inspected without page-level horizontal overflow or browser console errors.
 
 ## Observed verification
 
-- Frontend: **2 files, 16 tests passed**.
+- Frontend: **2 files, 17 tests passed**.
 - ESLint: passed with zero warnings.
 - Vite production build: passed; 22 modules transformed.
 - Backend regression: **52 passed**; two known non-failing dependency warnings.
@@ -63,9 +63,10 @@ were inspected without page-level horizontal overflow or browser console errors.
 - Browser: one-tap Focus start, neutral retry, Support interruption/return,
   missing-Gemini preservation, continue without Gemini, and factual terminal
   Perspective history observed against a unique disposable database.
-- Bounded AutoLoop: 2 of 5 correction cycles used. The second fixed a live-
+- Bounded AutoLoop: 3 of 5 correction cycles used. The second fixed a live-
   browser-discovered Perspective session that otherwise remained active when
-  navigating away.
+  navigating away; the third made all seven activity renderers explicitly
+  reachable without changing the default one-action start.
 
 ## Safety and state
 

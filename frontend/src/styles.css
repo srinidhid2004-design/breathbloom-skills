@@ -67,7 +67,7 @@ main { width: 100%; }
 .text-button { min-height: 44px; padding: .4rem; border: 0; background: transparent; color: var(--water); text-decoration: underline; }
 .entry-links { display: flex; justify-content: center; gap: .75rem; }
 
-.feature-card, .preferences-card, .activity-board, .seed-builder, .preview-card, .question-card,
+.feature-card, .preferences-card, .activity-choice-card, .activity-board, .seed-builder, .preview-card, .question-card,
 .answer-card, .trace-card, .history-card, .saved-text-card, .empty-card, .confirm-card, .lens-card,
 .request-preview, .custom-entry {
   margin: 1rem 0; padding: 1rem; border: 2px solid var(--sage); border-radius: var(--radius); background: var(--mist);
@@ -76,7 +76,7 @@ main { width: 100%; }
 .focus-tile { min-height: 94px; display: flex; align-items: center; gap: 1rem; padding: .9rem; border: 2px solid var(--sage); border-radius: 12px; background: white; }
 .focus-tile small, .option-card small { display: block; margin-top: .25rem; color: var(--water); font-size: .88rem; font-weight: 500; }
 .leaf-mark { color: var(--leaf); font-size: 2rem; letter-spacing: -.4rem; }
-.preferences-card summary, .custom-entry summary, .request-preview summary, .lens-card summary, .trace-card summary { min-height: 44px; display: flex; align-items: center; font-weight: 750; }
+.preferences-card summary, .activity-choice-card summary, .custom-entry summary, .request-preview summary, .lens-card summary, .trace-card summary { min-height: 44px; display: flex; align-items: center; font-weight: 750; }
 fieldset { margin: .75rem 0; border: 1px solid var(--sage); border-radius: 8px; }
 label { display: block; margin: .7rem 0; font-weight: 700; }
 label:has(input[type="radio"]), label:has(input[type="checkbox"]) { min-height: 44px; display: flex; align-items: center; gap: .6rem; font-weight: 500; }

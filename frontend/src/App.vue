@@ -14,6 +14,7 @@ const view = ref('entry')
 const supportOpen = ref(false)
 const supportOpener = ref(null)
 const focusGarden = ref(null)
+const focusActivity = ref('different_leaf')
 const seedSessionId = ref(null)
 const shellNotice = ref('')
 const preferences = ref({ motion_mode: 'standard', guidance_level: 'standard', difficulty: 'standard', remember_preferences: false, version: 1 })
@@ -25,6 +26,11 @@ async function navigate(next) {
   view.value = next
   await nextTick()
   document.querySelector('[data-view-heading]')?.focus()
+}
+
+function startFocus(activityType = 'different_leaf') {
+  focusActivity.value = activityType
+  navigate('focus-ready')
 }
 
 async function openSupport() {
@@ -86,7 +92,7 @@ onMounted(async () => {
       <EntryView
         v-if="view === 'entry'"
         :preferences="preferences"
-        @start-focus="navigate('focus-ready')"
+        @start-focus="startFocus"
         @perspective="navigate('perspective-entry')"
         @history="navigate('history')"
         @guide="navigate('guide-entry')"
@@ -96,6 +102,7 @@ onMounted(async () => {
         v-else-if="focusStates.has(view)"
         ref="focusGarden"
         :preferences="preferences"
+        :activity-type="focusActivity"
         @state="view = $event"
         @perspective="navigate('perspective-entry')"
         @history="navigate('history')"

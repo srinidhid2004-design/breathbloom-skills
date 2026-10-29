@@ -3,7 +3,10 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { activityPresentations } from '../data/activities.js'
 import { api, newId, utcNow } from '../services/api.js'
 
-const props = defineProps({ preferences: { type: Object, required: true } })
+const props = defineProps({
+  preferences: { type: Object, required: true },
+  activityType: { type: String, default: 'different_leaf' },
+})
 const emit = defineEmits(['state', 'perspective', 'history', 'entry'])
 const state = ref('focus-ready')
 const catalog = ref([])
@@ -37,9 +40,11 @@ async function start() {
   try {
     const catalogResult = await api.focusActivities()
     catalog.value = catalogResult.activities
+    const requestedIndex = catalog.value.findIndex((item) => item.activity_type === props.activityType)
+    activityIndex.value = requestedIndex >= 0 ? requestedIndex : 0
     startedAt.value = Date.now()
     const result = await api.createSession({
-      client_session_id: newId(), activity_type: catalog.value[0].activity_type,
+      client_session_id: newId(), activity_type: active.value.activity_type,
       started_at: utcNow(), difficulty: props.preferences.difficulty,
       motion_mode: props.preferences.motion_mode, guidance_level: props.preferences.guidance_level,
     })

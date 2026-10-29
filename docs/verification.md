@@ -721,7 +721,7 @@ these software checks.
 
 | Check | Expected | Observed |
 | --- | --- | --- |
-| Focused and complete Vitest | Contract and state behavior pass | 2 files, **16 passed** |
+| Focused and complete Vitest | Contract and state behavior pass | 2 files, **17 passed** |
 | ESLint | Zero warnings/errors | Passed with `--max-warnings=0` |
 | Vite production build | Successful bundle | Passed; 22 modules transformed |
 | Backend regression | Existing contract remains green | **52 passed**, two known dependency warnings |
@@ -760,8 +760,10 @@ iframes and was deleted after inspection.
 
 ### AutoLoop and limitations
 
-Two of five allowed correction cycles were used: formatting/test-fixture repairs,
-then the Perspective terminal-state correction. Assertions were not weakened.
+Three of five allowed correction cycles were used: formatting/test-fixture
+repairs, the Perspective terminal-state correction, and an acceptance-audit
+repair that made all seven implemented activity renderers reachable through an
+optional chooser without adding input to the default start. Assertions were not weakened.
 The current evidence does not include a real key, provider quota/account
 behavior, a successful generated alternative, a successful two-call grounded
 answer, or a final manual Support-source recheck. It is software evidence for a

@@ -44,7 +44,15 @@ function installApi({ noMotion = false, modelFailure = false, populated = false 
     const body = options.body ? JSON.parse(options.body) : null
     if (path.endsWith('/preferences') && method === 'GET') return json({ outcome: 'success', preferences: { ...preferences, motion_mode: noMotion ? 'no_motion' : 'standard' } })
     if (path.endsWith('/preferences') && method === 'PUT') return json({ outcome: 'success', preferences: { ...preferences, ...body, version: 2 } })
-    if (path.endsWith('/focus-activities')) return json({ outcome: 'success', activities: [{ activity_type: 'different_leaf', label: 'Different leaf', instruction: 'Choose the leaf with a different shape.' }], controls: ['Show me', 'Skip this', 'Stop', 'Support'], notice: 'No score.' })
+    if (path.endsWith('/focus-activities')) return json({
+      outcome: 'success',
+      activities: [
+        'different_leaf', 'ripple_path', 'flower_match', 'flower_change',
+        'petal_sequence', 'clue_search', 'garden_path',
+      ].map((activity_type) => ({ activity_type, label: activity_type, instruction: 'Choose one visible option.' })),
+      controls: ['Show me', 'Skip this', 'Stop', 'Support'],
+      notice: 'No score.',
+    })
     if (path.endsWith('/activity-sessions') && method === 'POST') return json({ outcome: 'success', session: { ...session, activity_type: body.activity_type } }, 201)
     if (path.includes('/events')) return json({ outcome: 'success', event: { event_id: 'event-1' } }, 201)
     if (path.includes('/activity-sessions/') && method === 'PATCH') return json({ outcome: 'success', session: { ...session, status: body.action === 'complete' ? 'completed' : body.action === 'interrupt' ? 'interrupted' : body.action === 'skip' ? 'skipped' : 'stopped', duration_ms: body.duration_ms, version: 2 } })
@@ -105,6 +113,23 @@ describe('FocusBloom Vue experience', () => {
     expect(wrapper.get('[data-state="focus-completed"]').text()).toContain('Completed')
     const patches = globalThis.fetch.mock.calls.filter(([, request]) => request?.method === 'PATCH')
     expect(patches).toHaveLength(1)
+  })
+
+  it('makes every approved no-typing activity reachable while retaining the default start', async () => {
+    const allActivities = [
+      'different_leaf', 'ripple_path', 'flower_match', 'flower_change',
+      'petal_sequence', 'clue_search', 'garden_path',
+    ]
+    const wrapper = mount(App)
+    await flushPromises()
+    const select = wrapper.get('#activity-choice')
+    expect(select.findAll('option').map((option) => option.element.value)).toEqual(allActivities)
+    await select.setValue('ripple_path')
+    await wrapper.get('.entry-view .primary').trigger('click')
+    await flushPromises()
+    expect(wrapper.get('[data-state="focus-active"] h1').text()).toBe('Follow the ripple path')
+    const createCall = globalThis.fetch.mock.calls.find(([url, request]) => String(url).endsWith('/activity-sessions') && request?.method === 'POST')
+    expect(JSON.parse(createCall[1].body).activity_type).toBe('ripple_path')
   })
 
   it('renders no-motion with identical controls and interrupts before opening Support', async () => {

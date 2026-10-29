@@ -258,7 +258,7 @@ audio capability, or real-distress testing was created or performed.
   the approved public API intentionally withholds them.
 - Static U.S. Support rendered from reviewed project wording without calling the
   API and remained available during active and failed states.
-- Frontend checks reported **16 passed**, zero-warning lint, and a successful
+- Frontend checks reported **17 passed**, zero-warning lint, and a successful
   production build. The unchanged backend reported **52 passed** and a clean
   `pip check`.
 - Automated browser inspection observed exact 390×844 and 1024×768 running
