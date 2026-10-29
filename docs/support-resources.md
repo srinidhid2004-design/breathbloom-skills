@@ -1,13 +1,13 @@
-# BreathBloom Support Resources
+# FocusBloom Support Resources
 
 ## Approved boundary
 
-BreathBloom uses a fixed **United States national fictional-demo scope**. It does
+FocusBloom uses a fixed **United States national fictional-demo scope**. It does
 not request or infer a real user's location or condition. Support content is
 static, reviewed application content and is not selected from messages, clicks,
 timing, completion, geolocation, a classifier, or model output.
 
-BreathBloom is a coursework prototype. It is not an emergency service, is not
+FocusBloom is a coursework prototype. It is not an emergency service, is not
 monitored, cannot contact help for the user, and does not diagnose, provide
 therapy or medical advice, or determine whether someone is in crisis.
 
@@ -15,7 +15,7 @@ therapy or medical advice, or determine whether someone is in crisis.
 
 > **Support information — United States demo**
 >
-> BreathBloom is a coursework prototype for fictional scenarios. It is not an
+> FocusBloom is a coursework prototype for fictional scenarios. It is not an
 > emergency service, is not monitored, and cannot contact help for you. This page
 > does not use your location or activity to choose resources.
 >
@@ -34,9 +34,9 @@ therapy or medical advice, or determine whether someone is in crisis.
 > FindTreatment.gov lists mental-health and substance-use treatment facilities in
 > the United States and its territories. It is not an emergency service.
 >
-> **About BreathBloom**
+> **About FocusBloom**
 >
-> BreathBloom does not diagnose, provide therapy or medical advice, detect
+> FocusBloom does not diagnose, provide therapy or medical advice, detect
 > distress, or notify another person.
 >
 > **Return**
@@ -58,39 +58,44 @@ The three purposes must remain visually and semantically separate:
 
 ## Official sources
 
-Access date for every source: **October 27, 2026**.
+Manual access date for every source: **October 29, 2026**. Verifier: Codex using
+a normal browser under the human-authorized publication checkpoint. Next review
+due by **January 27, 2027**, or sooner after a redirect or material change.
 
 | Exact page title | Organization | Direct URL | Purpose | Verification result |
 | --- | --- | --- | --- | --- |
-| Find Support \| SAMHSA | Substance Abuse and Mental Health Services Administration, U.S. Department of Health and Human Services | https://www.samhsa.gov/find-support | Official starting point for support, including 988 and treatment-information routes | Current official SAMHSA result and service summary confirmed. Automated direct-page retrieval returned an access-control response, so the page must be manually reopened before publication. |
-| National 911 Program \| 911.gov | National 911 Program, National Highway Traffic Safety Administration Office of Emergency Medical Services, U.S. Department of Transportation | https://www.911.gov/ | Official federal 911 information and direction to call 911 for an emergency | Direct page opened successfully and identified the maintaining federal program and emergency purpose. |
-| 988 Suicide & Crisis Lifeline \| SAMHSA | Substance Abuse and Mental Health Services Administration, U.S. Department of Health and Human Services | https://www.samhsa.gov/mental-health/988 | Official federal information about calling, texting, or chatting with 988 | Current official SAMHSA result and 988 call/text/chat summary confirmed. Automated direct-page retrieval returned an access-control response, so the page must be manually reopened before publication. |
-| 988 Lifeline | 988 Suicide & Crisis Lifeline | https://chat.988lifeline.org/ | Official 988 chat entry point | The official `https://988lifeline.org/chat/` entry opened and redirected to this HTTPS chat URL. No chat was started. |
-| FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality | https://findtreatment.gov/ | Non-emergency locator for mental-health and substance-use treatment facilities in the United States and its territories | Direct official page opened successfully. No search or location was submitted. |
-| FAQs - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality | https://findtreatment.gov/faqs | Explains the locator's scope and limits, including that it does not recommend a facility for an individual situation | Direct official page opened successfully and current FAQ content was confirmed. |
-| About - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality | https://findtreatment.gov/about | Identifies the responsible SAMHSA program and the locator's purpose | Direct official page opened successfully and the official ownership/purpose page was confirmed. |
+| Find Support \| SAMHSA | Substance Abuse and Mental Health Services Administration, U.S. Department of Health and Human Services | https://www.samhsa.gov/find-support | Official starting point for support, including 988 and treatment-information routes | Direct HTTPS page opened manually with no redirect. The official U.S. government/SAMHSA identity, support purpose, 988 routes, and treatment-information route were visible. |
+| National 911 Program \| 911.gov | National 911 Program, National Highway Traffic Safety Administration Office of Emergency Medical Services, U.S. Department of Transportation | https://www.911.gov/ | Official federal 911 information and direction to call 911 for an emergency | Direct HTTPS page opened manually with no redirect. It identified NHTSA's National 911 Program and stated that emergency assistance is not available through the website and to call 911 immediately. |
+| 988 Suicide & Crisis Lifeline \| SAMHSA | Substance Abuse and Mental Health Services Administration, U.S. Department of Health and Human Services | https://www.samhsa.gov/mental-health/988 | Official federal information about calling, texting, or chatting with 988 | Direct HTTPS page opened manually with no redirect. The official SAMHSA/HHS identity and 24/7 call, text, and chat purpose were visible. |
+| 988 Lifeline Pre Conversation Survey | 988 Suicide & Crisis Lifeline, with SAMHSA and Vibrant Emotional Health identified in the footer | https://chat.988lifeline.org/ | Official 988 chat entry point | Direct HTTPS destination opened manually. The official `https://988lifeline.org/chat/` entry redirected to this URL. The survey and Start a Chat control were visible, but no cookie choice, field, or chat was submitted. |
+| Home - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality, U.S. Department of Health and Human Services | https://findtreatment.gov/ | Non-emergency locator for mental-health and substance-use treatment facilities in the United States and its territories | Direct HTTPS page opened manually with no redirect. Official HHS/SAMHSA identity and locator purpose were visible; no search or location was submitted. |
+| FAQs - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality, U.S. Department of Health and Human Services | https://findtreatment.gov/faqs | Explains the locator's scope and limits, including that it does not recommend a facility for an individual situation | Direct HTTPS page opened manually with no redirect. It confirmed that the resource cannot recommend or endorse an individual facility or treatment type. |
+| About - FindTreatment.gov | SAMHSA Center for Behavioral Health Statistics and Quality, U.S. Department of Health and Human Services | https://findtreatment.gov/about | Identifies the responsible SAMHSA program and the locator's purpose | Direct HTTPS page opened manually with no redirect. It identified CBHSQ/SAMHSA ownership, locator purpose, and the non-referral/non-endorsement limitation. |
 
 These checks verify source identity, URL, and current stated purpose only. They do
-not verify application behavior and do not clinically validate BreathBloom.
+not verify application behavior and do not clinically validate FocusBloom.
+The categories remained distinct: 911 for immediate danger or medical emergency,
+988 for crisis support, and FindTreatment.gov for non-emergency treatment-location
+information. No call, text, chat, search, location, or personal-data submission
+occurred during the review.
 
-## Planned route behavior
+## Implemented route behavior
 
-- Support information remains directly available from entry, setup, loading,
-  model failure, deterministic fallback, ready, exercise, paused, stopped,
-  completed, interrupted, Next-time setup, and history-question/history states.
+- Support information remains directly available from entry, every Focus Garden
+  state, every Perspective Studio state, Next-Step Seed, every History Garden and
+  Garden Guide state, loading, no-match, query-rejected, and model-failed states.
 - The static wording and displayed numbers must render without FastAPI, SQLite,
   a runtime model/provider, a classifier, geolocation, or a successful network
   request.
-- Before or after a practice, **Return** restores the preceding non-exercise view
-  without changing it.
-- Opening Support during an exercise immediately pauses local timing, freezes the
-  current phase offset and completed-cycle count, and attempts an honest pause
-  save without making the pause depend on that save.
-- During a practice the return control is labeled **Return to paused practice**.
-- Returning shows the paused state and never resumes automatically. Only
-  **Resume practice** or **Stop** may continue the flow.
+- **Return** restores the preceding view without changing activity, entry, saved
+  text, or provider status.
+- Opening Support during an active Focus Garden activity suspends local work and
+  clears pending timers/callbacks without making Support depend on a save.
+- During an activity, returning restores the explicitly suspended/stopped view;
+  no activity or request resumes automatically. Any resumable-activity behavior
+  must be separately decided and verified before implementation.
 - A history question outside the approved factual allow-list receives the neutral
-  deterministic scope message and retains a visible Support link. BreathBloom
+  deterministic scope message and retains a visible Support link. FocusBloom
   does not claim why the question was out of scope or infer the user's condition.
 
 ## Manual re-verification procedure

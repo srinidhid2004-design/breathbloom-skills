@@ -1,68 +1,153 @@
-# AI Use Disclosure
+# AI use record
 
-## Current disclosure
+## Boundary
 
-- **Project:** BreathBloom
-- **Current milestone:** Completed Assignment 3.1 research/design submission
-- **Tools used:** OpenAI Codex and the official Figma MCP integration
-- **Specific model identifier:** A more specific Codex model identifier is not
-  exposed in the task or project settings available for this record, so none is
-  inferred or invented.
-- **Role:** Brainstorming, requirements synthesis, proposal drafting, official
-  source verification, project planning, Figma design creation/review, static
-  design validation, publication preparation, and documentation review.
+AI tools assisted with research synthesis, architecture planning, editable Figma
+construction, safe scaffold branding, tests, and documentation. Human-approved
+decisions define the active FocusBloom scope. AI output is not evidence of
+clinical safety, effectiveness, user benefit, or crisis detection. Only fictional
+examples and credential-free mocks are permitted.
 
-No runtime conversational provider or model has been selected. No provider API
-call, application code generation, dependency installation, database operation,
-or live application testing has occurred. Figma was used only for editable
-static design evidence; it did not run or test application behavior.
+## Tools and roles
 
-Human decisions selected the BreathBloom name, paced 4–6 breathing skill,
-water-garden design direction, exclusion of voice and audio, transparent
-personalization approach, and coursework/safety boundaries. The human also
-approved the Part 3.1 proposal with the data, API, RAG, Support, timing,
-accessibility, and Figma refinements recorded in the decision file. Codex helped
-draft and reconcile the proposal and checked the named official public pages; it
-did not replace human approval or clinically validate the product.
+- **OpenAI Codex:** inspected the repository, maintained project records, applied
+  basic branding, designed the proposed state/data/API/model contracts, ran local
+  checks, and managed the authorized feature-branch publication. It did not make
+  clinical decisions.
+- **Figma integration:** inspected the existing editable design, reused the water-
+  garden variables/styles, created the new FocusBloom section and editable frames,
+  and ran programmatic structural checks. Browser control was used only for the
+  file-level rename that the integration did not expose.
+- **Internet research/search:** opened the eight named primary research sources
+  and recorded limited findings. Studies were not treated as proof of FocusBloom
+  outcomes.
+- **Google Gemini (`gemini-3.5-flash-lite`):** is the fixed backend adapter model
+  for two bounded purposes. Version-2 tests used an injected fake gateway only;
+  no live request or real credential was used.
+- **Git/GitHub:** verified branch/history state, retained the existing repository,
+  and published only the authorized feature-branch pivot. No second repository,
+  history rewrite, force push, or `main` change is permitted.
 
-## Activity log
+No voice, audio, microphone, speech, biometric, geolocation, participant, or
+private third-party tool/data was used.
 
-| Date | Tool/model | Role | Artifact or decision | Human review | Evidence |
-| --- | --- | --- | --- | --- | --- |
-| 2026-10-27 | OpenAI Codex; specific model identifier unavailable | Requirements synthesis and documentation drafting/review | Foundation and continuity documents; no application implementation | Approved project decisions were supplied by the human and retained as constraints | `README.md`, `AGENTS.md`, `docs/design-pipeline.md`, `docs/verification.md`, and `prompts/01-project-foundation.md` |
-| 2026-10-27 | OpenAI Codex; specific model identifier unavailable | AI-assisted research/design proposal drafting, official-source verification, and approved-decision documentation | Assignment 3.1 wording, Support plan, timing/state behavior, five-record data plan, simplified API/RAG scope, accessibility rules, and Figma comparison plan; no implementation | Human approved the proposal subject to explicit refinements, including consolidation from seven to five records and removal of separate reflection/request-attempt records | `docs/part-3-1-decisions.md`, `docs/support-resources.md`, `docs/verification.md`, and `prompts/02-part-3-1-research-decisions.md` |
-| 2026-10-27 | OpenAI Codex with official Figma MCP; specific Codex model identifier unavailable | Created two editable static design directions, expanded the selected direction, inspected metadata/screenshots, and repaired visual defects | Direction A/B comparison, human-selected Direction A, 13 selected reference screens, overview, annotations, and static accessibility/contrast evidence | The human explicitly selected Direction A and supplied the rationale; Codex retained A's atmosphere while incorporating named clarity cues from B | Figma file and `prompts/03-direction-a-selection-and-figma-reference.md` |
-| 2026-10-27 | OpenAI Codex; Git 2.45.1; GitHub API and web interface | Prepared the redacted Part 3.1 report/evidence package, audited content, and performed the authorized publication workflow | Public repository, assessed milestone commit, final documentation commit, and public-link checks; no application implementation | The human explicitly authorized repository creation, commits, publication, and read-only public verification | `report.md`, `docs/evidence.md`, `docs/verification.md`, and `prompts/04-part-3-1-submission-and-publication.md` |
+## Human-approved product decisions
 
-Add later dated entries for material AI-assisted changes, including the tool or
-model identifier when it is actually available, its role, the affected artifact
-or decision, the human review performed, and the supporting evidence.
+- Rename the active product to FocusBloom and preserve historical BreathBloom
+  evidence.
+- Make Focus Garden the primary no-typing experience.
+- Use Perspective Studio's five-step one-minute cognitive reframe as the formal
+  course skill, with fictional-example and optional fictional-observer paths.
+- Keep Next-Step Seed optional and user authored.
+- Keep History Garden factual and unscored.
+- Bound Gemini to perspective alternatives and read-only factual history RAG.
+- Keep Support static and independent.
+- Retain the local folder name for tool/project continuity while renaming the
+  public repository.
 
-## Failed or revised approaches
+## Figma construction and validation
 
-The initial AI-assisted proposal separated session reflections and request
-attempts into their own records. Human review replaced that seven-record design
-with five planned record types: Next-time setup is nullable session data, and a
-bounded model request's lifecycle belongs to its initiating user message. The API
-proposal was also consolidated around one validated session-action endpoint, and
-an asynchronous request-status endpoint was removed unless later evidence shows
-it is needed. These are design revisions, not implementation failures; application
-implementation has not started.
+The integration reused existing editable visual foundations and created section
+`05 / FocusBloom Part 3.2 Pivot`, 16 required product frames, three reusable
+components, and a selected overview. It checked dimensions, overflow, fonts,
+placeholder copy, control sizes, primary-action count, and Support availability.
+A screenshot review found an overview design note overlapping the legend; the
+note positions were revised and the screenshot was reviewed again.
 
-The first Figma connection attempt later expired and could not access the design.
-After the human reauthenticated the integration, a read-only account/file check
-succeeded and the design work continued. A later visual review found malformed
-bloom geometry and clipped or overlapping completion/Support text; the affected
-editable vectors and spacing were revised, then the structural and visual checks
-were repeated. These are recorded as revised approaches rather than hidden as
-successful first attempts.
+One early scripted construction approach tried to reuse component-property keys
+and ellipse-node construction assumptions that were not valid for the available
+Figma Plugin API context. The approach was revised to set supported node
+properties directly and create fresh editable shape nodes. The rejected approach
+was not kept in the design. This is a tooling correction, not a design outcome.
 
-## Disclosure and redaction rules
+Static Figma validation does not prove keyboard behavior, reflow, persistence,
+provider behavior, or runtime accessibility.
 
-- Record AI assistance honestly and distinguish planning, mock evidence, and
-  observed live behavior.
-- Do not include credentials, secret values, personal information, research
-  participant information, or private third-party content.
-- Do not store raw chat exports. Keep only curated, relevant, redacted evidence.
-- Do not invent model identifiers, provider selections, tests, or outcomes.
-- Link evidence only when it is safe and appropriate for coursework review.
+## Research assistance and limits
+
+AI summarized visual-search, digital-nature, reappraisal/distancing,
+third-person self-talk, implementation-intention, and affect-labeling research.
+The active pivot record links the primary sources and states their limitations.
+The research supports questions and design rationale, not claims that FocusBloom
+calms, treats, restores attention, or improves a user.
+
+## Runtime model contract (implemented and mocked)
+
+Perspective alternatives use at most one request, strict bounded JSON, no advice,
+no automatic save, zero retries, and no provider/model fallback. History RAG uses
+at most two requests: one SQL proposal followed by one grounded answer only when
+validated rows exist. The backend validates a deliberately small SELECT grammar,
+uses a read-only URI, default-deny authorizer, bound execution/payloads, snapshot
+check, and row-reference validation, and rejects mutations before execution.
+Application-owned fixed status messages handle missing configuration or failure
+without fabricating model content.
+
+The first complete version-2 test cycle passed, but review found two boundaries
+that were correctable before publication: reused idempotency keys needed to
+conflict when content differed, and the SQL WHERE grammar was initially broader
+than necessary. The implementation was revised to compare stored input hashes/
+content and to accept only allow-listed bound comparison predicates. The full
+suite passed again. This is mocked adapter evidence, not a live-provider result.
+
+## Evidence integrity
+
+Prompt records distinguish requested work from observed results. The submitted
+Part 3.1 report and prompts 01–06 are unchanged. Tests, Figma checks, Git checks,
+and repository-redirect checks are recorded only after observation. A mock is
+never described as a live call. Version-2 backend behavior is described as
+implemented only where temporary-database and fake-gateway tests observed it;
+frontend behavior is implemented and locally verified. Separately authorized
+Prompt 10 checks distinguish tiny diagnostics from the successful bounded live
+Perspective and Garden Guide flows; failed attempts remain failed evidence and
+are not relabeled as success.
+
+## Prompt 09 frontend implementation
+
+Codex used the mandatory Figma design-to-code workflow for read-only inspection
+of the approved overview and representative narrow/wide frames, then translated
+the static React/Tailwind-like context into the repository's Vue 3 Composition
+API and plain CSS. No Figma content was modified and no temporary Figma asset URL
+was used at runtime.
+
+Codex created focused Vue components, a normalized API service, a stale-request
+guard, deterministic visual-activity data, and contract/UI tests. Automated
+browser control exercised the running app only against a disposable temporary
+database and missing-key configuration. The browser produced no warning/error
+logs. No live Gemini request or real credential was used.
+
+The first implementation pass passed the build but exposed existing ESLint
+formatting expectations and two test setup assumptions; formatting and test
+fixtures were corrected. A later live browser pass exposed an active Perspective
+session when the user left after continuing without Gemini. The lifecycle was
+revised to persist stopped or completed status before navigation, and the full
+frontend checks passed again. These were tooling/runtime corrections, not claims
+of clinical benefit.
+
+## Prompt 10 bounded live verification
+
+Codex used the running local interface, read-only database inspection, and a
+fixed fictional example to verify the integrated flow. Two full Perspective
+attempts first failed safely. One exact diagnostic isolated an unsupported
+provider-schema keyword; the adapter translated only that single-value `const`
+to the equivalent supported `enum[value]`, while Pydantic validation remained
+unchanged. The corrected Perspective request succeeded once and saved nothing
+automatically.
+
+The first Garden query proposal was safely rejected. One bounded diagnostic then
+showed that the generation instruction and existing validator grammar were
+misaligned. Only the instruction changed. A fresh UI submission used exactly two
+requests, retrieved two bounded read-only rows, and returned a validated answer
+with references 1 and 2. No retry or fallback occurred. The human explicitly
+selected the artifact deletion that left the Seed intact. Provider requests,
+mocked tests, application actions, and diagnostics are counted separately in the
+verification and evidence records.
+
+## Prompt 11 final report and publication
+
+Codex drafted the Canvas-ready Assignment 3.2 report, curated public-safe links,
+manually reviewed all seven official Support destinations in a normal browser,
+and ran the full backend/frontend and repository audits. The manual source review
+did not start a chat, call, text, treatment search, or location/personal-data
+submission. Final regression used only disposable temporary databases and made
+no Gemini request. The human authorized the publication and merge workflow;
+Canvas submission remains manual.

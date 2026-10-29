@@ -4,9 +4,19 @@
 
 This directory keeps concise evidence of significant project instructions,
 decisions, acceptance criteria, and observed results. It supports later review of
-how AI-assisted work affected BreathBloom without storing full conversations.
-The current project milestone is the **completed and published Assignment 3.1 —
-Research and Design submission**; there is no running application.
+how AI-assisted work affected the project without storing full conversations.
+The active milestone is the **FocusBloom Assignment 3.2 final report and
+publication**. The five-table/11-route BreathBloom backend is retained only in
+Git history and historical evidence. The nine-table/22-operation FocusBloom
+backend and complete Vue interface are implemented. A narrow provider-schema
+correction enabled successful live Perspective generation and explicit saves;
+an instruction-only alignment then enabled the unchanged validator, bounded
+read-only Garden retrieval, grounded answer, targeted deletion, and final
+integrated verification.
+
+The Canvas-ready report and final publication record preserve the distinction
+between automated tests, bounded live calls, manual source review, and public
+link verification.
 
 ## Redaction and safety rules
 
@@ -28,9 +38,16 @@ Research and Design submission**; there is no running application.
 | [`02-part-3-1-research-decisions.md`](02-part-3-1-research-decisions.md) | 2026-10-27 | Record the human-approved Assignment 3.1 research/design decisions and refinements without implementation | Exact decisions, official Support sources, five-record/API/RAG plans, accessibility rules, and the next Figma comparison were documented; no application, provider, database, Git, or Figma work occurred |
 | [`03-direction-a-selection-and-figma-reference.md`](03-direction-a-selection-and-figma-reference.md) | 2026-10-27 | Record the human selection of Direction A and expand it into an editable implementation-ready static Figma reference | Direction A selection, rationale, 13 selected reference frames, preserved comparison evidence, accessibility/layout validation, targeted visual repairs, and runtime limitations were documented; no application, Git, dependency, database, credential, or provider work occurred |
 | [`04-part-3-1-submission-and-publication.md`](04-part-3-1-submission-and-publication.md) | 2026-10-27 | Create, audit, commit, publish, and publicly verify the self-contained Assignment 3.1 submission | `report.md`, curated evidence, publication verification, and public Git history were created without starting Part 3.2 implementation |
+| [`05-part-3-2-foundation.md`](05-part-3-2-foundation.md) | 2026-10-27 | Verify the published handoff, finalize Part 3.2 architecture/model decisions, create and test the minimal Vue/FastAPI foundation, and publish it on the feature branch | Exact five-table/11-route/state plan, safe Google Gemini configuration, pinned foundations, passing local checks, and updated continuity records; no database, key, live provider call, or full selected interface |
+| [`06-part-3-2-backend.md`](06-part-3-2-backend.md) | 2026-10-27 | Implement, verify, audit, and publish the complete five-table backend and structurally bounded optional Gemini path | Exact 11-route API, deterministic session validation, SQLite persistence/reset, mocked success/failure matrix, and structural crisis-input boundary; no live provider, real credential, runtime database, frontend, or Figma change |
+| [`07-focusbloom-design-pivot.md`](07-focusbloom-design-pivot.md) | 2026-10-28 | Preserve Part 3.1 evidence while pivoting the active product, design, architecture, data, API, model, and handoff to FocusBloom | Editable FocusBloom Figma evolution, exact version-2 plan, low-input boundaries, basic scaffold branding, verification, and feature-branch publication; no full implementation, database, key, or live provider call |
+| [`08-focusbloom-version-2-backend.md`](08-focusbloom-version-2-backend.md) | 2026-10-28 | Replace the obsolete active backend with the complete contracted FocusBloom version-2 backend using only temporary databases and mocked Gemini | Nine tables, 22 API operations, activity/artifact/seed/history persistence, one-call Perspective, two-call read-only RAG, 52 passing tests, and updated continuity records; no runtime database, real key, live call, frontend, or Figma change |
+| [`09-focusbloom-vue-experience.md`](09-focusbloom-vue-experience.md) | 2026-10-28 | Implement, verify, audit, and publish the complete 17-state Vue experience from the approved Figma references | Low-input Focus Garden, Perspective, Seed, History, Garden Guide, independent Support, exact API service, 17 frontend tests, and exact viewport browser checks; no live provider, real key, project database, or Figma change |
+| [`10-integrated-live-verification.md`](10-integrated-live-verification.md) | 2026-10-29 | Run bounded integrated regression, diagnose narrow provider/instruction incompatibilities, and verify the complete live application flow | The equivalent enum correction enabled Perspective; an instruction-only SQL-grammar alignment preserved the validator and enabled two-request grounded Garden retrieval, artifact deletion with Seed retention, Support/focus checks, and clean final suites |
+| [`11-final-assignment-report.md`](11-final-assignment-report.md) | 2026-10-29 | Create the Canvas-ready Part 3.2 report, reverify official Support sources, run final regression, and publish through the authorized feature/merge workflow | Seven official sources manually confirmed; complete suites and repository audits passed; final report and continuity records prepared without provider or runtime-database access |
 
 ## Future numbering
 
 Use two-digit sequential names with a short purpose, such as
-`05-part-3-2-foundation-plan.md`. Add one index row per curated prompt record.
+`12-next-approved-checkpoint.md`. Add one index row per curated prompt record.
 Prompt records are curated evidence, not full chat exports.
