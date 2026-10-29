@@ -702,3 +702,67 @@ reflow, Standard/No-motion parity, stale browser responses, static Support
 rendering, end-to-end UI/API/SQLite agreement, account quota, or a live Gemini
 call. No clinical, safety, attention, or effectiveness conclusion follows from
 these software checks.
+
+## FocusBloom Vue verification — October 28, 2026
+
+### Starting gate and design inspection
+
+- Repository, branch, clean local/remote feature SHA
+  `875eb2d160e0a1410a6cf39a73055ad3457cf471`, and unchanged local/remote
+  `main` SHA `9f7a09d5ceb4fc50520e26ad6140103de3cc903e` matched the authorized gate.
+- `backend/.env` and `data/app.sqlite3` were absent and `data/` was empty. No
+  credential or live-provider request was used.
+- The Figma design-to-code workflow inspected overview `27:719` plus entry,
+  Focus/No-motion/completed, Perspective/evidence/alternatives/Lens, Seed,
+  History, Garden Guide, Support, and wide-composite references. The file had no
+  subscribed external library. No Figma write tool was called.
+
+### Automated frontend checks
+
+| Check | Expected | Observed |
+| --- | --- | --- |
+| Focused and complete Vitest | Contract and state behavior pass | 2 files, **16 passed** |
+| ESLint | Zero warnings/errors | Passed with `--max-warnings=0` |
+| Vite production build | Successful bundle | Passed; 22 modules transformed |
+| Backend regression | Existing contract remains green | **52 passed**, two known dependency warnings |
+| Dependency integrity | No broken Python requirements | `No broken requirements found.` |
+| Diff whitespace | No malformed patch whitespace | `git diff --check` passed; LF/CRLF notices only |
+
+Tests cover exact Perspective and Garden Guide request bodies, absence of
+browser-selected provider fields, safe error normalization, malformed/non-JSON
+responses, abort preservation, one-action Focus start, neutral retry, completion
+deduplication, No-motion, Support interruption and focus restoration,
+missing-configuration preservation, direct History, and Garden Guide no-match.
+Static scans found searched secret/provider/database/voice/`v-html` terms only in
+negative test assertions, not production frontend source or build output.
+
+### Automated browser observations
+
+The backend ran with no Gemini key and a unique SQLite path under the operating-
+system temporary directory. Vite proxied the application API. A disposable
+same-origin harness rendered the running app inside exact 390×844 and 1024×768
+iframes and was deleted after inspection.
+
+- 390×844: one-column entry and Focus task remained readable, controls fit, and
+  no page-level horizontal overflow appeared.
+- 1024×768: the entry used its wide two-column hierarchy, retained the full
+  header boundary, and kept primary/secondary actions visually distinct.
+- One-action Focus start created a session; an incorrect selection produced
+  neutral retry text; Support during activity persisted `interrupted`; Return
+  restored focus to Support and showed the interrupted state.
+- The fictional Perspective path reached evidence; the missing-key request
+  produced zero live provider calls and preserved work; Continue without Gemini
+  exposed the two reviewed fictional alternatives.
+- A browser-discovered active-session gap was corrected. Leaving the alternative
+  view now terminalizes Perspective first; History displayed `Stopped`, duration,
+  settings, saved indicators, and `Model: skipped` rather than `Active`.
+- Browser warning/error logs were empty. No screenshot file was retained.
+
+### AutoLoop and limitations
+
+Two of five allowed correction cycles were used: formatting/test-fixture repairs,
+then the Perspective terminal-state correction. Assertions were not weakened.
+The current evidence does not include a real key, provider quota/account
+behavior, a successful generated alternative, a successful two-call grounded
+answer, or a final manual Support-source recheck. It is software evidence for a
+fictional coursework prototype, not clinical or effectiveness validation.

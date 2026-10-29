@@ -2,90 +2,90 @@
 
 - **Date:** October 28, 2026
 - **Project:** FocusBloom
-- **Milestone:** Assignment 3.2 — version-2 backend implementation
+- **Milestone:** Assignment 3.2 — complete Vue experience checkpoint
 - **Branch:** `feature/assignment-3-part-2`
-- **Checkpoint start SHA:** `3f1ca4d3f7c4aa3c970a370925a8ab72915a5d75`
+- **Checkpoint start SHA:** `875eb2d160e0a1410a6cf39a73055ad3457cf471`
 - **Unchanged main SHA:** `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`
 - **Public repository:** https://github.com/srinidhid2004-design/focusbloom
-- **Publication:** commit subject `Implement FocusBloom activity and model
-  backend`; use branch history and the checkpoint response for its exact SHA.
+- **Publication subject:** `Implement FocusBloom Vue experience`
 
-## Implemented backend
+## Implemented frontend
 
-Active source is the FocusBloom version-2 backend. It initializes exactly nine
-tables at SQLite `user_version=2`: `demo_profiles`, `preferences`,
-`activity_sessions`, `activity_events`, `perspective_artifacts`,
-`next_step_seeds`, `conversations`, `messages`, and `model_requests`. A detected
-version-1 or unversioned existing schema stops initialization; it is never
-silently migrated, overwritten, or deleted.
+The Vue 3 application now implements the 17 named FocusBloom states and the
+existing 22-operation API contract:
 
-OpenAPI contains exactly the 22 approved `/api` operations. The implementation
-supports:
+- one-action entry and optional explained preferences;
+- all seven no-typing Focus Garden activities with literal alternatives, neutral
+  retry, Show me, Skip, Stop, Standard/No-motion parity, event writes, duplicate
+  guards, and interruption reconciliation;
+- fictional and optional custom Perspective Studio, evidence/uncertainty cards,
+  exact request preview, optional Gemini request, preserved failure state,
+  continue-without-model, alternatives, explicit save/edit/reject/create/delete,
+  and optional fictional Perspective Lens;
+- previewed, explicitly saved, editable/deletable user-authored Next-Step Seeds;
+- factual History cards, filters, saved indicators, individual deletion,
+  explained saved-text deletion, and confirmed complete reset;
+- Garden Guide suggested questions, optional text, loading, grounded answer,
+  no-match, rejected/failure, retry, and collapsed safe-trace states; and
+- static U.S. Support copied from the reviewed project record, available from
+  every major state without FastAPI, SQLite, Gemini, location, a classifier, or a
+  saved event.
 
-- transparent versioned preferences;
-- seven static Focus Garden activities plus Perspective Studio session records;
-- completed, stopped, skipped, and interrupted outcomes and ordered events;
-- explicit Perspective artifact and Next-Step Seed save/delete;
-- factual bounded history and stable IDs across API/SQLite;
-- ordered history-guide conversations/messages;
-- separate saved-text deletion and complete fixed-profile reset; and
-- lifecycle-only model request records with no prompt, SQL, row, raw response,
-  provider error, credential, or unsaved Perspective text storage.
+The browser API service sends exact approved fields, normalizes safe failures,
+never sends an authorization header or provider configuration, and uses abort/
+identity boundaries so superseded responses cannot overwrite the active state.
+The public history API intentionally withholds raw SQL, bound parameters, and
+retrieved rows; the UI explains this and never fabricates trace data.
 
-No breathing field/table/route remains in active runtime code. Historical Part
-3.1 and version-1 records remain unchanged; the earlier implementation remains
-available in Git history.
+## Design and accessibility observations
 
-## Model and RAG boundary
+Read-only Figma inspection covered overview `27:719` and representative entry,
+Focus, completion, Perspective, Lens, Seed, History, Garden Guide, Support, and
+wide frames. No Figma content changed. The runtime reuses the navy/water/leaf/
+sage/warm system, rounded cards, status pills, 48-pixel controls, and progressive
+disclosure while replacing static absolute positioning with semantic flexible
+layout.
 
-Google Gemini is fixed to `gemini-3.5-flash-lite`, a 10-second timeout, 384
-output tokens, one total attempt, zero retries, and no provider/model fallback.
-Perspective alternatives use one call at most, return no more than two bounded
-alternatives, and are not saved automatically.
-
-History RAG uses one SQL-proposal call and only uses a second grounded-answer
-call for validated nonempty retrieval. The validator rejects CTEs, mutation,
-DDL, schema access, comments, multiple statements, joins/subqueries/set
-operations, unapproved tables/columns/functions, literal profile scope,
-parameter mismatches, and limits above 20. Execution adds a read-only URI,
-`query_only`, `trusted_schema=OFF`, disabled extensions, default-deny authorizer,
-100-ms deadline, 20-row/8-column/8-KiB bounds, and a snapshot check. Only valid
-retrieved row references can be persisted with a grounded assistant answer.
-
-Request-count contract observed with injected fakes:
-
-- invalid input or missing configuration: zero provider calls;
-- Perspective accepted outcome: one call;
-- history malformed/rejected/out-of-scope/no-match/request-one failure: one call;
-- history success/invalid grounding/request-two failure: exactly two calls; and
-- duplicate completed requests: no additional call.
+Major navigation focuses the new heading. Support is an Escape-closeable modal,
+traps focus, and restores the invoking control. Controls have visible focus and
+44-pixel minimum targets. Text duplicates every visual activity cue. Explicit
+No-motion and `prefers-reduced-motion` remove nonessential transitions without
+changing instructions or controls. Exact 390×844 and 1024×768 running iframes
+were inspected without page-level horizontal overflow or browser console errors.
 
 ## Observed verification
 
-- First focused version-2 cycle: **45 passed**.
-- Final complete backend suite: **52 passed** in the observed 4.25-second run.
-- `pip check`: **No broken requirements found.**
-- Import/compile and exact 22-operation OpenAPI inspection passed.
-- `git diff --check`, protected-file scope, credential-pattern, generated/private
-  artifact, runtime-state, and branch-ref audits passed before commit.
-- One hardening cycle tightened differing-content idempotency and WHERE grammar;
-  tests were strengthened rather than weakened.
-- Two known non-failing dependency warnings remain: Starlette TestClient/httpx
-  transition and a Google Gen AI Python 3.14 type-alias deprecation.
-- `backend/.env` and `data/app.sqlite3` are absent; `data/` is empty.
-- No runtime database, real credential, live Gemini request, Figma change,
-  frontend implementation, voice/audio feature, merge, rebase, amend, force
-  push, or `main` change occurred.
+- Frontend: **2 files, 16 tests passed**.
+- ESLint: passed with zero warnings.
+- Vite production build: passed; 22 modules transformed.
+- Backend regression: **52 passed**; two known non-failing dependency warnings.
+- `pip check`: no broken requirements.
+- Browser: one-tap Focus start, neutral retry, Support interruption/return,
+  missing-Gemini preservation, continue without Gemini, and factual terminal
+  Perspective history observed against a unique disposable database.
+- Bounded AutoLoop: 2 of 5 correction cycles used. The second fixed a live-
+  browser-discovered Perspective session that otherwise remained active when
+  navigating away.
+
+## Safety and state
+
+`backend/.env` and `data/app.sqlite3` remain absent and `data/` remains
+empty. No real credential was read. No live Gemini request occurred. Temporary
+databases were outside the repository and are not evidence of a project runtime
+database. No dependency, Figma artifact, historical Part 3.1 report/evidence,
+voice/audio capability, authentication, analytics, notification, remote, or
+`main` state changed.
 
 ## Exact next task
 
-Implement the 17-state FocusBloom Vue interface and static independent Support
-route from the selected Figma reference, then integrate the version-2 API. Verify
-keyboard/focus, 390-pixel reflow, 200% zoom, Standard/No-motion parity,
-fictional/no-typing routes, cancellation and stale-response protection,
-explicit save/delete/reset, failure preservation, and API/SQLite/UI agreement.
-Do not make a live Gemini call without separate authorization.
+Only after separate authorization, configure a real backend-local Gemini key and
+perform one bounded fictional Perspective success plus one factual History
+success. Compare stable IDs and safe stored outcomes across UI, API, and read-only
+SQLite; verify provider request counts and safe failure cases; then remove the
+key and runtime database according to the approved procedure. Manually recheck
+all official Support sources immediately before the graded submission/demo.
 
-This remains a fictional coursework prototype, not therapy, diagnosis, crisis
-detection, monitoring, clinical validation, or evidence of emotion, attention,
-improvement, or effectiveness. Voice and audio remain prohibited.
+No key is needed for Focus Garden, ordinary History, saved-text controls,
+deterministic continue-without-model behavior, or Support. This remains a
+fictional coursework prototype, not therapy, diagnosis, crisis detection,
+monitoring, clinical validation, or evidence of attention or effectiveness.

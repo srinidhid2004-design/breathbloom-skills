@@ -238,3 +238,35 @@ documentation edit.
 This evidence is local and mocked. No runtime database, environment file, real
 credential, live Gemini request, Figma change, frontend implementation, voice/
 audio capability, or real-distress testing was created or performed.
+
+## FocusBloom Vue experience evidence
+
+- The active Vue source now implements the complete named state set and exact
+  version-2 browser contracts. No React, Tailwind, TypeScript, state-management
+  package, provider SDK, or new dependency was added.
+- Focus Garden offers all seven backend activities without required typing. The
+  runtime writes allow-listed events and terminal states, prevents repeated
+  terminal actions, and records refresh/Support interruption without silently
+  completing or resuming.
+- Perspective work remains local until explicit save. Missing configuration and
+  provider-safe failures preserve work; the user may continue with reviewed
+  fictional alternatives. Lens and Next-Step Seed are optional and user
+  controlled.
+- History displays only factual records and saved indicators. Garden Guide uses
+  suggested questions, exact two-step request fields, bounded result states, and
+  a collapsed trace. SQL/parameters/retrieved rows are not fabricated because
+  the approved public API intentionally withholds them.
+- Static U.S. Support rendered from reviewed project wording without calling the
+  API and remained available during active and failed states.
+- Frontend checks reported **16 passed**, zero-warning lint, and a successful
+  production build. The unchanged backend reported **52 passed** and a clean
+  `pip check`.
+- Automated browser inspection observed exact 390×844 and 1024×768 running
+  frames, no application console warnings/errors, one-tap Focus behavior,
+  neutral retry, Support interruption/focus restoration, missing-configuration
+  fallback, and terminal Perspective history.
+
+The browser backend used only a unique disposable database outside the project
+and no Gemini key. No screenshot was retained, no project runtime database was
+created or mutated, no real credential was read, no live Gemini request occurred,
+and no Figma or historical Part 3.1 artifact changed.

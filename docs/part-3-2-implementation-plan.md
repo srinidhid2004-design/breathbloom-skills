@@ -345,3 +345,22 @@ Browser, cross-layer UI, and manual pre-demo Support checks remain outstanding:
 - API/SQLite agreement for stable IDs and factual History Garden fields.
 - Manual source recheck for Support before submission. Software checks do not
   establish clinical safety or effectiveness.
+
+### Prompt 09 implementation status
+
+The 17-state Vue experience, independent Support, exact API service, stale-
+request boundary, deterministic Focus activities, Perspective/Lens/Seed, factual
+History, and Garden Guide presentation are now implemented. Automated tests,
+lint, build, complete backend regression, and exact 390×844/1024×768 disposable-
+runtime browser inspection passed as recorded in `docs/verification.md`.
+
+The API privacy contract remains authoritative: successful Garden Guide responses
+return answer text, request lifecycle, and row references, not raw proposed SQL,
+parameters, or retrieved rows. The UI's collapsed trace therefore explains that
+boundary and displays only safe returned facts. This clarification does not add
+an endpoint or weaken RAG validation.
+
+Still outstanding are a separately authorized live-provider success check,
+successful cross-layer UI/API/read-only-SQLite comparison for model-generated
+content, and the manual official Support-source recheck immediately before the
+graded submission or demonstration.

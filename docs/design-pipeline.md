@@ -137,13 +137,21 @@ answer call. Application-owned flows work when Gemini is unavailable.
 
 ## Current implementation boundary and next step
 
-The version-1 breathing schema, routes, timing services, model contract, and
-tests have been replaced in active source by the version-2 FocusBloom backend.
-Temporary-database tests cover the nine-table schema, 22-operation contract,
-activity/artifact/seed/history persistence, delete/reset, mocked Perspective
-calls, RAG call counts, adversarial SQL, read-only enforcement, no-match, and
-grounding. The fake-gateway suite is not live-provider evidence.
+The version-2 backend and 17-state Vue experience are implemented. The runtime
+uses focused components for entry/preferences, Focus Garden, Perspective Studio,
+Perspective Lens, Next-Step Seed, History Garden, Garden Guide, and Support; a
+single API service owns exact request bodies and safe response normalization; a
+request guard cancels superseded work and rejects late results.
 
-Next, build the 17 FocusBloom Vue states and static Support experience, integrate
-the API, and complete browser/cross-layer verification. A live provider call
-remains separately authorized.
+Static frames did not specify flexible text height, every transient failure copy,
+or the browser-safe trace boundary. Runtime cards grow with content, heading
+focus and modal focus restoration are explicit, and the trace never invents SQL,
+parameters, or retrieved rows that the approved API intentionally withholds.
+Exact 390×844 and 1024×768 running viewports, missing configuration, and key
+deterministic flows were inspected with a disposable database. This is not live-
+provider or clinical evidence.
+
+Next, separately authorize and verify live Gemini success for one fictional
+Perspective request and one factual History question, compare stable IDs and
+stored outcomes across UI/API/read-only SQLite, and manually recheck official
+Support sources before submission.

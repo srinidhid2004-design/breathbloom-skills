@@ -138,9 +138,10 @@ Pop-Location
 ```
 
 The backend tests initialize version-2 databases only in temporary test
-directories. Starting the server would initialize the configured runtime
-database, so that action was not used as checkpoint evidence. The visible Vue
-screen remains only a branded foundation scaffold, not the Figma experience.
+directories. Prompt 09 also started the backend with an explicit disposable
+database under the operating-system temporary directory and no Gemini key; it
+did not create `data/app.sqlite3`. The Vue application now implements the
+selected FocusBloom experience and the exact approved backend contracts.
 
 ## Technology and security boundary
 
@@ -159,10 +160,26 @@ Voice input/output, microphone use, WebRTC, recording, speech recognition,
 speech synthesis, and live-audio models are prohibited. The complete application
 must remain usable through visible text and controls.
 
-## Next implementation checkpoint
+## Implemented Vue experience
 
-Implement the 17-state FocusBloom Vue experience and static independent Support
-route from the selected Figma reference. Integrate it with the implemented API,
-then verify keyboard/focus behavior, 390-pixel reflow, 200% zoom, Standard/No-
-motion parity, cancellation/stale responses, explicit save/delete/reset, and
-API/SQLite/UI agreement. A live provider check remains separately authorized.
+The frontend now provides the 17 named states, one-action/no-typing Focus Garden,
+Standard and No-motion parity, fictional and optional custom Perspective paths,
+Perspective Lens, explicit artifact and Next-Step Seed saves, factual History
+Garden, bounded Garden Guide outcomes, and static independent Support. Major
+state changes focus the new heading; Support traps and restores focus; controls
+are at least 44 pixels; reduced motion removes transitions; and 390×844 and
+1024×768 running viewports were inspected with no browser application errors.
+
+Use the existing verified commands above for tests and builds. For runtime work,
+set `DATABASE_PATH` to an explicit disposable or approved backend path before
+starting Uvicorn; omitting it would create the planned project runtime database.
+The Vite development server proxies `/api` to `http://127.0.0.1:8000`.
+
+## Next integration checkpoint
+
+Run separately authorized live-provider verification only after adding a real
+backend-local key through the approved secret procedure. Verify successful
+Perspective and two-request grounded History results across UI, API, and
+read-only database rows. Recheck every official Support source immediately before
+the graded submission or demonstration. No key is needed for ordinary Focus
+Garden, History browsing, saved-text controls, or Support.

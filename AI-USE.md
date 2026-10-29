@@ -96,4 +96,27 @@ Part 3.1 report and prompts 01–06 are unchanged. Tests, Figma checks, Git chec
 and repository-redirect checks are recorded only after observation. A mock is
 never described as a live call. Version-2 backend behavior is described as
 implemented only where temporary-database and fake-gateway tests observed it;
-frontend and live-provider behavior remain unimplemented or unverified.
+frontend behavior is now implemented and locally verified; live-provider
+behavior remains unverified.
+
+## Prompt 09 frontend implementation
+
+Codex used the mandatory Figma design-to-code workflow for read-only inspection
+of the approved overview and representative narrow/wide frames, then translated
+the static React/Tailwind-like context into the repository's Vue 3 Composition
+API and plain CSS. No Figma content was modified and no temporary Figma asset URL
+was used at runtime.
+
+Codex created focused Vue components, a normalized API service, a stale-request
+guard, deterministic visual-activity data, and contract/UI tests. Automated
+browser control exercised the running app only against a disposable temporary
+database and missing-key configuration. The browser produced no warning/error
+logs. No live Gemini request or real credential was used.
+
+The first implementation pass passed the build but exposed existing ESLint
+formatting expectations and two test setup assumptions; formatting and test
+fixtures were corrected. A later live browser pass exposed an active Perspective
+session when the user left after continuing without Gemini. The lifecycle was
+revised to persist stopped or completed status before navigation, and the full
+frontend checks passed again. These were tooling/runtime corrections, not claims
+of clinical benefit.

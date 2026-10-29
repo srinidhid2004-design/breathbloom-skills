@@ -1,107 +1,134 @@
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
+import AppHeader from './components/AppHeader.vue'
+import EntryView from './components/EntryView.vue'
+import FocusGarden from './components/FocusGarden.vue'
+import GardenGuide from './components/GardenGuide.vue'
+import HistoryGarden from './components/HistoryGarden.vue'
+import NextStepSeed from './components/NextStepSeed.vue'
+import PerspectiveStudio from './components/PerspectiveStudio.vue'
+import SupportPanel from './components/SupportPanel.vue'
+import { api, newId, utcNow } from './services/api.js'
 
-const sections = [
-  { id: 'focus-garden', label: 'Focus Garden' },
-  { id: 'perspective-studio', label: 'Perspective Studio' },
-  { id: 'history-garden', label: 'History Garden' },
-  { id: 'support', label: 'Support' },
-]
+const view = ref('entry')
+const supportOpen = ref(false)
+const supportOpener = ref(null)
+const focusGarden = ref(null)
+const seedSessionId = ref(null)
+const shellNotice = ref('')
+const preferences = ref({ motion_mode: 'standard', guidance_level: 'standard', difficulty: 'standard', remember_preferences: false, version: 1 })
+const focusStates = new Set(['focus-ready', 'focus-active', 'focus-stopped', 'focus-completed'])
+const perspectiveStates = new Set(['perspective-entry', 'perspective-evidence', 'perspective-alt-loading', 'perspective-alt-ready', 'perspective-model-failed'])
+const guideStates = new Set(['history-question-loading', 'history-answer-ready', 'history-no-match', 'history-query-rejected', 'guide-entry'])
 
-const lastVisited = ref('Focus Garden')
-
-function noteVisit(label) {
-  lastVisited.value = label
+async function navigate(next) {
+  view.value = next
+  await nextTick()
+  document.querySelector('[data-view-heading]')?.focus()
 }
+
+async function openSupport() {
+  supportOpener.value = document.activeElement
+  if (view.value === 'focus-active') {
+    await focusGarden.value?.interruptForSupport()
+    view.value = 'focus-stopped'
+  }
+  supportOpen.value = true
+}
+
+async function closeSupport() {
+  supportOpen.value = false
+  await nextTick()
+  supportOpener.value?.focus?.()
+}
+
+async function reconcileInterruptedSession() {
+  const raw = sessionStorage.getItem('focusbloom_active_session')
+  if (!raw) return
+  sessionStorage.removeItem('focusbloom_active_session')
+  try {
+    const stale = JSON.parse(raw)
+    await api.updateSession(stale.id, {
+      action: 'interrupt', expected_version: stale.version, idempotency_key: newId(), ended_at: utcNow(),
+      duration_ms: Math.max(0, Date.now() - stale.startedAt), perspective_progress: 'none', model_status: 'skipped',
+    })
+    shellNotice.value = 'A previously active Focus Garden was recorded as interrupted after refresh. It was not resumed or completed.'
+  } catch {
+    shellNotice.value = 'A previous Focus Garden may have been interrupted. FocusBloom could not confirm that record; it was not shown as completed.'
+  }
+}
+
+onMounted(async () => {
+  await reconcileInterruptedSession()
+  try { preferences.value = (await api.preferences()).preferences }
+  catch { shellNotice.value ||= 'The local service is unavailable. Static Support still works; actions are not assumed saved.' }
+})
 </script>
 
 <template>
   <div class="app-shell">
-    <header class="site-header">
-      <a
-        class="brand"
-        href="#main-content"
-      >
-        FocusBloom
-      </a>
-      <nav aria-label="Foundation areas">
-        <a
-          v-for="section in sections"
-          :key="section.id"
-          :href="`#${section.id}`"
-          @click="noteVisit(section.label)"
-        >
-          {{ section.label }}
-        </a>
-      </nav>
-    </header>
-
+    <a
+      class="skip-link"
+      href="#main-content"
+    >Skip to main content</a>
+    <AppHeader @support="openSupport" />
+    <p class="prototype-notice">
+      Fictional coursework prototype · not therapy, diagnosis, or monitoring.
+    </p>
+    <p
+      v-if="shellNotice"
+      class="shell-notice"
+      role="status"
+    >
+      {{ shellNotice }}
+    </p>
     <main id="main-content">
-      <p class="eyebrow">
-        IST 402 · Assignment 3.2 foundation
-      </p>
-      <h1>FocusBloom coursework prototype</h1>
-      <p class="boundary">
-        This fictional local prototype will explore brief visual-attention activities and a
-        structured perspective exercise. It is not therapy, an emergency service, or a monitored
-        support service.
-      </p>
-      <p
-        class="status"
-        aria-live="polite"
-      >
-        Foundation area: {{ lastVisited }}
-      </p>
-
-      <div class="foundation-grid">
-        <section
-          id="focus-garden"
-          aria-labelledby="focus-garden-heading"
-        >
-          <h2 id="focus-garden-heading">
-            Focus Garden
-          </h2>
-          <p>
-            Short no-typing visual-attention activities will be implemented in a later checkpoint.
-          </p>
-        </section>
-
-        <section
-          id="perspective-studio"
-          aria-labelledby="perspective-studio-heading"
-        >
-          <h2 id="perspective-studio-heading">
-            Perspective Studio
-          </h2>
-          <p>
-            A one-minute cognitive-reframe flow with a fictional-example path is planned here.
-          </p>
-        </section>
-
-        <section
-          id="history-garden"
-          aria-labelledby="history-garden-heading"
-        >
-          <h2 id="history-garden-heading">
-            History Garden
-          </h2>
-          <p>
-            Factual fictional-demo activity history will appear after the revised data model is implemented.
-          </p>
-        </section>
-
-        <section
-          id="support"
-          aria-labelledby="support-heading"
-        >
-          <h2 id="support-heading">
-            Support
-          </h2>
-          <p>
-            The reviewed independent Support information route will be implemented in a later checkpoint.
-          </p>
-        </section>
-      </div>
+      <EntryView
+        v-if="view === 'entry'"
+        :preferences="preferences"
+        @start-focus="navigate('focus-ready')"
+        @perspective="navigate('perspective-entry')"
+        @history="navigate('history')"
+        @guide="navigate('guide-entry')"
+        @preferences="preferences = $event"
+      />
+      <FocusGarden
+        v-else-if="focusStates.has(view)"
+        ref="focusGarden"
+        :preferences="preferences"
+        @state="view = $event"
+        @perspective="navigate('perspective-entry')"
+        @history="navigate('history')"
+        @entry="navigate('entry')"
+      />
+      <PerspectiveStudio
+        v-else-if="perspectiveStates.has(view)"
+        :preferences="preferences"
+        @state="view = $event"
+        @seed="seedSessionId = $event; navigate('next-step-seed')"
+        @history="navigate('history')"
+        @entry="navigate('entry')"
+      />
+      <NextStepSeed
+        v-else-if="view === 'next-step-seed'"
+        :session-id="seedSessionId"
+        @history="navigate('history')"
+        @entry="navigate('entry')"
+      />
+      <HistoryGarden
+        v-else-if="view === 'history'"
+        @guide="navigate('guide-entry')"
+        @entry="navigate('entry')"
+      />
+      <GardenGuide
+        v-else-if="guideStates.has(view)"
+        @state="view = $event"
+        @history="navigate('history')"
+      />
     </main>
+    <SupportPanel
+      v-if="supportOpen"
+      @close="closeSupport"
+    />
   </div>
 </template>
