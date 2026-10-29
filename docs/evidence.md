@@ -270,3 +270,216 @@ The browser backend used only a unique disposable database outside the project
 and no Gemini key. No screenshot was retained, no project runtime database was
 created or mutated, no real credential was read, no live Gemini request occurred,
 and no Figma or historical Part 3.1 artifact changed.
+
+## FocusBloom integrated live verification — October 29, 2026
+
+### Automated and runtime gate
+
+- Local/remote feature refs matched
+  `b6208388c7e79a71ed8a450c83af1c44697f2936`; local/remote `main` remained
+  `9f7a09d5ceb4fc50520e26ad6140103de3cc903e`.
+- The backend-local environment file was ignored and untracked. Configuration
+  presence was reported without a value. The fixed model, single attempt, and no
+  provider/model fallback remained intact.
+- Backend regression reported **52 passed** with two known warnings; `pip check`
+  was clean. Frontend regression reported **2 files, 17 passed**; lint and the
+  22-module production build passed.
+- OpenAPI still contained 22 operations. The initialized version-2 database had
+  exactly the nine approved tables, no breathing runtime route/field, and zero
+  foreign-key violations. Browser request contracts continued to exclude keys,
+  provider/model/prompt overrides, database paths, and raw SQL.
+
+### Bounded live-provider evidence
+
+The fixed fictional Perspective example was submitted once. Loading was visible.
+The single fixed-model attempt ended in the safe Provider Unavailable state with
+one lifecycle row: purpose `perspective_alternatives`, status `failed`, safe code
+`provider_failure`, and attempt count 1. No alternative or Seed was persisted,
+unsaved fictional work remained available, and the interface did not navigate
+automatically.
+
+No retry was made. The Garden Guide submission was not made, so its provider
+count was 0 and total live provider attempts were 1. Consequently, this run has
+no actual proposed SQL, trusted parameters, bounded retrieval records, row
+references, grounded answer, saved text, or deletion evidence. The successful
+Perspective/Garden Guide path remains unverified rather than being represented
+as a passing empty result.
+
+### Browser, accessibility, and database evidence
+
+- 390×844: Focus completion, factual History, provider-safe failure, independent
+  Support, No-motion, neutral retry, Stop, Skip, and refresh-to-Interrupted were
+  observed. Continue without Gemini showed exactly two reviewed fictional
+  alternatives without saving either. Escape restored focus to Support.
+- 1024×768: the actual iframe viewport used the wide layout, remained readable,
+  and showed logical keyboard order and visible focus on the primary action.
+- A clean direct application tab had no console warnings/errors. Three
+  MutationObserver messages occurred only in the scaled iframe harness, had no
+  application URL, and did not recur in the direct app tab.
+- No-motion kept identical instructions and controls while disabling scaling,
+  ripples, fades, and translation. The stylesheet's reduced-motion media query
+  disables animation and transition; an OS-level preference toggle was not run.
+- Pre-flow counts were one fixed profile, one preference, and zero rows in the
+  remaining seven tables. Post-flow counts were 1 profile, 1 preference, 5
+  sessions, 11 events, 0 artifacts, 0 Seeds, 0 conversations, 0 messages, and 1
+  model request. Sessions were completed, active unsaved Perspective, stopped,
+  skipped, and interrupted. The explicit preference action set No motion with
+  remember disabled. Schema version remained 2 and foreign-key violations were
+  zero.
+
+### Retained public-safe screenshots
+
+- `docs/evidence/10-focus-complete.jpg`
+- `docs/evidence/10-focus-history.jpg`
+- `docs/evidence/10-perspective-provider-unavailable.jpg`
+- `docs/evidence/10-support-independent.jpg`
+- `docs/evidence/10-no-motion.jpg`
+- `docs/evidence/10-responsive-keyboard-1024.jpg`
+
+The images contain no key, environment content, authorization header, private
+path, real person, or raw provider response. The ignored runtime database and
+backend-local environment file are not tracked. No Figma, dependency, schema,
+API, provider/model, retry, voice/audio, or `main` state changed. Because all
+required live checks did not pass, no verification commit or push was made.
+
+### Prompt 10A safe provider diagnosis
+
+- Read-only inspection confirmed the backend-only credential path, exact fixed
+  model, GenerateContent method, installed structured-output fields, nonempty
+  Pydantic schema, 10-second timeout, and one total attempt. The fixed fictional
+  request was far below the documented model limits.
+- The adapter currently distinguishes timeout, 401, 403, and 429, while other
+  provider exceptions become the safe `provider_failure` used in Prompt 10.
+- One authorized model-metadata lookup returned visible. One authorized tiny
+  structured generation returned a valid object. Safe result: HTTP 200 / `OK`,
+  category `success`; metadata calls 1, generation calls 1, inference permitted.
+- No raw catalog, key, header, provider payload, exception text, or response text
+  was retained or displayed. No database, Perspective, Garden Guide, source,
+  test, dependency, Figma, commit, push, or remote state changed.
+
+The diagnostic proves the credential, project access, model visibility, and
+minimal structured inference were operational at that time. The earlier live
+application failure remains unsuccessful and exactly unclassified because its
+raw provider error was deliberately sanitized and not retained. The result
+argues against a persistent configuration incompatibility and is consistent
+with, but does not prove, a temporary provider condition.
+
+### Prompt 10B bounded application continuation
+
+- All repository and privacy gates passed. The pre-flow database retained the
+  original evidence with schema version 2, counts `1,1,5,11,0,0,0,0,1`, and zero
+  foreign-key violations.
+- The supplied fictional Alex example was previewed at 390×844 and submitted
+  exactly once. Loading was visible. The one fixed-model provider attempt again
+  ended in the bounded Provider Unavailable state.
+- The new lifecycle row has purpose `perspective_alternatives`, status `failed`,
+  safe code `provider_failure`, attempt count 1, and the fixed model. No retry,
+  fallback, separate diagnostic, or Garden Guide request occurred.
+- Post-failure counts were `1,1,6,13,0,0,0,0,2`. Only one active unsaved
+  Perspective session, two Perspective step events, and the one failed lifecycle
+  row were added. No artifact, Seed, conversation, message, alternative, or
+  answer was stored. Foreign-key integrity still passed.
+- The existing provider-failure screenshot was sufficient, so no duplicate was
+  retained. The temporary harness and services were stopped.
+
+Per the explicit failure boundary, save/delete, Support repetition, Garden Guide,
+final suite reruns, commit, and push stopped. No source, test, dependency, schema,
+API, Figma, credential, provider/model, retry, or remote state changed. The
+successful minimal diagnostic followed by two failed full application requests
+points to a full-request-specific provider outcome, but the exact category
+remains unknown because the production adapter safely collapses it.
+
+### Prompt 10C exact schema isolation and live continuation
+
+- The one exact full-request diagnostic call returned HTTP 400, SDK `ClientError`,
+  safe category `invalid_request_schema`. No provider-controlled text was
+  retained. The OS-temporary script was deleted immediately afterward.
+- Official structured-output documentation supports `enum` but not the
+  single-value `const` emitted by Pydantic `Literal`. Source now translates only
+  `const` to its equivalent `enum[value]` for `response_json_schema`; unchanged
+  Pydantic validation still enforces the exact values and maximum two
+  alternatives.
+- Focused mocked checks passed 17 cases. The complete backend passed 61 cases
+  with the same two warnings, and `pip check` remained clean.
+- At 390×844, the one corrected Perspective submission showed loading and
+  succeeded after one provider call. Exactly two bounded alternatives appeared;
+  neither was saved automatically. One was explicitly selected and saved, and a
+  fictional user-authored Seed was previewed and explicitly saved.
+- History factually showed a completed Perspective session, model succeeded,
+  Perspective saved yes, and Next-Step Seed yes. The Seed was not presented as
+  treatment, advice chosen by Gemini, a reminder, or an effectiveness claim.
+- Garden Guide used one suggested factual-history question. Request 1 produced a
+  proposal rejected by the unchanged SQL validator before execution. Request 2
+  did not occur; there were no retrieved rows, assistant message, invented
+  answer, or retry.
+- Protected-table hashes for profile, preference, sessions, events, artifact,
+  and Seed were byte-for-byte identical before and after the Garden request.
+  The only Garden rows were one conversation, one user message, and one
+  `history_sql` lifecycle row with `query_rejected`, attempt count 1.
+
+Prompt 10C used three generation calls: one exact diagnostic, one successful
+Perspective, and one rejected Garden query proposal. Database counts changed
+from `1,1,6,13,0,0,0,0,2` to `1,1,7,16,1,1,1,1,4`; schema version stayed 2 and
+foreign-key violations stayed zero.
+
+New public-safe screenshots:
+
+- `docs/evidence/10-perspective-success.jpg`
+- `docs/evidence/10-saved-artifact-seed.jpg`
+- `docs/evidence/10-garden-guide-query-rejected.jpg`
+
+No duplicate provider-failure screenshot was added. Garden failure correctly
+stopped deletion, Support repetition, and commit/push. Successful query
+validation, read-only retrieval, request-2 grounding, deletion with Seed
+retention, and post-success console/Support checks remain unverified.
+
+### Prompt 10D validator alignment and completed integrated flow
+
+- The unchanged validator audit confirmed four tables, their existing column
+  allow-lists, only `COUNT`, `MIN`, and `MAX`, backend-owned `:profile_id`, bound
+  non-profile values, one final limit of 1–20, and rejection of literals,
+  comments, joins, CTEs, subqueries, set operations, schema access, multiple
+  statements, and mutations.
+- One OS-temporary diagnostic made exactly one proposal request for the approved
+  factual question. The response was schema-valid with outcome `query`, but the
+  unchanged validator returned safe category `unapproved_table_or_column`. It
+  made no database write and the temporary script was deleted immediately.
+- Only the `history_sql` instruction in `backend/app/gemini.py` changed. It now
+  states the exact approved schema/grammar, backend ownership of `profile_id`,
+  bound-value requirement, literal prohibition, and one validator-valid JSON
+  example. `backend/app/rag.py`, every allow-list, and every execution limit are
+  unchanged.
+- Focused instruction/validator tests passed 33 cases. The final backend suite
+  passed 69 with the same two non-failing dependency warnings; `pip check` was
+  clean. Frontend tests passed 17 cases in two files, ESLint passed with zero
+  warnings, and the production build transformed 22 modules.
+- One fresh Garden Guide UI submission made exactly two provider requests: one
+  validated query proposal and one grounded answer. No retry or fallback
+  occurred. Read-only retrieval returned two bounded rows; the answer factually
+  reported a tie between the completed fictional activities and referenced rows
+  1 and 2. It contained no diagnosis, inferred emotion, effectiveness claim, or
+  advice. The safe grounding trace remained collapsed by default.
+- The selected Perspective artifact was deleted through the UI after explicit
+  action-time confirmation. History changed to Perspective saved `no` while the
+  Next-Step Seed remained `yes` and its saved row remained present. Support then
+  opened independently, Escape closed it, and focus returned to the Support
+  button without changing the six provider rows.
+- After services were restarted, the direct Edge DevTools Console was visibly
+  open and blank. No application warning or error appeared.
+
+Final runtime counts in approved order were `1,1,7,16,0,1,2,3,6`. Schema
+version remained 2, all nine application tables remained, integrity was `ok`,
+and foreign-key violations were zero. The latest `history_sql` and
+`history_answer` rows each succeeded in one attempt with two row references;
+the latest conversation ordering was user then assistant. Profile, preference,
+event, and Seed hashes matched across deletion; only the selected artifact and
+its owning session's explicit deletion state changed.
+
+New public-safe screenshots:
+
+- `docs/evidence/10-garden-guide-success.png`
+- `docs/evidence/10-artifact-deleted-seed-retained.png`
+
+They contain no credential, private path, raw SQL, database path, provider
+payload, exception, or personal information. No duplicate Support screenshot
+was added because the existing independent-Support evidence remained sufficient.

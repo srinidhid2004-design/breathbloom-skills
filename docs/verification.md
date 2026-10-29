@@ -768,3 +768,336 @@ The current evidence does not include a real key, provider quota/account
 behavior, a successful generated alternative, a successful two-call grounded
 answer, or a final manual Support-source recheck. It is software evidence for a
 fictional coursework prototype, not clinical or effectiveness validation.
+
+## FocusBloom integrated live verification — October 29, 2026
+
+### Starting and automated gates
+
+| Check | Expected | Observed |
+| --- | --- | --- |
+| Feature branch | Local/remote at required SHA | Both `b6208388c7e79a71ed8a450c83af1c44697f2936` |
+| Main | Local/remote unchanged | Both `9f7a09d5ceb4fc50520e26ad6140103de3cc903e` |
+| Worktree/index | Clean before runtime | Passed |
+| Secret boundary | Ignored, untracked environment file; presence only | Passed; value never displayed or printed |
+| Model/retry | Fixed `gemini-3.5-flash-lite`, one attempt, no fallback | Passed |
+| Backend regression | Complete suite passes | **52 passed**, two known dependency warnings |
+| Dependency integrity | No broken Python requirements | Passed |
+| Frontend regression | Complete suite passes | **2 files, 17 passed** |
+| ESLint | Zero warnings/errors | Passed |
+| Production build | Successful bundle | Passed; 22 modules transformed |
+| Diff whitespace | No malformed patch whitespace | Passed before runtime |
+| API/schema | 22 operations; version 2; nine tables | Passed |
+| Contract audit | No breathing runtime; no browser provider/SQL authority | Passed |
+
+No AutoLoop correction was required. Safe health output reported service and
+database available plus configuration `configured`; it returned no key value.
+
+### Live request ledger
+
+| User submission | Allowed provider attempts | Observed attempts | Outcome |
+| --- | ---: | ---: | --- |
+| Fictional Perspective example | 1 | 1 | Failed safely: `provider_failure`; no retry |
+| Suggested Garden Guide question | 2 | 0 | Not submitted because the first live submission failed |
+| **Total** | **3 maximum** | **1** | Live portion stopped at the required boundary |
+
+The Perspective loading state appeared before the bounded failure state. The
+database stored one `perspective_alternatives` model-request lifecycle row with
+status `failed`, attempt count 1, and the fixed model. No generated alternative,
+artifact, or Next-Step Seed was persisted. The interface preserved unsaved
+fictional work and required an explicit retry; none was made.
+
+Garden Guide did not run, so request-two gating, query validation/execution,
+trusted `profile_id` parameters, bounded rows, row references, grounded answer,
+collapsed trace, RAG non-mutation, and saved-text deletion were not observed in
+this live checkpoint. There is no proposed query to record safely. These remain
+incomplete checks and are not inferred from mocked tests.
+
+### Integrated browser observations
+
+- At 390×844 the no-typing entry, completed Focus activity, and matching factual
+  History card were readable. The completion record contained status, duration,
+  difficulty, settings, saved indicators, and model status without attention,
+  treatment, diagnosis, or effectiveness claims.
+- Support opened from the provider-unavailable state without another provider
+  request. Escape closed it and restored focus to the Support trigger.
+- Continue without Gemini exposed exactly two reviewed fictional alternatives;
+  neither was selected or persisted.
+- No-motion retained the literal task and all controls while explicitly stating
+  that scaling, ripples, fades, and translation were disabled.
+- An incorrect selection showed neutral retry language. Stop and Skip created
+  factual terminal records without score, rank, penalty, or failure language.
+- Refreshing an active Focus activity recorded `interrupted`; it did not resume
+  or change to completed.
+- At an actual 1024×768 iframe viewport, the wide two-column entry was readable.
+  Keyboard order moved through skip link, brand, Support, and the primary action;
+  the primary action showed a visible focus ring.
+- The reduced-motion stylesheet rule disables animation and transitions. The
+  explicit No-motion runtime was observed; an OS-level reduced-motion toggle was
+  not performed.
+- A clean direct app tab reported zero console warnings/errors. Three
+  `MutationObserver` errors with no application URL occurred only in the scaled
+  iframe harness and were isolated as harness/browser instrumentation behavior.
+
+### Logical SQLite snapshots
+
+| Approved table | Before | After |
+| --- | ---: | ---: |
+| `demo_profiles` | 1 | 1 |
+| `preferences` | 1 | 1 |
+| `activity_sessions` | 0 | 5 |
+| `activity_events` | 0 | 11 |
+| `perspective_artifacts` | 0 | 0 |
+| `next_step_seeds` | 0 | 0 |
+| `conversations` | 0 | 0 |
+| `messages` | 0 | 0 |
+| `model_requests` | 0 | 1 |
+
+The five sessions were one completed Focus activity, one active unsaved
+Perspective session preserved after provider failure, one stopped Focus
+activity, one skipped Focus activity, and one refreshed/interrupted Focus
+activity. The 11 events reflected the starts, attempts, completion, Perspective
+steps, stop, and skip that were actually performed. The explicit preference
+action set No motion with standard guidance/difficulty and remember disabled.
+Schema version remained 2 and `PRAGMA foreign_key_check` returned zero rows.
+
+### Evidence, privacy, and stop condition
+
+Six public-safe screenshots in `docs/evidence/` retain only the material states:
+completion, factual History, provider-safe failure, independent Support,
+No-motion, and wide keyboard focus. Visual inspection found no credential,
+environment content, authorization header, private path, real personal data, or
+raw provider response.
+
+The backend-local environment file and runtime database remained ignored and
+untracked. No Figma, dependency, schema, API, provider/model, retry, credential,
+voice/audio, tracked runtime data, or `main` state changed. Required successful
+Perspective/Garden Guide/save/delete checks did not pass, so the authorized
+commit-and-push condition was false. No commit or push was made.
+
+### Prompt 10A safe Gemini diagnosis
+
+The follow-up checkpoint performed no application submission and no database
+write. Read-only code and installed-SDK inspection observed:
+
+- backend-only `SecretStr` configuration passed to the official SDK only when a
+  configured request is accepted;
+- exact model `gemini-3.5-flash-lite` through `models.generate_content`;
+- installed `google-genai` 2.33.0 fields for `max_output_tokens`,
+  `response_mime_type`, and `response_schema`;
+- a nonempty schema with `alternatives` and `limitation` properties;
+- a 10,000-ms timeout and `HttpRetryOptions(attempts=1)`, where one means no
+  retry; and
+- about 531 input bytes plus a 791-byte schema, far below the model's documented
+  input/output bounds.
+
+The adapter maps timeout, 401, 403, and 429 separately and maps other SDK/provider
+exceptions to `provider_failure`, so the Prompt 10 lifecycle row cannot identify
+the original provider category.
+
+| Diagnostic | Allowed | Observed | Safe result |
+| --- | ---: | ---: | --- |
+| Model metadata | 1 | 1 | Visible; HTTP 200 / `OK` |
+| Tiny structured generation | 1 | 1 | Valid object; HTTP 200 / `OK` |
+
+Safe category was `success`; inference was permitted. No catalog, credential,
+header, environment content, raw payload, raw exception, or raw response was
+printed or retained. The credential/project/model/minimal structured-output path
+was operational at diagnostic time. The earlier application flow remains failed
+and its exact cause remains unknown; this evidence is consistent with, but does
+not prove, a temporary provider condition. No Perspective retry, Garden Guide
+submission, source/test edit, automated regression rerun, commit, or push
+occurred.
+
+### Prompt 10B bounded application continuation
+
+The repository, ignored-file, configured-key-presence, fixed-model, zero-retry,
+no-fallback, and Prompt 10A evidence gates passed. Safe health output reported
+service/database available and configuration present without a value.
+
+| New live action | Allowed | Observed | Outcome |
+| --- | ---: | ---: | --- |
+| Fictional Perspective submission | 1 | 1 | Loading, then bounded `provider_failure` |
+| Perspective provider attempts | 1 | 1 | Fixed model; no retry/fallback |
+| Garden Guide submission | 1 only after success | 0 | Correctly blocked by Perspective failure |
+| Garden Guide provider attempts | 2 only after success | 0 | Not made |
+
+At 390×844, the exact supplied Alex example and request preview were visible.
+The failed request did not save an alternative or control navigation. The second
+application lifecycle row recorded status `failed`, safe code
+`provider_failure`, and attempt count 1. Cumulative application counts are two
+Perspective submissions/two provider attempts and zero Garden Guide submissions/
+requests; the Prompt 10A metadata and tiny generation calls remain separate
+diagnostics.
+
+| Approved table | Before 10B | After 10B |
+| --- | ---: | ---: |
+| `demo_profiles` | 1 | 1 |
+| `preferences` | 1 | 1 |
+| `activity_sessions` | 5 | 6 |
+| `activity_events` | 11 | 13 |
+| `perspective_artifacts` | 0 | 0 |
+| `next_step_seeds` | 0 | 0 |
+| `conversations` | 0 | 0 |
+| `messages` | 0 | 0 |
+| `model_requests` | 1 | 2 |
+
+The only new database evidence was one active unsaved Perspective session, two
+Perspective step events, and one failed model-request lifecycle row. Schema
+version remained 2 and foreign-key violations remained zero. No duplicate
+screenshot was retained. The temporary harness and services were removed or
+stopped.
+
+The failure stop condition prevented artifact/Seed saving, deletion, Garden
+Guide retrieval/grounding, Support repetition, final suite reruns, commit, and
+push. No source or test was edited. The exact full-request provider category is
+still unknown; no raw error was exposed or retained.
+
+### Prompt 10C exact isolation, correction, and bounded continuation
+
+The exact application-shaped diagnostic made one generation call with the same
+SDK, model, instructions, fictional context, Pydantic schema, JSON MIME type,
+384-token cap, 10-second timeout, and one total attempt. Safe result was HTTP
+400, SDK class `ClientError`, category `invalid_request_schema`. The temporary
+script was deleted immediately. A preceding import-path launch failed locally
+before SDK construction and made zero provider calls.
+
+Google's structured-output subset supports `enum` and omits `const`. The
+Perspective schema and grounded-answer schema each contained a Pydantic single-
+value `const`. The narrow correction recursively replaces only `const` with the
+equivalent `enum[value]` and supplies it as `response_json_schema`. Parsed output
+continues through the unchanged strict Pydantic model and existing safety
+validators. Numeric provider statuses now receive safe internal categories
+without retaining raw detail.
+
+| Check | Observed |
+| --- | --- |
+| Focused Perspective regression | 17 passed, same two warnings |
+| Complete backend | 61 passed, same two warnings |
+| Dependency integrity | No broken requirements |
+| Complete frontend | 2 files, 17 passed |
+| ESLint | Passed with zero warnings |
+| Production build | Passed; 22 modules transformed |
+
+The corrected application Perspective request showed loading and succeeded in
+one provider call. Two validated alternatives appeared and nothing was saved
+automatically. One alternative and one previewed fictional user-authored Seed
+were explicitly saved. History reported the session completed, model succeeded,
+and both saved indicators yes.
+
+Garden Guide selected “Which activity did I complete most often?” and made one
+request-1 provider call. The generated proposal failed the unchanged SQL
+validator, producing `query_rejected` before execution. Request 2 did not occur,
+no rows were retrieved, and no assistant message or answer was inserted.
+
+| Approved table | Before 10C | After 10C |
+| --- | ---: | ---: |
+| `demo_profiles` | 1 | 1 |
+| `preferences` | 1 | 1 |
+| `activity_sessions` | 6 | 7 |
+| `activity_events` | 13 | 16 |
+| `perspective_artifacts` | 0 | 1 |
+| `next_step_seeds` | 0 | 1 |
+| `conversations` | 0 | 1 |
+| `messages` | 0 | 1 |
+| `model_requests` | 2 | 4 |
+
+The pre/post Garden hashes for profile, preference, sessions, events, artifact,
+and Seed matched exactly. Schema version remained 2 and foreign-key violations
+remained zero. Prompt 10C generation calls totaled 3: exact diagnostic 1,
+Perspective 1, Garden request 1; Garden request 2 was zero.
+
+Garden failure stopped deletion, Seed-retention-after-deletion, Support
+repetition, new console inspection, commit, and push. The public-safe evidence
+contains no secret, raw SQL, database path, provider payload, private path, or
+personal information. Successful validator-approved retrieval and grounded
+answer remain unverified.
+
+### Prompt 10D validator alignment and completed live verification
+
+The validator was audited without modification. Its exact allow-list is:
+
+- `activity_sessions`: `session_id`, `profile_id`, `activity_type`, `status`,
+  `started_at`, `ended_at`, `duration_ms`, `difficulty`, `motion_mode`,
+  `guidance_level`, `perspective_progress`, `alternative_save_state`,
+  `seed_save_state`, `model_status`, `version`;
+- `perspective_artifacts`: `artifact_id`, `profile_id`, `session_id`,
+  `interpretation_text`, `alternative_text`, `alternative_source`,
+  `observer_mode`, `saved_at`, `updated_at`;
+- `next_step_seeds`: `seed_id`, `profile_id`, `session_id`, `situation_text`,
+  `action_text`, `formatted_plan`, `source`, `saved_at`, `updated_at`;
+- `preferences`: `profile_id`, `motion_mode`, `guidance_level`, `difficulty`,
+  `remember_preferences`, `version`, `updated_at`.
+
+The grammar accepts exactly one `SELECT` from one approved table, requires
+backend-owned `profile_id = :profile_id`, excludes `profile_id` from model
+parameters, binds every other value, permits no quoted or numeric value literal
+apart from the final limit, and requires one final limit from 1 through 20.
+Only `COUNT`, `MIN`, and `MAX` are approved functions. Approved columns may be
+grouped; approved columns or selected aliases may be ordered. CTEs, joins,
+subqueries, set operations, mutations, DDL, comments, schema access, and
+multiple statements remain rejected.
+
+The one-call OS-temporary diagnostic used the fixed model, production schema,
+production instruction, corrected JSON-schema handling, one attempt, no retry,
+no fallback, no database, and no second request. It returned a schema-valid
+`query` proposal and safe validator category `unapproved_table_or_column`. This
+was an instruction mismatch, not a validator defect. Only the `history_sql`
+instruction changed; `backend/app/rag.py` and all safety limits remained
+unchanged. The focused suite passed 33 cases, including profile ownership,
+binding, the illustrative aggregation shape, adversarial rejection, one-call
+rejection behavior, and no mutation.
+
+The subsequent UI flow submitted the approved factual question once:
+
+| Live action | Provider requests | Observed result |
+| --- | ---: | --- |
+| Prompt 10D diagnostic | 1 | Structured `query`; safely rejected as `unapproved_table_or_column`; no database write |
+| Garden query proposal | 1 | Passed the unchanged validator; bounded read-only retrieval returned two rows |
+| Garden grounded answer | 1 | One validated answer citing rows 1 and 2; no advice or inference |
+
+There were zero retries and no fallback. Source inspection reconfirmed SQLite
+URI `mode=ro`, `query_only`, trusted profile injection, the default-deny
+authorizer, 20-row/8-column/8-KiB boundaries, and the 100-ms deadline. The
+browser received no raw SQL, database path, credential, provider payload, or
+exception. The grounding trace was collapsed by default.
+
+The answer factually reported that `perspective_studio` and `different_leaf`
+each had one completed session. After explicit confirmation, UI deletion removed
+only the saved Perspective artifact, changed its session deletion indicator,
+and left the Seed saved. History updated to Perspective saved `no` and Seed
+saved `yes`. Support opened without a provider request; Escape restored focus to
+the Support button. After the local services were restarted, a direct Edge
+DevTools Console check showed a blank Console with no warning or error.
+
+| Approved table | Before 10D live Garden | Final |
+| --- | ---: | ---: |
+| `demo_profiles` | 1 | 1 |
+| `preferences` | 1 | 1 |
+| `activity_sessions` | 7 | 7 |
+| `activity_events` | 16 | 16 |
+| `perspective_artifacts` | 1 | 0 |
+| `next_step_seeds` | 1 | 1 |
+| `conversations` | 1 | 2 |
+| `messages` | 1 | 3 |
+| `model_requests` | 4 | 6 |
+
+The diagnostic wrote nothing. Both new model lifecycle rows succeeded in one
+attempt and retained two row references; message ordinals were user 0 then
+assistant 1. Schema version was 2, all nine tables remained, integrity was `ok`,
+and foreign-key violations were zero. Pre/post deletion hashes matched for the
+profile, preferences, activity events, and Seed; the session and artifact
+changes were exactly the authorized deletion state transition.
+
+Final checks observed:
+
+| Check | Result |
+| --- | --- |
+| Complete backend | 69 passed; two known non-failing dependency warnings |
+| Dependency integrity | No broken requirements |
+| Complete frontend | 2 files, 17 passed |
+| ESLint | Passed with zero warnings |
+| Production build | Passed; 22 modules transformed |
+
+Public-safe evidence is retained in `10-garden-guide-success.png` and
+`10-artifact-deleted-seed-retained.png`; the existing Support evidence was not
+duplicated.

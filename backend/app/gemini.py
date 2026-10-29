@@ -76,6 +76,42 @@ def validate_grounded_answer(value: Any) -> GroundedHistoryAnswer:
 T = TypeVar("T", bound=BaseModel)
 
 
+def _provider_json_schema(schema: type[BaseModel]) -> dict[str, Any]:
+    """Translate Pydantic's single-value const into Gemini's supported enum."""
+
+    def translate(value: Any) -> Any:
+        if isinstance(value, list):
+            return [translate(item) for item in value]
+        if not isinstance(value, dict):
+            return value
+        translated = {key: translate(item) for key, item in value.items() if key != "const"}
+        if "const" in value:
+            translated["enum"] = [translate(value["const"])]
+        return translated
+
+    return translate(schema.model_json_schema())
+
+
+def _safe_api_problem(exc: errors.APIError) -> ProviderProblem:
+    """Map provider status codes without retaining provider-controlled detail."""
+
+    if exc.code == 400:
+        return ProviderProblem("invalid_request")
+    if exc.code == 401:
+        return ProviderProblem("authentication_failure")
+    if exc.code == 403:
+        return ProviderProblem("permission_failure")
+    if exc.code == 404:
+        return ProviderProblem("model_not_available")
+    if exc.code in (408, 504):
+        return ProviderProblem("timeout", 504)
+    if exc.code == 429:
+        return ProviderProblem("rate_limit_failure", 429)
+    if exc.code in (500, 502, 503):
+        return ProviderProblem("service_unavailable")
+    return ProviderProblem("provider_failure")
+
+
 class GoogleGeminiGateway:
     """Construct the official SDK client only for an accepted configured request."""
 
@@ -93,10 +129,30 @@ class GoogleGeminiGateway:
                 "claim effectiveness, select an action, or navigate the application."
             ),
             "history_sql": (
-                "Return only the exact JSON schema. For saved FocusBloom records, propose one bounded "
-                "parameterized SELECT using one approved table, WHERE profile_id = :profile_id, and a "
-                "final LIMIT no greater than 20. Use bound parameters for other values. No CTE, join, "
-                "subquery, comment, schema access, or mutation. Mark unrelated requests out_of_scope."
+                "Return only the exact JSON schema. Mark requests unrelated to saved FocusBloom records "
+                "out_of_scope. For a query outcome, produce exactly one SELECT from exactly one approved "
+                "table. Approved tables and columns are: activity_sessions(session_id, profile_id, "
+                "activity_type, status, started_at, ended_at, duration_ms, difficulty, motion_mode, "
+                "guidance_level, perspective_progress, alternative_save_state, seed_save_state, "
+                "model_status, version); perspective_artifacts(artifact_id, profile_id, session_id, "
+                "interpretation_text, alternative_text, alternative_source, observer_mode, saved_at, "
+                "updated_at); next_step_seeds(seed_id, profile_id, session_id, situation_text, "
+                "action_text, formatted_plan, source, saved_at, updated_at); preferences(profile_id, "
+                "motion_mode, guidance_level, difficulty, remember_preferences, version, updated_at). "
+                "Select one to eight approved columns or COUNT, MIN, or MAX expressions; aliases are "
+                "allowed. WHERE must include profile_id = :profile_id, but never put profile_id in the "
+                "parameters object. Bind every other comparison value with a named parameter and include "
+                "exactly those non-profile parameters in parameters. Additional predicates may use only "
+                "approved columns with =, !=, <>, <=, >=, <, >, or LIKE and must be joined by AND; IS NULL "
+                "and IS NOT NULL are also allowed. Optional GROUP BY may name approved columns. Optional "
+                "ORDER BY may name approved columns or selected aliases with ASC or DESC. End with exactly "
+                "one integer LIMIT from 1 through 20. Do not use literal or quoted values, OR, CTEs, joins, "
+                "subqueries, comments, schema access, set operations, multiple statements, or mutations. "
+                "A conforming answer for 'Which activity did I complete most often?' is "
+                "{\"outcome\":\"query\",\"intent\":\"Count completed sessions by activity type.\","
+                "\"sql\":\"SELECT activity_type, COUNT(*) AS session_count FROM activity_sessions "
+                "WHERE profile_id = :profile_id AND status = :status GROUP BY activity_type ORDER BY "
+                "session_count DESC LIMIT 20\",\"parameters\":{\"status\":\"completed\"}}."
             ),
             "history_answer": (
                 "Return only the exact JSON schema. Answer solely from the supplied numbered rows and "
@@ -118,19 +174,13 @@ class GoogleGeminiGateway:
                 config=types.GenerateContentConfig(
                     max_output_tokens=GEMINI_MAX_OUTPUT_TOKENS,
                     response_mime_type="application/json",
-                    response_schema=schema,
+                    response_json_schema=_provider_json_schema(schema),
                 ),
             )
         except (TimeoutError, httpx.TimeoutException) as exc:
             raise ProviderProblem("timeout", 504) from exc
         except errors.APIError as exc:
-            if exc.code == 401:
-                raise ProviderProblem("authentication_failure") from exc
-            if exc.code == 403:
-                raise ProviderProblem("permission_failure") from exc
-            if exc.code == 429:
-                raise ProviderProblem("rate_limit_failure", 429) from exc
-            raise ProviderProblem("provider_failure") from exc
+            raise _safe_api_problem(exc) from exc
         except ProviderProblem:
             raise
         except Exception as exc:

@@ -17,19 +17,25 @@ text, clicks, timing, completion, or history.
 
 ## Current milestone
 
-This feature branch implements the approved Assignment 3.2 FocusBloom backend.
-It has the exact nine-table version-2 SQLite schema, 22-operation `/api` surface,
-factual activity/session persistence, explicitly saved Perspective artifacts and
-Next-Step Seeds, ordered history conversations, lifecycle-only model records,
-one-request Perspective alternatives, and the bounded two-request history RAG
-workflow. The previous breathing-specific version-1 implementation remains only
-in Git history and historical records.
+This feature branch implements the approved Assignment 3.2 FocusBloom backend
+and Vue experience. It has the exact nine-table version-2 SQLite schema,
+22-operation `/api` surface, factual activity/session persistence, explicitly
+saved Perspective artifacts and Next-Step Seeds, ordered history conversations,
+lifecycle-only model records, one-request Perspective alternatives, and the
+bounded two-request history RAG workflow. The previous breathing-specific
+version-1 implementation remains only in Git history and historical records.
 
-The backend is verified locally with temporary databases and an injected fake
-Gemini gateway. It does **not** include the complete revised Vue interface,
-browser accessibility/integration evidence, or a live Gemini verification. No
-runtime `data/app.sqlite3`, local environment file, real key, or provider request
-was created for this checkpoint.
+The October 29 integrated checkpoint passed the complete automated regression
+and exercised the running application at 390×844 and 1024×768. Two early
+fictional Perspective submissions failed safely. An exact diagnostic then proved
+that Pydantic's single-value `const` was rejected by the provider schema subset;
+the narrow correction sends the equivalent supported `enum[value]` through
+`response_json_schema` while retaining unchanged Pydantic validation. The next
+Perspective request succeeded, and one artifact plus one user-authored Seed were
+explicitly saved. Garden Guide request 1 proposed a query that the unchanged
+validator rejected before execution, so request 2 did not occur. The ignored
+runtime `data/app.sqlite3` contains only the fixed fictional profile and
+verification actions; it is not tracked.
 
 Authoritative active records:
 
@@ -138,10 +144,10 @@ Pop-Location
 ```
 
 The backend tests initialize version-2 databases only in temporary test
-directories. Prompt 09 also started the backend with an explicit disposable
-database under the operating-system temporary directory and no Gemini key; it
-did not create `data/app.sqlite3`. The Vue application now implements the
-selected FocusBloom experience and the exact approved backend contracts.
+directories. Prompt 10 separately initialized the approved ignored project
+runtime database and made one bounded live request from the supplied fictional
+Perspective example. The Vue application implements the selected FocusBloom
+experience and the exact approved backend contracts.
 
 ## Technology and security boundary
 
@@ -149,12 +155,15 @@ selected FocusBloom experience and the exact approved backend contracts.
   visible state.
 - `backend/`: typed Python/FastAPI; owns validation, persistence, and the only
   optional provider calls.
-- `data/`: runtime SQLite `data/app.sqlite3`, opened only by the backend when the
-  server is deliberately started; it is absent from this checkpoint.
+- `data/`: ignored runtime SQLite `data/app.sqlite3`, opened only by the backend
+  when the server is deliberately started; the current file contains only this
+  checkpoint's fixed fictional verification state and is not tracked.
 - Google Gemini model is fixed to `gemini-3.5-flash-lite`; the key is backend
-  only. No alternate provider/model, automatic retry, or live request is
-  used by the implemented adapter. This checkpoint authorized mocked verification
-  only, not a live request.
+  only. No alternate provider/model or automatic retry is used by the adapter.
+  The integrated checkpoint retained two earlier bounded Perspective failures,
+  then verified one corrected Perspective call and one two-request Garden Guide
+  flow. No key, raw provider payload, request header, or environment content was
+  exposed.
 
 Voice input/output, microphone use, WebRTC, recording, speech recognition,
 speech synthesis, and live-audio models are prohibited. The complete application
@@ -175,11 +184,18 @@ set `DATABASE_PATH` to an explicit disposable or approved backend path before
 starting Uvicorn; omitting it would create the planned project runtime database.
 The Vite development server proxies `/api` to `http://127.0.0.1:8000`.
 
-## Next integration checkpoint
+## Integrated verification status
 
-Run separately authorized live-provider verification only after adding a real
-backend-local key through the approved secret procedure. Verify successful
-Perspective and two-request grounded History results across UI, API, and
-read-only database rows. Recheck every official Support source immediately before
+Perspective generation, explicit artifact and Seed saves, the bounded Garden
+Guide retrieval/grounding flow, targeted artifact deletion with Seed retention,
+independent Support, focus restoration, and a clean direct Edge console are now
+verified with fictional runtime data. One Prompt 10D diagnostic exposed an
+instruction/validator mismatch; only the `history_sql` instruction was aligned
+to the unchanged read-only validator and covered by focused tests. The fixed
+model, zero-retry policy, two-request maximum, schema, API, SQL allow-lists, and
+read-only protections remain unchanged.
+
+The next work is the final Assignment 3.2 report, publication/merge decision,
+and Canvas submission. Recheck every official Support source immediately before
 the graded submission or demonstration. No key is needed for ordinary Focus
 Garden, History browsing, saved-text controls, or Support.
