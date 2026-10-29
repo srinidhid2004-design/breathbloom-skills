@@ -20,6 +20,9 @@ publication checks.
 | [`06-part-3-2-backend.md`](../prompts/06-part-3-2-backend.md) | Authorize the complete backend and supply the exact structural crisis/input decision after the initial safety stop | Five-table SQLite repository, 11-route FastAPI API, deterministic session validation, bounded Gemini adapter, 32-test suite, and continuity updates | Branch/start gate; focused/full tests; temporary-row snapshots; mocked call counts and failure matrix; dependency/import/diff and credential/generated-state audits |
 | [`07-focusbloom-design-pivot.md`](../prompts/07-focusbloom-design-pivot.md) | Preserve Part 3.1 evidence while pivoting the active product, design, architecture, data, API, and model contract to FocusBloom | Editable FocusBloom Figma evolution, exact version-2 plan, low-input boundaries, scaffold branding, and continuity updates | Exact Git/start gate; Figma structure/screenshots; research sources; tests/build; repository rename and feature-branch publication |
 | [`08-focusbloom-version-2-backend.md`](../prompts/08-focusbloom-version-2-backend.md) | Replace the legacy active backend with the complete approved FocusBloom version-2 backend | Nine-table schema, 22 API operations, explicit-save persistence, bounded Gemini adapter, read-only history RAG, 52-test suite, and continuity updates | Exact Git/start gate; schema/route inspection; focused and complete tests; mocked 0/1/2 call matrix; adversarial SQL/read-only checks; dependency and artifact audits |
+| [`09-focusbloom-vue-experience.md`](../prompts/09-focusbloom-vue-experience.md) | Implement the complete approved Vue experience without live provider or project-database access | Seventeen-state low-input interface, exact API service, activity data, request guard, tests, styles, and continuity updates | Figma/context inspection; frontend tests/lint/build; disposable-database browser checks at narrow and wide viewports; credential/runtime scans |
+| [`10-integrated-live-verification.md`](../prompts/10-integrated-live-verification.md) | Run the bounded fictional integrated flow and make only narrowly authorized corrections | Provider-schema and instruction alignment, successful Perspective/Garden evidence, explicit save/delete evidence, and final verification commit | Full and focused suites; bounded live request ledger; UI, console, read-only database, grounding, focus, Support, and public-safe evidence checks |
+| [`11-final-assignment-report.md`](../prompts/11-final-assignment-report.md) | Finalize the Canvas-ready report and authorized publication without another provider request or runtime-database access | Part 3.2 `report.md`, current Support review, publication evidence, and synchronized continuity records | Seven-source manual review; full and focused suites; OpenAPI/temp-schema inspections; credential/private-path/runtime scans; staged, merge, and public-link gates |
 
 ## Consequential design comparison
 
@@ -483,3 +486,43 @@ New public-safe screenshots:
 They contain no credential, private path, raw SQL, database path, provider
 payload, exception, or personal information. No duplicate Support screenshot
 was added because the existing independent-Support evidence remained sufficient.
+
+## Assignment 3.2 finalization evidence — October 29, 2026
+
+### Manual Support-source review
+
+All seven recorded official destinations were opened in a normal browser. The
+observed page titles, responsible organizations, final HTTPS destinations, and
+stated purposes matched the fixed Support categories. The public 988 Lifeline
+`/chat/` entry redirected to `https://chat.988lifeline.org/`. No cookie choice,
+call, text, chat, treatment search, location, field, or personal information was
+submitted. FindTreatment.gov still states that it cannot recommend an individual
+facility or treatment type. This source review establishes current source
+identity and purpose only, not application safety, clinical validity, or
+effectiveness.
+
+### Final feature-branch regression
+
+- Backend: 69 passed with the same two non-failing dependency warnings; `pip
+  check` reported no broken requirements.
+- Focused history-instruction, read-only validator, request-count, grounding,
+  and Perspective tests: 50 passed.
+- Frontend: 17 passed; ESLint passed with zero warnings; the production build
+  transformed 22 modules.
+- OpenAPI inspection found exactly 22 operations.
+- A disposable OS-temporary database initialized schema version 2 with exactly
+  nine approved tables, `integrity=ok`, and zero foreign-key violations.
+- Credential-value, private absolute-path, tracked runtime/generated-file,
+  frontend key-marker, `v-html`, and ignore-rule audits passed.
+
+No provider request occurred, `backend/.env` was not accessed, and the project
+runtime database was not opened or modified. The report links only the retained
+public-safe screenshots listed above and clearly identifies the earlier failure
+screens as safe-failure evidence rather than final success.
+
+### Report and historical continuity
+
+The Canvas-ready report is `reports/assignment-3-part-2/report.md`. The
+historical root `report.md`, `docs/part-3-1-decisions.md`, prompts 01–06, original
+Figma sections, and assessed commits remain unchanged. Canvas upload is not part
+of this evidence and remains a manual human action.

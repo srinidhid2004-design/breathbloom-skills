@@ -27,15 +27,15 @@ version-1 implementation remains only in Git history and historical records.
 
 The October 29 integrated checkpoint passed the complete automated regression
 and exercised the running application at 390×844 and 1024×768. Two early
-fictional Perspective submissions failed safely. An exact diagnostic then proved
-that Pydantic's single-value `const` was rejected by the provider schema subset;
-the narrow correction sends the equivalent supported `enum[value]` through
-`response_json_schema` while retaining unchanged Pydantic validation. The next
-Perspective request succeeded, and one artifact plus one user-authored Seed were
-explicitly saved. Garden Guide request 1 proposed a query that the unchanged
-validator rejected before execution, so request 2 did not occur. The ignored
-runtime `data/app.sqlite3` contains only the fixed fictional profile and
-verification actions; it is not tracked.
+fictional Perspective submissions failed safely. A narrow provider-schema
+correction then enabled one-request Perspective success while retaining
+unchanged Pydantic validation. An instruction-only alignment to the unchanged
+read-only SQL validator enabled the final two-request Garden Guide flow with two
+bounded rows and references 1 and 2. One artifact and one user-authored Seed
+were explicitly saved; the artifact was later deleted while the Seed remained.
+Support stayed provider-independent, and the direct application console was
+clean. The ignored runtime database is not tracked and is not used by final
+regression.
 
 Authoritative active records:
 
@@ -44,6 +44,7 @@ Authoritative active records:
 - [Design pipeline](docs/design-pipeline.md)
 - [Support resources](docs/support-resources.md)
 - [Verification record](docs/verification.md)
+- [Assignment 3.2 report](reports/assignment-3-part-2/report.md)
 - [Current handoff](handoffs/current.md)
 
 The submitted Part 3.1 [report](report.md), prompt records 01–06, original Figma
@@ -55,7 +56,7 @@ evidence.
 The retained local folder name `breathbloom-skills` preserves tool/project
 continuity. The active product and public repository are named FocusBloom.
 
-## Planned experience
+## Implemented experience
 
 ### Focus Garden
 
@@ -195,7 +196,9 @@ to the unchanged read-only validator and covered by focused tests. The fixed
 model, zero-retry policy, two-request maximum, schema, API, SQL allow-lists, and
 read-only protections remain unchanged.
 
-The next work is the final Assignment 3.2 report, publication/merge decision,
-and Canvas submission. Recheck every official Support source immediately before
-the graded submission or demonstration. No key is needed for ordinary Focus
-Garden, History browsing, saved-text controls, or Support.
+The Canvas-ready Assignment 3.2 report is
+[`reports/assignment-3-part-2/report.md`](reports/assignment-3-part-2/report.md).
+Official Support sources were manually rechecked on October 29, 2026, and the
+final feature regression passed without a provider request or runtime-database
+access. Canvas upload remains a manual human action. No key is needed for
+ordinary Focus Garden, History browsing, saved-text controls, or Support.

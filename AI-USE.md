@@ -96,8 +96,10 @@ Part 3.1 report and prompts 01–06 are unchanged. Tests, Figma checks, Git chec
 and repository-redirect checks are recorded only after observation. A mock is
 never described as a live call. Version-2 backend behavior is described as
 implemented only where temporary-database and fake-gateway tests observed it;
-frontend behavior is now implemented and locally verified; live-provider
-behavior remains unverified.
+frontend behavior is implemented and locally verified. Separately authorized
+Prompt 10 checks distinguish tiny diagnostics from the successful bounded live
+Perspective and Garden Guide flows; failed attempts remain failed evidence and
+are not relabeled as success.
 
 ## Prompt 09 frontend implementation
 
@@ -120,3 +122,32 @@ session when the user left after continuing without Gemini. The lifecycle was
 revised to persist stopped or completed status before navigation, and the full
 frontend checks passed again. These were tooling/runtime corrections, not claims
 of clinical benefit.
+
+## Prompt 10 bounded live verification
+
+Codex used the running local interface, read-only database inspection, and a
+fixed fictional example to verify the integrated flow. Two full Perspective
+attempts first failed safely. One exact diagnostic isolated an unsupported
+provider-schema keyword; the adapter translated only that single-value `const`
+to the equivalent supported `enum[value]`, while Pydantic validation remained
+unchanged. The corrected Perspective request succeeded once and saved nothing
+automatically.
+
+The first Garden query proposal was safely rejected. One bounded diagnostic then
+showed that the generation instruction and existing validator grammar were
+misaligned. Only the instruction changed. A fresh UI submission used exactly two
+requests, retrieved two bounded read-only rows, and returned a validated answer
+with references 1 and 2. No retry or fallback occurred. The human explicitly
+selected the artifact deletion that left the Seed intact. Provider requests,
+mocked tests, application actions, and diagnostics are counted separately in the
+verification and evidence records.
+
+## Prompt 11 final report and publication
+
+Codex drafted the Canvas-ready Assignment 3.2 report, curated public-safe links,
+manually reviewed all seven official Support destinations in a normal browser,
+and ran the full backend/frontend and repository audits. The manual source review
+did not start a chat, call, text, treatment search, or location/personal-data
+submission. Final regression used only disposable temporary databases and made
+no Gemini request. The human authorized the publication and merge workflow;
+Canvas submission remains manual.

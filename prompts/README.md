@@ -5,14 +5,18 @@
 This directory keeps concise evidence of significant project instructions,
 decisions, acceptance criteria, and observed results. It supports later review of
 how AI-assisted work affected the project without storing full conversations.
-The active milestone is the **FocusBloom Assignment 3.2 integrated live
-verification**. The five-table/11-route BreathBloom backend is retained only in
+The active milestone is the **FocusBloom Assignment 3.2 final report and
+publication**. The five-table/11-route BreathBloom backend is retained only in
 Git history and historical evidence. The nine-table/22-operation FocusBloom
 backend and complete Vue interface are implemented. A narrow provider-schema
 correction enabled successful live Perspective generation and explicit saves;
 an instruction-only alignment then enabled the unchanged validator, bounded
 read-only Garden retrieval, grounded answer, targeted deletion, and final
 integrated verification.
+
+The Canvas-ready report and final publication record preserve the distinction
+between automated tests, bounded live calls, manual source review, and public
+link verification.
 
 ## Redaction and safety rules
 
@@ -40,9 +44,10 @@ integrated verification.
 | [`08-focusbloom-version-2-backend.md`](08-focusbloom-version-2-backend.md) | 2026-10-28 | Replace the obsolete active backend with the complete contracted FocusBloom version-2 backend using only temporary databases and mocked Gemini | Nine tables, 22 API operations, activity/artifact/seed/history persistence, one-call Perspective, two-call read-only RAG, 52 passing tests, and updated continuity records; no runtime database, real key, live call, frontend, or Figma change |
 | [`09-focusbloom-vue-experience.md`](09-focusbloom-vue-experience.md) | 2026-10-28 | Implement, verify, audit, and publish the complete 17-state Vue experience from the approved Figma references | Low-input Focus Garden, Perspective, Seed, History, Garden Guide, independent Support, exact API service, 17 frontend tests, and exact viewport browser checks; no live provider, real key, project database, or Figma change |
 | [`10-integrated-live-verification.md`](10-integrated-live-verification.md) | 2026-10-29 | Run bounded integrated regression, diagnose narrow provider/instruction incompatibilities, and verify the complete live application flow | The equivalent enum correction enabled Perspective; an instruction-only SQL-grammar alignment preserved the validator and enabled two-request grounded Garden retrieval, artifact deletion with Seed retention, Support/focus checks, and clean final suites |
+| [`11-final-assignment-report.md`](11-final-assignment-report.md) | 2026-10-29 | Create the Canvas-ready Part 3.2 report, reverify official Support sources, run final regression, and publish through the authorized feature/merge workflow | Seven official sources manually confirmed; complete suites and repository audits passed; final report and continuity records prepared without provider or runtime-database access |
 
 ## Future numbering
 
 Use two-digit sequential names with a short purpose, such as
-`11-final-assignment-report.md`. Add one index row per curated prompt record.
+`12-next-approved-checkpoint.md`. Add one index row per curated prompt record.
 Prompt records are curated evidence, not full chat exports.

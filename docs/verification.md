@@ -1101,3 +1101,49 @@ Final checks observed:
 Public-safe evidence is retained in `10-garden-guide-success.png` and
 `10-artifact-deleted-seed-retained.png`; the existing Support evidence was not
 duplicated.
+
+## Assignment 3.2 final publication gate — October 29, 2026
+
+### Manual official-source review
+
+All seven direct URLs in `docs/support-resources.md` were opened in a normal
+browser. Titles, official organizations, final HTTPS destinations, and purposes
+were visible and matched the documented 911 emergency, 988 crisis-support, and
+FindTreatment.gov non-emergency categories. The public 988 Lifeline `/chat/`
+entry redirected to the recorded HTTPS chat destination. No call, text, chat,
+treatment search, location, cookie choice, field, or personal data was submitted.
+The next scheduled review is January 27, 2027, or sooner after a redirect or
+material change.
+
+### Final feature-branch commands and observations
+
+| Check | Observed result |
+| --- | --- |
+| `.venv/Scripts/python.exe -m pytest -q` | 69 passed; two known non-failing dependency deprecation warnings |
+| `.venv/Scripts/python.exe -m pip check` | No broken requirements found |
+| Focused `test_history_instruction.py`, `test_rag.py`, and `test_perspective.py` | 50 passed; same two warnings |
+| `npm test` | 2 files, 17 tests passed |
+| `npm run lint` | Passed with zero warnings |
+| `npm run build` | Passed; 22 modules transformed |
+| OpenAPI inspection | Exactly 22 HTTP operations |
+| Disposable schema inspection | Version 2; exactly nine tables; `integrity=ok`; zero foreign-key violations |
+| `git diff --check` and safety scans | Passed before documentation changes |
+
+The schema check created its database only under an OS temporary directory and
+closed it after inspection. The complete test suite likewise used temporary
+databases. No live provider request occurred, `backend/.env` was not accessed,
+and `data/app.sqlite3` was not opened or modified.
+
+Credential-value, private absolute-path, tracked runtime/generated-file,
+frontend credential-marker, `v-html`, and ignore-rule scans were clean. The
+accessibility-oriented frontend tests and static review covered semantic
+controls, headings, focus targets, status/alert semantics, modal semantics,
+keyboard handlers, and reduced-motion rules. This evidence is software and
+source verification, not clinical or effectiveness validation.
+
+### Publication artifact boundary
+
+`reports/assignment-3-part-2/report.md` is the new Canvas-ready report. The root
+`report.md` remains the historical Part 3.1 submission. Part 3.1 decisions,
+prompts 01–06, original Figma sections, and historical assessed commits remain
+unchanged. Canvas access and submission were not performed.
